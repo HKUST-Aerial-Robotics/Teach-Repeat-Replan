@@ -1,0 +1,9 @@
+<library path="lib/libcascade_controller">
+    <class name="cascade_controller/CascadeControllerNode"
+           type="CascadeControllerNode"
+           base_class_type="nodelet::Nodelet">
+    <description>
+        controller nodelet
+    </description>
+    </class>
+</library>

@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<package>
+  <name>cascade_controller</name>
+  <version>0.1.0</version>
+  <description>The cascade_controller package</description>
+
+  <!-- One maintainer tag required, multiple allowed, one person per tag -->
+  <!-- Example:  -->
+  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
+  <maintainer email="wu@todo.todo">wu</maintainer>
+
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>LGPLv3</license>
+
+
+  <!-- Url tags are optional, but multiple are allowed, one per tag -->
+  <!-- Optional attribute type can be: website, bugtracker, or repository -->
+  <!-- Example: -->
+  <!-- <url type="website">http://wiki.ros.org/cascade_controller</url> -->
+
+
+  <!-- Author tags are optional, multiple are allowed, one per tag -->
+  <!-- Authors do not have to be maintainers, but could be -->
+  <!-- Example: -->
+  <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
+
+
+  <!-- The *_depend tags are used to specify dependencies -->
+  <!-- Dependencies can be catkin packages or system dependencies -->
+  <!-- Examples: -->
+  <!-- Use build_depend for packages you need at compile time: -->
+  <!--   <build_depend>message_generation</build_depend> -->
+  <!-- Use buildtool_depend for build tool packages: -->
+  <!--   <buildtool_depend>catkin</buildtool_depend> -->
+  <!-- Use run_depend for packages you need at runtime: -->
+  <!--   <run_depend>message_runtime</run_depend> -->
+  <!-- Use test_depend for packages you need only for testing: -->
+  <!--   <test_depend>gtest</test_depend> -->
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>Eigen3          </build_depend>
+  <build_depend>DJIOSDK         </build_depend>
+  <build_depend>roscpp          </build_depend>
+  <build_depend>std_msgs        </build_depend>
+  <build_depend>quadrotor_msgs  </build_depend>
+  <build_depend>geometry_msgs   </build_depend>
+  <build_depend>nav_msgs        </build_depend>
+  <build_depend>dji_sdk         </build_depend>
+  <build_depend>GSL             </build_depend>
+  <build_depend>sensor_msgs     </build_depend>
+  <build_depend>nodelet         </build_depend>
+  <build_depend>uav_utils       </build_depend>
+  <build_depend>cmake_utils </build_depend>
+
+  <run_depend>Eigen3        </run_depend>
+  <run_depend>DJIOSDK       </run_depend>
+  <run_depend>roscpp        </run_depend>
+  <run_depend>std_msgs      </run_depend>
+  <run_depend>quadrotor_msgs</run_depend>
+  <run_depend>geometry_msgs </run_depend>
+  <run_depend>nav_msgs      </run_depend>
+  <run_depend>GSL           </run_depend>
+  <run_depend>dji_sdk       </run_depend>
+  <run_depend>sensor_msgs   </run_depend>
+  <run_depend>nodelet       </run_depend>
+  <run_depend>uav_utils     </run_depend>
+  <run_depend>cmake_utils   </run_depend>
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+    <nodelet plugin="${prefix}/nodelet_plugins.xml"/>
+  </export>
+</package>

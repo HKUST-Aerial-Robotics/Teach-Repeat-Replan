@@ -1,0 +1,9 @@
+<library path="lib/libmission_template">
+    <class name="mission_template/MissionTemplateNode"
+           type="MissionTemplateNode"
+           base_class_type="nodelet::Nodelet">
+    <description>
+        mission template nodelet
+    </description>
+    </class>
+</library>

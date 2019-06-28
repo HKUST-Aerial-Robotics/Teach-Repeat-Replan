@@ -1,0 +1,36 @@
+<launch>
+
+<arg name="map_size_x" default="20.0"/>
+<arg name="map_size_y" default="20.0"/>
+<arg name="map_size_z" default=" 3.0"/>
+
+<arg name="init_x" default="-8.0"/>
+<arg name="init_y" default="-8.0"/>
+<arg name="init_z" default=" 2.0"/>
+
+  <node pkg ="trr_global_planner" name ="random_complex" type ="random_complex" output = "screen">    
+      <remap from="~odometry"       to="/drone_1/visual_slam/odom"/>
+
+      <param name="init_state_x"   value="$(arg init_x)"/>
+      <param name="init_state_y"   value="$(arg init_y)"/>
+
+      <param name="map/x_size"     value="$(arg map_size_x)" />
+      <param name="map/y_size"     value="$(arg map_size_y)" />
+      <param name="map/z_size"     value="$(arg map_size_z)" />
+
+      <param name="map/circle_num" value="40"/>        
+      <param name="map/obs_num"    value="300"/>        
+      <param name="map/resolution" value="0.05"/>        
+
+      <param name="ObstacleShape/lower_rad" value="0.1"/>
+      <param name="ObstacleShape/upper_rad" value="0.7"/>
+      <param name="ObstacleShape/lower_hei" value="1.0"/>
+      <param name="ObstacleShape/upper_hei" value="3.0"/>
+
+      <param name="CircleShape/lower_circle_rad"   value="0.6"/>        
+      <param name="CircleShape/upper_circle_rad"   value="2.0"/>        
+      
+      <param name="sensing/rate"   value="1.0"/>        
+  </node>
+
+</launch>

@@ -1,0 +1,15 @@
+# optimizer
+lamda1: 50.0
+lamda2: 0.95
+lamda3: 0.0001
+lamda4: 0.001
+dist0: 0.80
+alpha: 0.002 
+beta: 0.01 
+algorithm: 11
+max_iteration_num: 100
+order: 3 
+limit_ratio: 1.07 
+
+#max_vel: 2.0
+#max_acc: 1.5 

@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="state_machine" type="state_machine_node" name="state_machine_node" output="screen">
+    <remap from="/rc/position" to="position_cmd"/>
+    <remap from="/rc_input" to="joy"/>
+    </node>
+</launch>
