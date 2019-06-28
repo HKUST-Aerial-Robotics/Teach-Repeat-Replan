@@ -1,0 +1,17 @@
+@article{gao2019trr,
+  title={Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments},
+  author={Gao, Fei and Wang, Luqi and Zhou, Boyu and Han, Luxin and Pan, Jie and Shen, Shaojie},
+  journal={arXiv preprint arXiv:},
+  year={2019}
+}
+
+@article{gao2019optimal,
+  title={Optimal Trajectory Generation for Quadrotor Teach-and-Repeat},
+  author={Gao, Fei and Wang, Luqi and Wang, Kaixuan and Wu, William and Zhou, Boyu and Han, Luxin and Shen, Shaojie},
+  journal={IEEE Robotics and Automation Letters},
+  volume={4},
+  number={2},
+  pages={1493--1500},
+  year={2019},
+  publisher={IEEE}
+}

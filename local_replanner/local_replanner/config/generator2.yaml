@@ -1,0 +1,31 @@
+# optimizer
+lamda1: 10.0
+lamda2: 0.8
+lamda3: 0.00001
+lamda4: 0.001
+dist0: 0.5
+alpha: 0.002 
+beta: 0.01 
+algorithm: 11 
+max_iteration_num: 100
+order: 3 
+
+max_vel: 3.0
+max_acc: 2.0 
+horizon: 50 
+time_sample: 0.5
+limit_ratio: 1.1 
+
+# path searcher 
+lambda_heu: 5.0
+max_tau: 0.4
+max_jerk: 5.0 
+w_time: 15.0 
+visualization: 0 
+
+horizon_replan: 2.0
+range_end: 3.0
+range_sensor: 7.0
+margin: -0.01
+
+resolution: 0.1
