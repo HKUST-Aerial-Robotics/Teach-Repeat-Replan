@@ -64,13 +64,7 @@ We use **OOQP** for quadratic programming.
 
 ```
   sudo apt-get install libarmadillo-dev 
-```
-
-```
   sudo apt-get install glpk-utils libglpk-dev
-```
-
-```
   sudo apt-get install libcdd-dev
 ```
 
@@ -82,8 +76,6 @@ The simulator requires C++17, which needs **gcc 7** to compile, which can be ins
   sudo apt-get update
   sudo apt-get install gcc-7 g++-7
 ```
-Then, 
-
   for ubuntu 14.04:
   ```
     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
