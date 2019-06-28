@@ -12,7 +12,7 @@ alt="video" width="376" height="240" border="5" /></a>
 
 **Videos for Mainland China:** [Video1](https://www.bilibili.com/video/av57116775/) [Video2](https://www.bilibili.com/video/av57117018/)
 
-**Authors:**[Fei Gao](https://ustfei.com/), [Boyu Zhou](https://github.com/ZbyLGsc), [Luqi Wang](https://lwangax.wordpress.com) and [Shaojie Shen](http://uav.ust.hk/group/) from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
+**Authors:**[Fei Gao](https://ustfei.com/), [Boyu Zhou](https://github.com/ZbyLGsc), [Luqi Wang](https://lwangax.wordpress.com), Jie Pan and [Shaojie Shen](http://uav.ust.hk/group/) from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
 Sub-modules integrated in our system include:
 
