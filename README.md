@@ -106,10 +106,9 @@ After the installation, you can switch your default compiler back to **gcc 5**. 
  ## 2.GPU Dependency
  Two packages in this repo, **local_sensing** and **polyhedron_generator** needs CUDA, GPU. 
  
- **local_sensing** runs in simulation, to mimic the depth measured by onboard stereo cameras. It has a stereo camera model and renders a depth image (in GPU) by back-projecting obstcles surrounding the drone. And **polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor.
- 
- They have been tested under CUDA 9.0, 10.0 on x86 and TX2.
- 
+ **local_sensing** runs in simulation, to mimic the depth measured by onboard stereo cameras. It has a stereo camera model and renders a depth image (in GPU) by back-projecting obstcles surrounding the drone. And **polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor. They have been tested under CUDA 9.0, 10.0 on x86 and TX2.
+For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.com/cuda-toolkit)
+
  If you don't have a GPU or don't want to try CUDA, don't worry. 
  For both of these two packages, GPUs are only used for accelerations but are **not necessary**. Now the released code depends on CUDA but we will release a version which is CUDA free but, of course, run a little bit slower. 
  
