@@ -42,7 +42,7 @@ Our system can also be used for normal autonomous navigations, like our previous
 *If you use Teach-Repeat-Replan or its sub-modules for your application or research, please cite our related papers.* [bib](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/bib.txt)
 
 ## Simulation or Real-World
-To use the Teach-Repeat-Replan system in real world, you can check this branch **[experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)**. Compared to the master branch, **[experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)** has modified versions of [dense-surfel-mapping](https://github.com/HKUST-Aerial-Robotics/DenseSurfelMapping) and [stereo-VINS](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion). However, to test the proposed system in simulation, the master branch is enough.
+To use the Teach-Repeat-Replan system in real world, you can check this branch **[experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)**. Compared to the master branch, **[experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)** has modified versions of [dense-surfel-mapping](https://github.com/HKUST-Aerial-Robotics/DenseSurfelMapping) and [stereo-VINS](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion) and an onboard controller. However, to test the proposed system in simulation, the master branch is enough.
 *we will release the source code for experiment soon.*
 
 ## 1. Prerequisites
