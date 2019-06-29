@@ -86,14 +86,26 @@ We use **OOQP** for quadratic programming.
 
 The simulator requires C++17, which needs **gcc 7** to compile. When you catkin_make, the simulator would automatically select gcc 7 as its compiler, but wouldn't change your default compiler (gcc 4.8/ gcc 5). 
 
- ## 2.GPU Dependency
- Two packages in this repo, **local_sensing** and **polyhedron_generator** needs CUDA, GPU. 
+ ## 2.Using GPU or Not
+ Two packages in this repo, **local_sensing** (in the folder **local_replanner** ) and **polyhedron_generator** have GPU, CPU two different versions. By default, they are in CPU version. By change
  
- **local_sensing** runs in simulation, to mimic the depth measured by onboard stereo cameras. It has a stereo camera model and renders a depth image (in GPU) by back-projecting obstcles surrounding the drone. And **polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor. They have been tested under CUDA 9.0, 10.0 on x86 and TX2.
-For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.com/cuda-toolkit)
+ ```
+ set(ENABLE_CUDA false)
+ ```
+ 
+ in the CMakeList.txt in these two packages, to
+ 
+ ```
+ set(ENABLE_CUDA true)
+ ```
+ 
+The GPU functionalities are turned-on.
+ 
+If *ENABLE_CUDA* turn on, **local_sensing** mimic the depth measured by onboard stereo cameras. It has a stereo camera model and renders a depth image by GPU. If *ENABLE_CUDA* off, it publish point cloud data. Our local mapper takes both depth images and pointclouds.
 
- If you don't have a GPU or don't want to try CUDA, don't worry. 
- For both of these two packages, GPUs are only used for accelerations but are **not necessary**. Now the released code depends on CUDA but we will release a version which is CUDA free but, of course, run a little bit slower. 
+**polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor while teaching. If *ENABLE_CUDA* turn on, it can run much faster (depends on resolution, up to 30X at fine resolution) than *ENABLE_CUDA* off. 
+
+For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.com/cuda-toolkit)
  
  ## 3.Build on ROS
   I suggest to create an empty new workspace. Then clone the repository to your workspace and catkin_make. For example:
