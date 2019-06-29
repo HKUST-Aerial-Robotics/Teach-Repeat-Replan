@@ -102,6 +102,7 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   source ~/your_catkin_ws/devel/setup.bash
 ```
   ## 4.Run Teach-Repeat-Replan
-  1.1# Teaching (with joystick)
+  **4.1 Teaching (with joystick)**
+  We use a USB joy-stick **Betop**, to control the drone virtually in simulation. 
   
-  1.2# Repeating
+  **4.2 Repeating**
