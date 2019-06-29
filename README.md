@@ -100,7 +100,7 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   catkin_make
   source ~/your_catkin_ws/devel/setup.bash
 ```
-  ## 4.Run Teach-Repeat-Replan in simulation
+  ## 4.Run Teach-Repeat-Replan
   1.1# Teaching (with joystick)
   
   1.2# Repeating
