@@ -12,7 +12,7 @@
 #include <pcl/search/kdtree.h>
 #include <pcl/search/impl/kdtree.hpp>
 #include <pcl/filters/voxel_grid.h>
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 
 using namespace std;
 using namespace Eigen;
