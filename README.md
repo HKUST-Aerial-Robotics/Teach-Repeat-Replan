@@ -80,7 +80,7 @@ We use **OOQP** for quadratic programming.
   sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 50 --slave /usr/bin/g++ g++ /usr/bin/g++-7
 ```
 
-The simulator requires C++17, which needs **gcc 7** to compile. When you catkin_make, the simulator would automatically select gcc 7 as its compiler temporarily, and change it back to your default compiler (gcc 4.8/ gcc 5). So don't worry about your environment.
+The simulator requires C++17, which needs **gcc 7** to compile. When you catkin_make, the simulator would automatically select gcc 7 as its compiler, but wouldn't change your default compiler (gcc 4.8/ gcc 5). 
 
  ## 2.GPU Dependency
  Two packages in this repo, **local_sensing** and **polyhedron_generator** needs CUDA, GPU. 
