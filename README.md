@@ -103,7 +103,7 @@ The GPU functionalities are turned-on.
  
 **local_sensing** is the simulated sensors. If *ENABLE_CUDA* turn on, it mimics the depth measured by stereo cameras and renders a depth image by GPU. If *ENABLE_CUDA* off, it publish pointclouds. Our local mapper takes both depth images and pointclouds.
 
-**polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor while teaching. If *ENABLE_CUDA* turn on, it can run much faster (depends on resolution, up to 30X at fine resolution) than *ENABLE_CUDA* off. 
+**polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor while teaching. If *ENABLE_CUDA* turn on, it can run much faster (depends on resolution and your graphics card) than *ENABLE_CUDA* off. 
 
 For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.com/cuda-toolkit)
  
