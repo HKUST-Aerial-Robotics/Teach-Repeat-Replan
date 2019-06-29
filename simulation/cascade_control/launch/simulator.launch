@@ -156,7 +156,7 @@
   <param name="id"               value="$(arg drone_number)"/>
 </node>
 
- <node name="rviz" pkg="rviz" type="rviz" output="screen"
+ <node name="rviz" pkg="rviz" type="rviz" output="log"
        args="-d $(find trr_global_planner)/config/rviz_config.rviz"> 
 </node>
 

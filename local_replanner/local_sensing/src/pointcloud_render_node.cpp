@@ -87,7 +87,7 @@ void rcvGlobalPointCloudCallBack(const sensor_msgs::PointCloud2 & pointcloud_map
   pcl::PointCloud<pcl::PointXYZ> cloud_input;
   pcl::fromROSMsg(pointcloud_map, cloud_input);
   
-  _voxel_sampler.setLeafSize(0.2f, 0.2f, 0.2f);
+  _voxel_sampler.setLeafSize(0.1f, 0.1f, 0.1f);
   _voxel_sampler.setInputCloud( cloud_input.makeShared() );      
   _voxel_sampler.filter( _cloud_all_map );    
 
@@ -98,19 +98,39 @@ void rcvGlobalPointCloudCallBack(const sensor_msgs::PointCloud2 & pointcloud_map
 
 void renderSensedPoints(const ros::TimerEvent & event)
 {
-   if(!has_global_map || !has_odom)
+    if(!has_global_map || !has_odom)
        return;
 
+    Eigen::Quaterniond q;
+    q.x() = _odom.pose.pose.orientation.x;
+    q.y() = _odom.pose.pose.orientation.y;
+    q.z() = _odom.pose.pose.orientation.z;
+    q.w() = _odom.pose.pose.orientation.w;
+
+    Eigen::Matrix3d rot;
+    rot = q;
+    Eigen::Vector3d yaw_vec = rot.col(0);
+
+    _local_map.points.clear();
     pcl::PointXYZ searchPoint(_odom.pose.pose.position.x, _odom.pose.pose.position.y, _odom.pose.pose.position.z);
     _pointIdxRadiusSearch.clear();
     _pointRadiusSquaredDistance.clear();
 
     pcl::PointXYZ pt;
-    if ( _kdtreeLocalMap.radiusSearch (searchPoint, sensing_horizon / 2.0, _pointIdxRadiusSearch, _pointRadiusSquaredDistance) > 0 )
+    if ( _kdtreeLocalMap.radiusSearch (searchPoint, sensing_horizon, _pointIdxRadiusSearch, _pointRadiusSquaredDistance) > 0 )
     {
        for (size_t i = 0; i < _pointIdxRadiusSearch.size (); ++i)
        {
-          pt = _cloud_all_map.points[_pointIdxRadiusSearch[i]];      
+          pt = _cloud_all_map.points[_pointIdxRadiusSearch[i]];  
+          
+          if( (fabs(pt.z - _odom.pose.pose.position.z) / (sensing_horizon)) > tan(M_PI / 12.0) )
+              continue;    
+          
+          Vector3d pt_vec(pt.x - _odom.pose.pose.position.x, pt.y - _odom.pose.pose.position.y, pt.z - _odom.pose.pose.position.z);
+          
+          if(pt_vec.dot(yaw_vec) < 0 ) 
+            continue;
+          
           _local_map.points.push_back(pt);
        }
     }
@@ -143,7 +163,6 @@ int main(int argc, char **argv)
   nh.getParam("sensing_rate",    sensing_rate);
   nh.getParam("estimation_rate", estimation_rate);
 
-  nh.getParam("map/resolution", _resolution);
   nh.getParam("map/x_size",     _x_size);
   nh.getParam("map/y_size",     _y_size);
   nh.getParam("map/z_size",     _z_size);
@@ -154,10 +173,9 @@ int main(int argc, char **argv)
   odom_sub       = nh.subscribe( "odometry",   50, rcvOdometryCallbck   );  
 
   //publisher depth image and color image
-  pub_cloud = nh.advertise<sensor_msgs::Image>("depth",1000);
+  pub_cloud = nh.advertise<sensor_msgs::PointCloud2>("local_pointcloud", 10);
   
-  double sensing_duration  = 1.0 / sensing_rate;
-  double estimate_duration = 1.0 / estimation_rate;
+  double sensing_duration  = 1.0 / sensing_rate * 2.5;
 
   local_sensing_timer = nh.createTimer(ros::Duration(sensing_duration),  renderSensedPoints);
 

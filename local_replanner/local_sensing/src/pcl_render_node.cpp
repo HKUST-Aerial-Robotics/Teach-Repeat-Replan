@@ -333,7 +333,6 @@ int main(int argc, char **argv)
   nh.getParam("sensing_rate",    sensing_rate);
   nh.getParam("estimation_rate", estimation_rate);
 
-  nh.getParam("map/resolution", _resolution);
   nh.getParam("map/x_size",     _x_size);
   nh.getParam("map/y_size",     _y_size);
   nh.getParam("map/z_size",     _z_size);

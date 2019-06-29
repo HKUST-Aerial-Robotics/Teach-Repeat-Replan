@@ -153,7 +153,7 @@ private:
 
   int pose_type_;
   string input_data_type_;
-  
+
   ros::Subscriber indep_depth_sub_, indep_odom_sub_, indep_pose_sub_, indep_cloud_sub_;
   ros::Publisher map_pub_, esdf_pub_, test_pub_, map_inf_pub_, update_range_pub_;
   ros::Timer occ_timer_, esdf_timer_;
@@ -166,7 +166,7 @@ private:
 
   bool occ_need_update_, esdf_need_update_;
   bool has_first_depth_;
-  bool has_odom_;
+  bool has_odom_, has_cloud_;
 
   /* ============================== map fusion and esdf ============================== */
   /* ---------- local map fusion ---------- */
@@ -184,7 +184,7 @@ private:
   /* ---------- esdf update ---------- */
   Eigen::Vector3i esdf_min_, esdf_max_;
   double esdf_inflate_;
-  int cut_dio_inflate_;
+  int local_map_margin_;
   double ground_z_;
 
   double fuse_time_, esdf_time_, max_fuse_time_, max_esdf_time_;

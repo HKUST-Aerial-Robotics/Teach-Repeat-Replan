@@ -77,7 +77,7 @@ void GradBandOptimizer::renewLambda2(double lamda2_) { lamda2 += lamda2_; }
 void GradBandOptimizer::resetLambda2()
 {
   ros::param::get("/local_replanner/lamda2", lamda2);
-  cout << "reset lamda2: " << lamda2 << endl;
+//  cout << "reset lamda2: " << lamda2 << endl;
 }
 
 void GradBandOptimizer::setBSplineInterval(double ts) {

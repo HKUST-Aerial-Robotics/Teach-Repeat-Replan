@@ -81,7 +81,6 @@ void drawBspline(NonUniformBspline bspline, int id, Eigen::Vector4d color, bool 
 
 void visCheckTrajPoints(const vector<Vector3d> & traj_pts);
 void visBsplineInitialization(const MatrixXd & ctrl_pts);
-void visBoundaryDer(const MatrixXd & pos, const MatrixXd & vel, const MatrixXd & acc);
 void visFillMinima(Eigen::Vector3d center, Eigen::Vector3d sc);
 
 ros::Time _replan_request_time;
@@ -92,7 +91,6 @@ int request_cnt = 0;
 ros::Time time_1st_request;
 void rcvReplanRequestCallBack( const quadrotor_msgs::ReplanCheck & replan_request_msg)
 {   
-    //cout<<"rcv replan request from the server"<<endl;
     if( !_sdf_map->hasDepthObservation() ) 
         return;
     
@@ -125,34 +123,25 @@ void rcvReplanRequestCallBack( const quadrotor_msgs::ReplanCheck & replan_reques
     Vector3d check_pt;
 
     std::vector<Vector3d> traj_pts;            
-    for(auto pt: replan_request_msg.plan_points)
-    {   
+    for(auto pt: replan_request_msg.plan_points){   
         Vector3d plan_pt(pt.x, pt.y, pt.z);
         traj_pts.push_back(plan_pt);    
     }
     visCheckTrajPoints(traj_pts);
 	
-//    if((ros::Time::now() - time_1st_request).toSec() < 2.2)
-//       return;
-    //ROS_BREAK();
     ros::Time t1 = ros::Time::now();
     //cout<<"time vis: ="<<(t1-t0).toSec()<<endl;
     Eigen::Vector3d grad;
     Eigen::Vector3d pt_1(replan_request_msg.check_points[0].x,replan_request_msg.check_points[0].y,replan_request_msg.check_points[0].z);
     for(int i = 0; i < replan_request_msg.check_points.size(); i++)
     {   
-        //ROS_WARN("Check points list size: = %d", replan_request_msg.check_points.size());
         check_pt << replan_request_msg.check_points[i].x, replan_request_msg.check_points[i].y, replan_request_msg.check_points[i].z;
-        
-	if( (check_pt-pt_1).norm() > 3.0 )
-	    break;	
+    
+        if( (check_pt-pt_1).norm() > 3.0 ) break;	
 	   
-       //if( _sdf_map->getOccupancy(check_pt) > 0 )
-	   double dis;
+	    double dis;
         dis = _sdf_map->getDistWithGradTrilinear(check_pt,  grad );
-        if( dis <= 0.2  ) // 0.05
-        //if( _sdf_map->getInflateOccupancy(check_pt) > 0 )
-        {	   
+        if( dis <= 0.05  ){	   
             ROS_WARN("[Local Replanner] Collision detected, neeed replanning, dis:= %f", dis ); 
             if( i * check_time_interval < _time_emergency){
                 ROS_ERROR("[Local Replanner] Emergency braking");
@@ -164,16 +153,14 @@ void rcvReplanRequestCallBack( const quadrotor_msgs::ReplanCheck & replan_reques
                 _bspline_pub.publish(stop_traj);
                 return;
             }
-            else
-            {   
+            else{   
                 ros::Time t1 = ros::Time::now();
                 gradLocalReplan(traj_pts, plan_time_interval, vel, acc, replan_request_msg.replan_to_global_time);
-                cout<<"time in local replannning := "<<(ros::Time::now() - t1).toSec()<<endl;
+                //cout<<"time in local replannning := "<<(ros::Time::now() - t1).toSec()<<endl;
                 return;
             }
         }
     }
-    //cout<<"time check:= "<<(ros::Time::now() - t1).toSec()<<endl;
 }
 
 quadrotor_msgs::Bspline getBsplineTraj(NonUniformBspline & traj_opt)
@@ -204,8 +191,6 @@ quadrotor_msgs::Bspline getBsplineTraj(NonUniformBspline & traj_opt)
 void gradLocalReplan( const vector<Vector3d> & traj_pts, const double & time_interval, const MatrixXd & vel, const MatrixXd & acc , double local_to_global_time)
 {
     /* generate sample points set on a naive trajectory*/
-	ROS_WARN("Start local replanning");
-
     vector<Eigen::Vector3d> start_end_derivative;
     start_end_derivative.push_back(vel.row(0));
     start_end_derivative.push_back(vel.row(1));
@@ -219,11 +204,8 @@ void gradLocalReplan( const vector<Vector3d> & traj_pts, const double & time_int
     pos_v.row(0) = traj_pts.front();
     pos_v.row(1) = traj_pts.back();
 
-    //visBoundaryDer(pos_v, vel_v, acc_v);
-
     ros::Time t1, t2;
     t1 = ros::Time::now();    
-
     /* ========================================================================== */
     _bspline_replanner->setInput(_sdf_map, time_interval, traj_pts, start_end_derivative);
     _bspline_replanner->resetLambda2();
@@ -262,19 +244,14 @@ void gradLocalReplan( const vector<Vector3d> & traj_pts, const double & time_int
     /* ========================================================================== */
 
     /* publish optimized B-spline */
-    //if(traj_feas && traj_safe){
-    if( traj_safe ){ // neglect feasibility here for a higher success rate
-        cout<<"safe replan"<<endl;
-        if(!traj_feas) cout<<"infeasible but accepted"<<endl;
+    if( traj_safe ){ 
         quadrotor_msgs::Bspline safe_spline = getBsplineTraj(traj_opt);
-
         double t_bspline_cmd_start, t_bspline_cmd_end;
         traj_opt.getRegion(t_bspline_cmd_start, t_bspline_cmd_end);
 
         double replan_traj_time = t_bspline_cmd_end - t_bspline_cmd_start;
         double time_extra = replan_traj_time - _replan_time_length;
 
-        //cout<<"time_extra: = "<<time_extra<<endl;
         safe_spline.time_extra = time_extra;
         safe_spline.replan_to_global_time = local_to_global_time;
 
@@ -284,14 +261,11 @@ void gradLocalReplan( const vector<Vector3d> & traj_pts, const double & time_int
         drawBspline(traj_opt, OPT_TRAJ_ID + succ_replan_num_, Eigen::Vector4d(0, 1, 0, 1), true,
               0.1, OPT_PT_ID + succ_replan_num_, Eigen::Vector4d(1, 1, 0, 1));
         succ_replan_num_ += 3;
-
     }
-    else
-    {
-        cout<<"no safe replan, try it in next loop"<<endl;
+    else{
+        // do nothing
+        //cout<<"no safe replan, try it in next loop"<<endl;
     }
-    
-
 }
 
 void BsplineFeasibleCheck(NonUniformBspline traj, bool & is_feas, bool & is_safe, Eigen::Vector3d & collision_pt)
@@ -321,11 +295,8 @@ void BsplineFeasibleCheck(NonUniformBspline traj, bool & is_feas, bool & is_safe
                 is_feas = false;
         }
 	
-	
         dis = _sdf_map->getDistWithGradTrilinear(pos,  grad );
-        //if( _sdf_map->getDistance(pos) < 0.1 ){
-//        if( _sdf_map->getInflateOccupancy(pos) > 0 ){
-	   if( dis < 0.25 ){
+	   if( dis < 0.075 ){
             is_safe = false;
             if(collision_pt.norm() < 1e-5) collision_pt = pos;
         }
@@ -334,22 +305,14 @@ void BsplineFeasibleCheck(NonUniformBspline traj, bool & is_feas, bool & is_safe
 }
 
 void visualizeESDFGrid(const ros::TimerEvent& event)
-{
+{   
     if( !_sdf_map->hasDepthObservation() ) 
         return;
-
-    ros::Time t1 = ros::Time::now();
 
     _sdf_map->publishMap();
     _sdf_map->publishMapInflate();
     _sdf_map->publishUpdateRange();
     _sdf_map->publishESDF();
-    
-    ros::Time t2 = ros::Time::now();
-
-    // cout<<"t visualize: = "<<(t2 - t1).toSec()<<endl;
-    // ----------------test esdf------------------
-    //_sdf_map->checkDist();
 }
 
 int main(int argc, char** argv)
@@ -438,7 +401,6 @@ void visCheckTrajPoints(const vector<Vector3d> & traj_pts)
         pre = cur;
     }
 
-    //ROS_INFO("[local_replan] The length of the trajectory; %fm.", traj_len);
     _vis_check_traj_pub.publish(traj_vis);
 }
 
@@ -543,63 +505,6 @@ void visBsplineInitialization(const MatrixXd & ctrl_pts)
 
     //ROS_INFO("[local_replan] The length of the trajectory; %fm.", traj_len);
     _vis_initial_b_spline.publish(ctrl_pts_vis);
-}
-
-void visBoundaryDer(const MatrixXd & pos, const MatrixXd & vel, const MatrixXd & acc)
-{   
-    visualization_msgs::Marker vis_vel, vis_acc;
-    vis_vel.ns = "bondary_vel";
-    vis_vel.id = 0;
-    vis_vel.header.frame_id = _frame_id;
-    vis_vel.type = visualization_msgs::Marker::ARROW;
-    vis_vel.action = visualization_msgs::Marker::ADD;
-    vis_vel.color.a = 1.0;
-    vis_vel.color.r = 0.0;
-    vis_vel.color.g = 1.0;
-    vis_vel.color.b = 0.0;
-    vis_vel.scale.x = 0.05;
-    vis_vel.scale.y = 0.1;
-    vis_vel.scale.z = 0.1;
-
-    vis_acc.ns = "bondary_acc";
-    vis_acc.id = 0;
-    vis_acc.header.frame_id = _frame_id;
-    vis_acc.type = visualization_msgs::Marker::ARROW;
-    vis_acc.action = visualization_msgs::Marker::ADD;
-    vis_acc.color.a = 1.0;
-    vis_acc.color.r = 1.0;
-    vis_acc.color.g = 1.0;
-    vis_acc.color.b = 0.0;
-    vis_acc.scale.x = 0.05;
-    vis_acc.scale.y = 0.1;
-    vis_acc.scale.z = 0.1;
-
-    vis_vel.header.stamp = _replan_request_time;
-    vis_acc.header.stamp = _replan_request_time;
-
-    vis_vel.points.clear();
-    vis_acc.points.clear();
-
-    geometry_msgs::Point pt;
-
-    pt.x = pos(1, 0);
-    pt.y = pos(1, 1);
-    pt.z = pos(1, 2);
-    vis_vel.points.push_back(pt);
-    vis_acc.points.push_back(pt);
-
-    pt.x = pos(1, 0) + vel(1, 0);
-    pt.y = pos(1, 1) + vel(1, 1);
-    pt.z = pos(1, 2) + vel(1, 2);
-    vis_vel.points.push_back(pt);
-
-    pt.x = pos(1, 0) + acc(1, 0);
-    pt.y = pos(1, 1) + acc(1, 1);
-    pt.z = pos(1, 2) + acc(1, 2);
-    vis_acc.points.push_back(pt);
-
-    _vis_vel_pub.publish(vis_vel);
-    _vis_acc_pub.publish(vis_acc);
 }
 
 void visFillMinima(Eigen::Vector3d center, Eigen::Vector3d sc) {

@@ -571,20 +571,17 @@ void SDFMap::initMap(ros::NodeHandle& nh)
   node_.param("sdf_map/use_uniform_update", use_uniform_update_, true);
 
   node_.param("sdf_map/pose_type", pose_type_, 1);
-  node_.param("sdf_map/input_data_type", input_data_type_, string("depth"));
+  //node_.param("sdf_map/input_data_type", input_data_type_, string("depth"));
 
   node_.param("sdf_map/frame_id", frame_id_, string("world"));
   node_.param("sdf_map/esdf_inflate", esdf_inflate_, 1.0);
-  node_.param("sdf_map/cut_dio_inflate", cut_dio_inflate_, 1);
+  node_.param("sdf_map/local_map_margin", local_map_margin_, 1);
   node_.param("sdf_map/ground_z", ground_z_, 1.0);
 
   esdf_inflate_ = max(resolution, esdf_inflate_);
 
   resolution_inv = 1 / resolution;
-  // const double x_minus_bias = 5.0;
-  // /origin = Eigen::Vector3d(-x_minus_bias, -y_size / 2.0, -z_minus_bias);
-  const double x_minus_bias = 3.0;
-  origin = Eigen::Vector3d(-x_minus_bias, -y_size / 2.0, ground_z_);
+  origin   = Eigen::Vector3d(-y_size / 2.0, -y_size / 2.0, ground_z_);
   map_size = Eigen::Vector3d(x_size, y_size, z_size);
 
   prob_hit_log_ = logit(p_hit_);
@@ -690,14 +687,11 @@ void SDFMap::initMap(ros::NodeHandle& nh)
     sync_image_odom_->registerCallback(boost::bind(&SDFMap::depthOdomCallback, this, _1, _2));
   }
 
-  if (input_data_type_ != "depth")
-  {
-    indep_odom_sub_ =
-        node_.subscribe<nav_msgs::Odometry>("/sdf_map/odom", 10, &SDFMap::odomCallback, this);
+  indep_odom_sub_ =
+      node_.subscribe<nav_msgs::Odometry>("/sdf_map/odom", 10, &SDFMap::odomCallback, this);
 
-    indep_cloud_sub_ =
-        node_.subscribe<sensor_msgs::PointCloud2>("/sdf_map/cloud", 10, &SDFMap::cloudCallback, this);
-  }
+  indep_cloud_sub_ =
+      node_.subscribe<sensor_msgs::PointCloud2>("/sdf_map/cloud", 10, &SDFMap::cloudCallback, this);
 
   occ_timer_ = node_.createTimer(ros::Duration(0.05), &SDFMap::updateOccupancyCallback, this);
   esdf_timer_ = node_.createTimer(ros::Duration(0.05), &SDFMap::updateESDFCallback, this);
@@ -711,7 +705,8 @@ void SDFMap::initMap(ros::NodeHandle& nh)
   occ_need_update_ = false;
   esdf_need_update_ = false;
   has_first_depth_ = false;
-  has_odom_ = false;
+  has_odom_  = false;
+  has_cloud_ = false;
   image_cnt_ = 0;
 
   esdf_time_ = 0.0;
@@ -824,6 +819,7 @@ void SDFMap::projectDepthImage()
         for (int u = depth_filter_margin_; u < cols - depth_filter_margin_; u += skip_pixel_)
         {
           depth = (*row_ptr) * inv_factor;
+
           pt_cur(0) = (u - cx_) * depth / fx_;
           pt_cur(1) = (v - cy_) * depth / fy_;
           pt_cur(2) = depth;
@@ -859,7 +855,6 @@ void SDFMap::projectDepthImage()
     }
   }
 
-  //  std::cout<<"proj_pts_cnt: "<<proj_points_cnt<<"\n\n";
   /* ---------- maintain last ---------- */
   last_camera_pos_ = camera_pos_;
   last_camera_q_ = camera_q_;
@@ -1003,8 +998,6 @@ void SDFMap::raycastProcess()
         (log_odds_update <= 0 && occupancy_buffer[idx_ctns] <= clamp_min_log_))
       continue;
 
-    // Eigen::Vector3d local(5.0, 3.0, 1.5);
-
     Eigen::Vector3d local_range_min = camera_pos_ - sensor_range_;
     Eigen::Vector3d local_range_max = camera_pos_ + sensor_range_;
     Eigen::Vector3i min_id, max_id;
@@ -1053,77 +1046,77 @@ void SDFMap::clearAndInflateLocalMap()
   // Eigen::Vector3i min_vec_margin = min_vec - Eigen::Vector3i(vec_margin, vec_margin, vec_margin);
   // Eigen::Vector3i max_vec_margin = max_vec + Eigen::Vector3i(vec_margin, vec_margin, vec_margin);
 
-  Eigen::Vector3i min_cut_dio = esdf_min_ - Eigen::Vector3i(cut_dio_inflate_, cut_dio_inflate_, cut_dio_inflate_);
-  Eigen::Vector3i max_cut_dio = esdf_max_ + Eigen::Vector3i(cut_dio_inflate_, cut_dio_inflate_, cut_dio_inflate_);
+  Eigen::Vector3i min_cut = esdf_min_ - Eigen::Vector3i(local_map_margin_, local_map_margin_, local_map_margin_);
+  Eigen::Vector3i max_cut = esdf_max_ + Eigen::Vector3i(local_map_margin_, local_map_margin_, local_map_margin_);
 
-  max_cut_dio = max_cut_dio.array().min((grid_size - Eigen::Vector3i::Ones()).array());
-  max_cut_dio = max_cut_dio.array().max(Eigen::Vector3i::Zero().array());
+  max_cut = max_cut.array().min((grid_size - Eigen::Vector3i::Ones()).array());
+  max_cut = max_cut.array().max(Eigen::Vector3i::Zero().array());
 
-  min_cut_dio = min_cut_dio.array().min((grid_size - Eigen::Vector3i::Ones()).array());
-  min_cut_dio = min_cut_dio.array().max(Eigen::Vector3i::Zero().array());
+  min_cut = min_cut.array().min((grid_size - Eigen::Vector3i::Ones()).array());
+  min_cut = min_cut.array().max(Eigen::Vector3i::Zero().array());
 
-  Eigen::Vector3i min_cut_dio_m = min_cut_dio - Eigen::Vector3i(vec_margin, vec_margin, vec_margin);
-  Eigen::Vector3i max_cut_dio_m = max_cut_dio + Eigen::Vector3i(vec_margin, vec_margin, vec_margin);
+  Eigen::Vector3i min_cut_m = min_cut - Eigen::Vector3i(vec_margin, vec_margin, vec_margin);
+  Eigen::Vector3i max_cut_m = max_cut + Eigen::Vector3i(vec_margin, vec_margin, vec_margin);
 
-  max_cut_dio_m = max_cut_dio_m.array().min((grid_size - Eigen::Vector3i::Ones()).array());
-  max_cut_dio_m = max_cut_dio_m.array().max(Eigen::Vector3i::Zero().array());
+  max_cut_m = max_cut_m.array().min((grid_size - Eigen::Vector3i::Ones()).array());
+  max_cut_m = max_cut_m.array().max(Eigen::Vector3i::Zero().array());
 
-  min_cut_dio_m = min_cut_dio_m.array().min((grid_size - Eigen::Vector3i::Ones()).array());
-  min_cut_dio_m = min_cut_dio_m.array().max(Eigen::Vector3i::Zero().array());
+  min_cut_m = min_cut_m.array().min((grid_size - Eigen::Vector3i::Ones()).array());
+  min_cut_m = min_cut_m.array().max(Eigen::Vector3i::Zero().array());
 
   int inf_step = ceil(inflate_val_ / resolution);
-  int inf_step_z = 1;
+  //int inf_step_z = 1;
 
   /* ---------- clear map outside local range ---------- */
 
-  for (int x = min_cut_dio_m(0); x <= max_cut_dio_m(0); ++x)
-    for (int y = min_cut_dio_m(1); y <= max_cut_dio_m(1); ++y)
-      for (int z = min_cut_dio_m(2); z <= min_cut_dio(2); ++z)
+  for (int x = min_cut_m(0); x <= max_cut_m(0); ++x)
+    for (int y = min_cut_m(1); y <= max_cut_m(1); ++y)
+      for (int z = min_cut_m(2); z <= min_cut(2); ++z)
       {
         int idx = x * grid_size(1) * grid_size(2) + y * grid_size(2) + z;
         occupancy_buffer[idx] = clamp_min_log_;
         distance_buffer_all[idx] = 10000;
       }
 
-  for (int x = min_cut_dio_m(0); x <= max_cut_dio_m(0); ++x)
-    for (int y = min_cut_dio_m(1); y <= max_cut_dio_m(1); ++y)
-      for (int z = max_cut_dio(2); z <= max_cut_dio_m(2); ++z)
+  for (int x = min_cut_m(0); x <= max_cut_m(0); ++x)
+    for (int y = min_cut_m(1); y <= max_cut_m(1); ++y)
+      for (int z = max_cut(2); z <= max_cut_m(2); ++z)
       {
         int idx = x * grid_size(1) * grid_size(2) + y * grid_size(2) + z;
         occupancy_buffer[idx] = clamp_min_log_;
         distance_buffer_all[idx] = 10000;
       }
 
-  for (int x = min_cut_dio_m(0); x <= max_cut_dio_m(0); ++x)
-    for (int y = min_cut_dio_m(1); y <= min_cut_dio(1); ++y)
-      for (int z = min_cut_dio_m(2); z <= max_cut_dio_m(2); ++z)
+  for (int x = min_cut_m(0); x <= max_cut_m(0); ++x)
+    for (int y = min_cut_m(1); y <= min_cut(1); ++y)
+      for (int z = min_cut_m(2); z <= max_cut_m(2); ++z)
       {
         int idx = x * grid_size(1) * grid_size(2) + y * grid_size(2) + z;
         occupancy_buffer[idx] = clamp_min_log_;
         distance_buffer_all[idx] = 10000;
       }
 
-  for (int x = min_cut_dio_m(0); x <= max_cut_dio_m(0); ++x)
-    for (int y = max_cut_dio(1); y <= max_cut_dio_m(1); ++y)
-      for (int z = min_cut_dio_m(2); z <= max_cut_dio_m(2); ++z)
+  for (int x = min_cut_m(0); x <= max_cut_m(0); ++x)
+    for (int y = max_cut(1); y <= max_cut_m(1); ++y)
+      for (int z = min_cut_m(2); z <= max_cut_m(2); ++z)
       {
         int idx = x * grid_size(1) * grid_size(2) + y * grid_size(2) + z;
         occupancy_buffer[idx] = clamp_min_log_;
         distance_buffer_all[idx] = 10000;
       }
 
-  for (int x = min_cut_dio_m(0); x <= min_cut_dio(0); ++x)
-    for (int y = min_cut_dio_m(1); y <= max_cut_dio_m(1); ++y)
-      for (int z = min_cut_dio_m(2); z <= max_cut_dio_m(2); ++z)
+  for (int x = min_cut_m(0); x <= min_cut(0); ++x)
+    for (int y = min_cut_m(1); y <= max_cut_m(1); ++y)
+      for (int z = min_cut_m(2); z <= max_cut_m(2); ++z)
       {
         int idx = x * grid_size(1) * grid_size(2) + y * grid_size(2) + z;
         occupancy_buffer[idx] = clamp_min_log_;
         distance_buffer_all[idx] = 10000;
       }
 
-  for (int x = max_cut_dio(0); x <= max_cut_dio_m(0); ++x)
-    for (int y = min_cut_dio_m(1); y <= max_cut_dio_m(1); ++y)
-      for (int z = min_cut_dio_m(2); z <= max_cut_dio_m(2); ++z)
+  for (int x = max_cut(0); x <= max_cut_m(0); ++x)
+    for (int y = min_cut_m(1); y <= max_cut_m(1); ++y)
+      for (int z = min_cut_m(2); z <= max_cut_m(2); ++z)
       {
         int idx = x * grid_size(1) * grid_size(2) + y * grid_size(2) + z;
         occupancy_buffer[idx] = clamp_min_log_;
@@ -1151,7 +1144,7 @@ void SDFMap::clearAndInflateLocalMap()
         {
           inflatePoint(Eigen::Vector3i(x, y, z), inf_step, inf_pts);
 
-          for (int k = 0; k < inf_pts.size(); ++k)
+          for (int k = 0; k < (int)inf_pts.size(); ++k)
           {
             inf_pt = inf_pts[k];
 
@@ -1280,21 +1273,34 @@ void SDFMap::poseCallback(const geometry_msgs::PoseStampedConstPtr& pose)
 
   has_odom_ = true;
 }
+
 void SDFMap::odomCallback(const nav_msgs::OdometryConstPtr& odom)
-{
-  std::cout << "odom: " << odom->header.stamp << std::endl;
+{ 
+  if(!has_cloud_)
+    return;
+  
+  camera_pos_(0) = odom->pose.pose.position.x;
+  camera_pos_(1) = odom->pose.pose.position.y;
+  camera_pos_(2) = odom->pose.pose.position.z;
+
+  //std::cout<<"odom"<<std::endl;
+  has_odom_ = true;
 }
+
 void SDFMap::cloudCallback(const sensor_msgs::PointCloud2ConstPtr& img)
 {
-  if (!has_odom_)
-  {
-    std::cout << "no odom!" << std::endl;
-    return;
-  }
-  std::cout << "cloud: " << img->header.stamp << std::endl;
+  //std::cout << "cloud: " << img->header.stamp << std::endl;
 
   pcl::PointCloud<pcl::PointXYZ> latest_cloud, cloud_inflate_vis;
   pcl::fromROSMsg(*img, latest_cloud);
+
+  has_cloud_ = true;
+
+  if (!has_odom_)
+  {
+    //std::cout << "no odom!" << std::endl;
+    return;
+  }
 
   if (latest_cloud.points.size() == 0)
     return;
@@ -1311,6 +1317,16 @@ void SDFMap::cloudCallback(const sensor_msgs::PointCloud2ConstPtr& img)
   int inf_step = ceil(inflate_val_ / resolution);
   int inf_step_z = 1;
 
+  double max_x, max_y, max_z, min_x, min_y, min_z;
+
+  min_x = max_range(0);
+  min_y = max_range(1);
+  min_z = max_range(2);
+
+  max_x = min_range(0);
+  max_y = min_range(1);
+  max_z = min_range(2);
+
   for (size_t i = 0; i < latest_cloud.points.size(); ++i)
   {
     pt = latest_cloud.points[i];
@@ -1318,6 +1334,7 @@ void SDFMap::cloudCallback(const sensor_msgs::PointCloud2ConstPtr& img)
 
     /* point inside update range */
     Eigen::Vector3d devi = p3d - camera_pos_;
+    Eigen::Vector3i inf_pt;
     if (fabs(devi(0)) < sensor_range_(0) && fabs(devi(1)) < sensor_range_(1) && fabs(devi(2)) < sensor_range_(2))
     {
       /* inflate the point */
@@ -1329,11 +1346,39 @@ void SDFMap::cloudCallback(const sensor_msgs::PointCloud2ConstPtr& img)
             p3d_inf(1) = pt.y + y * resolution;
             p3d_inf(2) = pt.z + z * resolution;
 
-            this->setOccupancy(p3d_inf);
+            max_x = max(max_x, p3d_inf(0));
+            max_y = max(max_y, p3d_inf(1));
+            max_z = max(max_z, p3d_inf(2));
+
+            min_x = min(min_x, p3d_inf(0));
+            min_y = min(min_y, p3d_inf(1));
+            min_z = min(min_z, p3d_inf(2));
+
+            posToIndex(p3d_inf, inf_pt);
+
+            int idx_inf = inf_pt[0] * grid_size(1) * grid_size(2) + inf_pt[1] * grid_size(2) + inf_pt[2];
+            if (idx_inf < 0 || idx_inf > grid_size(0) * grid_size(1) * grid_size(2))            
+              continue;
+
+            occupancy_buffer_inflate_[idx_inf] = clamp_max_log_;
           }
     }
   }
 
+  min_x = min(min_x, camera_pos_(0));
+  min_y = min(min_y, camera_pos_(1));
+  min_z = min(min_z, camera_pos_(2));
+
+  max_x = max(max_x, camera_pos_(0));
+  max_y = max(max_y, camera_pos_(1));
+  max_z = max(max_z, camera_pos_(2));
+
+  max_z = max(max_z, ground_z_);
+
+  posToIndex(Eigen::Vector3d(max_x, max_y, max_z), esdf_max_);
+  posToIndex(Eigen::Vector3d(min_x, min_y, min_z), esdf_min_);
+
+  has_first_depth_ = true;
   esdf_need_update_ = true;
 }
 
@@ -1342,17 +1387,17 @@ void SDFMap::publishMap()
   pcl::PointXYZ pt;
   pcl::PointCloud<pcl::PointXYZ> cloud;
 
-  Eigen::Vector3i min_cut_dio = esdf_min_ - Eigen::Vector3i(cut_dio_inflate_, cut_dio_inflate_, cut_dio_inflate_);
-  Eigen::Vector3i max_cut_dio = esdf_max_ + Eigen::Vector3i(cut_dio_inflate_, cut_dio_inflate_, cut_dio_inflate_);
-  max_cut_dio = max_cut_dio.array().min((grid_size - Eigen::Vector3i::Ones()).array());
-  max_cut_dio = max_cut_dio.array().max(Eigen::Vector3i::Zero().array());
+  Eigen::Vector3i min_cut = esdf_min_ - Eigen::Vector3i(local_map_margin_, local_map_margin_, local_map_margin_);
+  Eigen::Vector3i max_cut = esdf_max_ + Eigen::Vector3i(local_map_margin_, local_map_margin_, local_map_margin_);
+  max_cut = max_cut.array().min((grid_size - Eigen::Vector3i::Ones()).array());
+  max_cut = max_cut.array().max(Eigen::Vector3i::Zero().array());
 
-  min_cut_dio = min_cut_dio.array().min((grid_size - Eigen::Vector3i::Ones()).array());
-  min_cut_dio = min_cut_dio.array().max(Eigen::Vector3i::Zero().array());
+  min_cut = min_cut.array().min((grid_size - Eigen::Vector3i::Ones()).array());
+  min_cut = min_cut.array().max(Eigen::Vector3i::Zero().array());
 
-  for (int x = min_cut_dio(0); x <= max_cut_dio(0); ++x)
-    for (int y = min_cut_dio(1); y <= max_cut_dio(1); ++y)
-      for (int z = min_cut_dio(2); z <= max_cut_dio(2); ++z)
+  for (int x = min_cut(0); x <= max_cut(0); ++x)
+    for (int y = min_cut(1); y <= max_cut(1); ++y)
+      for (int z = min_cut(2); z <= max_cut(2); ++z)
       {
         if (occupancy_buffer[x * grid_size(1) * grid_size(2) + y * grid_size(2) + z] <= min_occupancy_log_)
           continue;
@@ -1387,17 +1432,17 @@ void SDFMap::publishMapInflate()
   pcl::PointXYZ pt;
   pcl::PointCloud<pcl::PointXYZ> cloud;
   // iterate the local map
-  Eigen::Vector3i min_cut_dio = esdf_min_ - Eigen::Vector3i(cut_dio_inflate_, cut_dio_inflate_, cut_dio_inflate_);
-  Eigen::Vector3i max_cut_dio = esdf_max_ + Eigen::Vector3i(cut_dio_inflate_, cut_dio_inflate_, cut_dio_inflate_);
-  max_cut_dio = max_cut_dio.array().min((grid_size - Eigen::Vector3i::Ones()).array());
-  max_cut_dio = max_cut_dio.array().max(Eigen::Vector3i::Zero().array());
+  Eigen::Vector3i min_cut = esdf_min_ - Eigen::Vector3i(local_map_margin_, local_map_margin_, local_map_margin_);
+  Eigen::Vector3i max_cut = esdf_max_ + Eigen::Vector3i(local_map_margin_, local_map_margin_, local_map_margin_);
+  max_cut = max_cut.array().min((grid_size - Eigen::Vector3i::Ones()).array());
+  max_cut = max_cut.array().max(Eigen::Vector3i::Zero().array());
 
-  min_cut_dio = min_cut_dio.array().min((grid_size - Eigen::Vector3i::Ones()).array());
-  min_cut_dio = min_cut_dio.array().max(Eigen::Vector3i::Zero().array());
+  min_cut = min_cut.array().min((grid_size - Eigen::Vector3i::Ones()).array());
+  min_cut = min_cut.array().max(Eigen::Vector3i::Zero().array());
 
-  for (int x = min_cut_dio(0); x <= max_cut_dio(0); ++x)
-    for (int y = min_cut_dio(1); y <= max_cut_dio(1); ++y)
-      for (int z = min_cut_dio(2); z <= max_cut_dio(2); ++z)
+  for (int x = min_cut(0); x <= max_cut(0); ++x)
+    for (int y = min_cut(1); y <= max_cut(1); ++y)
+      for (int z = min_cut(2); z <= max_cut(2); ++z)
       {
         if (occupancy_buffer_inflate_[x * grid_size(1) * grid_size(2) + y * grid_size(2) + z] <= min_occupancy_log_)
           continue;
@@ -1435,7 +1480,7 @@ void SDFMap::publishUpdateRange()
   cube_scale = esdf_max_pos - esdf_min_pos;
 
   visualization_msgs::Marker mk;
-  mk.header.frame_id = "world";
+  mk.header.frame_id = frame_id_;
   mk.header.stamp = ros::Time::now();
   mk.type = visualization_msgs::Marker::CUBE;
   mk.action = visualization_msgs::Marker::ADD;
@@ -1462,16 +1507,16 @@ void SDFMap::publishESDF()
   const double min_dist = 0.0;
   const double max_dist = 3.0;
 
-  Eigen::Vector3i min_cut_dio = esdf_min_ - Eigen::Vector3i(cut_dio_inflate_, cut_dio_inflate_, cut_dio_inflate_);
-  Eigen::Vector3i max_cut_dio = esdf_max_ + Eigen::Vector3i(cut_dio_inflate_, cut_dio_inflate_, cut_dio_inflate_);
-  max_cut_dio = max_cut_dio.array().min((grid_size - Eigen::Vector3i::Ones()).array());
-  max_cut_dio = max_cut_dio.array().max(Eigen::Vector3i::Zero().array());
+  Eigen::Vector3i min_cut = esdf_min_ - Eigen::Vector3i(local_map_margin_, local_map_margin_, local_map_margin_);
+  Eigen::Vector3i max_cut = esdf_max_ + Eigen::Vector3i(local_map_margin_, local_map_margin_, local_map_margin_);
+  max_cut = max_cut.array().min((grid_size - Eigen::Vector3i::Ones()).array());
+  max_cut = max_cut.array().max(Eigen::Vector3i::Zero().array());
 
-  min_cut_dio = min_cut_dio.array().min((grid_size - Eigen::Vector3i::Ones()).array());
-  min_cut_dio = min_cut_dio.array().max(Eigen::Vector3i::Zero().array());
+  min_cut = min_cut.array().min((grid_size - Eigen::Vector3i::Ones()).array());
+  min_cut = min_cut.array().max(Eigen::Vector3i::Zero().array());
 
-  for (int x = min_cut_dio(0); x <= max_cut_dio(0); ++x)
-    for (int y = min_cut_dio(1); y <= max_cut_dio(1); ++y)
+  for (int x = min_cut(0); x <= max_cut(0); ++x)
+    for (int y = min_cut(1); y <= max_cut(1); ++y)
     {
       {
         Eigen::Vector3d pos;
