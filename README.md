@@ -37,9 +37,9 @@ Our system can also be used for normal autonomous navigations, like our previous
 
 **Related Papers**
 
-* **Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments**, Fei Gao, Luqi Wang, Boyu Zhou, Luxin Han, Jie Pan, shaojie Shen, submitted to IEEE Transactions on Robotics (**T-RO**), [arxiv]()
+* [**Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments**](), Fei Gao, Luqi Wang, Boyu Zhou, Luxin Han, Jie Pan, shaojie Shen, submitted to IEEE Transactions on Robotics (**T-RO**).
 
-* **Optimal Trajectory Generation for Quadrotor Teach-and-Repeat**, Fei Gao, Luqi Wang, Kaixuan Wang, William Wu, Boyu Zhou, Luxin Han, Shaojie Shen, IEEE Robotics and Automation Letters (**RA-L**), 2019. [pdf](https://ieeexplore.ieee.org/abstract/document/8625495) 
+* [**Optimal Trajectory Generation for Quadrotor Teach-and-Repeat**](https://ieeexplore.ieee.org/abstract/document/8625495), Fei Gao, Luqi Wang, Kaixuan Wang, William Wu, Boyu Zhou, Luxin Han, Shaojie Shen, IEEE Robotics and Automation Letters (**RA-L**), 2019.
 
 *If you use Teach-Repeat-Replan or its sub-modules for your application or research, please cite our related papers.* [bib](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/bib.txt)
 
@@ -63,7 +63,7 @@ We use **OOQP** for quadratic programming.
 
 2. Manually un-zip packages *OOQP.zip* in the **installation** folder of this repo and install it follow the document *INSTALL* in **OOQP**, install it to your ubuntu.
 
-**1.3**   **some math tools**
+**1.3**   **some tools**
 
 ```
   sudo apt-get install ros-kinetic-joy
@@ -99,16 +99,16 @@ The simulator requires C++17, which needs **gcc 7** to compile. When you catkin_
  set(ENABLE_CUDA true)
  ```
  
-The GPU functionalities are turned-on.
+CUDA will be turned-on to exploit your GPU.
  
-**local_sensing** is the simulated sensors. If *ENABLE_CUDA* turn on, it mimics the depth measured by stereo cameras and renders a depth image by GPU. If *ENABLE_CUDA* off, it publish pointclouds. Our local mapper takes both depth images and pointclouds.
+**local_sensing** is the simulated sensors. If ```ENABLE_CUDA``` turn on, it mimics the depth measured by stereo cameras and renders a depth image by GPU. If ```ENABLE_CUDA``` off, it publish pointclouds. Our local mapper takes both depth images and pointclouds.
 
-**polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor while teaching. If *ENABLE_CUDA* turn on, it can run much faster (depends on resolution and your graphics card) than *ENABLE_CUDA* off. 
+**polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor while teaching. If ```ENABLE_CUDA``` turn on, it can run much faster (depends on resolution and your graphics card) than ```ENABLE_CUDA``` off. 
 
 For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.com/cuda-toolkit)
  
  ## 3.Build on ROS
-  I suggest to create an empty new workspace. Then clone the repository to your workspace and catkin_make. For example:
+  I suggest to create an empty new workspace. Then clone the repository to your workspace and catkin_make:
 ```
   cd ~/your_catkin_ws/src
   git clone https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan.git
@@ -117,12 +117,14 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   source ~/your_catkin_ws/devel/setup.bash
 ```
   ## 4.Run Teach-Repeat-Replan
-  **4.1 Teaching (with joystick)**
+  **4.1 Human Interface**
   
   We use a USB joy-stick [**Betop**](https://detail.tmall.com/item.htm?id=43773042338&spm=a1z09.2.0.0.18a42e8d0ZJzki&_u=t1hlsb1me213), which can be bought at **TaoBao** in mainland China, to control the drone virtually in simulation. 
  <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/joystick.png" width = "400" height = "248"/>
  </p>
-  Actually any USB joystick that suits ROS is fine, but its buttons may need to be re-maped. Re-mapped can be done in *simulation/simulator.launch*. 
-
-  **4.2 Repeating**
+  Actually any USB joystick that suits ROS is fine, but its buttons may need to be re-maped. Re-map can be done in ```simulation/simulator.launch```. 
+  
+  **4.2 Teaching**
+  
+  **4.3 Repeating**
