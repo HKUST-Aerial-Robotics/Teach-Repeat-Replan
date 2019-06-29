@@ -87,7 +87,7 @@ If failed, you can manually install them one by one:
 
 The simulator requires C++17, which needs **gcc 7** to compile. When you catkin_make, the simulator would automatically select gcc 7 as its compiler, but wouldn't change your default compiler (gcc 4.8/ gcc 5). 
 
- ## 2.Using GPU or Not
+ ## 2.Use GPU or Not
  Two packages in this repo, **local_sensing** (in the folder **local_replanner** ) and **polyhedron_generator** have GPU, CPU two different versions. By default, they are in CPU version. By change
  
  ```
