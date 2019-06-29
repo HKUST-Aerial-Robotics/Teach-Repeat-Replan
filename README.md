@@ -126,7 +126,8 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
  </p>
   Actually any USB joystick is fine, but its buttons may need to be re-maped. Re-map can be done in ```simulator.launch``` which inside the ```simulation``` folder.
   
-  **4.2 Teaching**
+  **4.2 Teaching and Repeating**
+  
   The whole system is launched by
   ```
   ./trr_simulation.sh
@@ -146,5 +147,15 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/teaching3.gif" width = "400" height = "248"/>
  </p>
  
+ After the flight, press ```back``` button ont eh joystick, the drone will back to the mannual state and all visualization is cleared. You can start another teaching again.
+ 
+  **4.3 Re-planning**
   
-  **4.3 Repeating**
+ In simulation, the re-planning is triggered when collisions are reported in a horizon. We maintain a local ESDF map, which is built very efficiently on the flight, to detect collisions and provide gradient information for local trajectory optimization. The re-planning is done in a sliding-window fasion, details can be checked in paper, video, or wiki.
+ <p align="center">
+  <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/replanning.gif" width = "600" height = "372"/>
+ </p>
+ 
+ Note, if you use the ```local_sensing``` with ```ENABLE_CUDA false```, the re-planning may not be triggered during repeating. Because in this mode the sensor acquisition is assumed perfect. We will fix this as soon as possible. 
+ With ```ENABLE_CUDA true``` mode, measurement erros in the depth images can normally trigger re-plans. 
+ 
