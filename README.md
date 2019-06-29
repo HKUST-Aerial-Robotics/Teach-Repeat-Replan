@@ -164,7 +164,7 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
  With ```ENABLE_CUDA true``` mode, measurement erros in the depth images can normally trigger re-plans. 
  
 ## 5. Acknowledgements
-We use [Sikang Liu's tool](https://github.com/sikang/DecompUtil) to visualize the polyhedrons, use [quickHull](https://github.com/akuukka/quickhull) to find the convex hull. We use [**Mosek**](https://www.mosek.com/), [**OOQP**](http://pages.cs.wisc.edu/~swright/ooqp/) and [**NLopt**](https://nlopt.readthedocs.io/en/latest/) to solve different problems in planning.
+We use [Sikang Liu's tool](https://github.com/sikang/DecompUtil) to visualize the polyhedrons, use [quickHull](https://github.com/akuukka/quickhull) to find the V-representaion of a convex polyhedron. We use [**Mosek**](https://www.mosek.com/), [**OOQP**](http://pages.cs.wisc.edu/~swright/ooqp/) and [**NLopt**](https://nlopt.readthedocs.io/en/latest/) for solving different problems in planning.
 
 ## 6. Licence
 The source code is released under [GPLv3](http://www.gnu.org/licenses/) license.
