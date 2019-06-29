@@ -101,7 +101,7 @@ The simulator requires C++17, which needs **gcc 7** to compile. When you catkin_
  
 The GPU functionalities are turned-on.
  
-If *ENABLE_CUDA* turn on, **local_sensing** mimic the depth measured by onboard stereo cameras. It has a stereo camera model and renders a depth image by GPU. If *ENABLE_CUDA* off, it publish point cloud data. Our local mapper takes both depth images and pointclouds.
+**local_sensing** is the simulated sensors. If *ENABLE_CUDA* turn on, it mimics the depth measured by stereo cameras and renders a depth image by GPU. If *ENABLE_CUDA* off, it publish pointclouds. Our local mapper takes both depth images and pointclouds.
 
 **polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor while teaching. If *ENABLE_CUDA* turn on, it can run much faster (depends on resolution, up to 30X at fine resolution) than *ENABLE_CUDA* off. 
 
