@@ -124,8 +124,16 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
  <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/joystick.png" width = "400" height = "248"/>
  </p>
-  Actually any USB joystick that suits ROS is fine, but its buttons may need to be re-maped. Re-map can be done in simulation/simulator.launch.
+  Actually any USB joystick is fine, but its buttons may need to be re-maped. Re-map can be done in ```simulator.launch``` which inside the ```simulation``` folder.
   
   **4.2 Teaching**
+  The whole system is launched by
+  ```
+  ./trr_simulation.sh
+  ```
+  Then, you can find a drone model in ```Rviz```. Piloting the drone by your joystick to fly around the complex environment, you can find polyhedrons are generated one by one, as:
+ <p align="center">
+  <img src="" width = "400" height = "248"/>
+ </p>
   
   **4.3 Repeating**
