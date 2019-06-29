@@ -14,7 +14,7 @@ alt="video" width="376" height="240" border="5" /></a>
 
 **Authors:**[Fei Gao](https://ustfei.com/), [Boyu Zhou](https://github.com/ZbyLGsc), [Luqi Wang](https://lwangax.wordpress.com), Jie Pan and [Shaojie Shen](http://uav.ust.hk/group/) from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
-Sub-modules integrated in our system include:
+Sub-modules integrated into our system include:
 
 **Planning:**     flight corridor generation, global spatial-temporal planning, [local online re-planning]()
 
@@ -31,7 +31,7 @@ Sub-modules integrated in our system include:
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/sys_architecture.png" width = "767" height = "366">
   </p>
 
-Our system can be applied to situations where the user has a preferable rough route but isn't able to pilot the drone ideally. For example, for drone racing or aerial filming, a beginner-level pilot is impossible to control the drone to finish the race safely or take an aerial video smoothly unless months of training. With our system, the huamn pilot can virtually control the drone with his/her navie operations, then our system automatically generate a very efficient repeating trajectory and autonomously execute it.
+Our system can be applied to situations where the user has a preferable rough route but isn't able to pilot the drone ideally. For example, for drone racing or aerial filming, a beginner-level pilot is impossible to control the drone to finish the race safely or take an aerial video smoothly unless months of training. With our system, the human pilot can virtually control the drone with his/her navie operations, then our system automatically generates a very efficient repeating trajectory and autonomously execute it.
 
 Our system can also be used for normal autonomous navigations, like our previous works in [video1](https://youtu.be/Uh2aKmUzXSg) and [video2](https://youtu.be/Dn6pXL3GqeY). For these applications, drone can autonomously fly in complex environments using only onboard sensing and planning.
 
@@ -44,7 +44,7 @@ Our system can also be used for normal autonomous navigations, like our previous
 *If you use Teach-Repeat-Replan or its sub-modules for your application or research, please cite our related papers.* [bib](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/bib.txt)
 
 ## Simulation or Real-World
-To use the Teach-Repeat-Replan system in real world, you can check this branch **[experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)**. Compared to the master branch, **[experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)** has modified versions of [dense-surfel-mapping](https://github.com/HKUST-Aerial-Robotics/DenseSurfelMapping) and [stereo-VINS](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion) and an onboard controller, but without the simulator. However, to test the proposed system in simulation, the master branch is enough.
+To use the Teach-Repeat-Replan system in the real world, you can check this branch **[experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)**. Compared to the master branch, **[experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)** has modified versions of [dense-surfel-mapping](https://github.com/HKUST-Aerial-Robotics/DenseSurfelMapping) and [stereo-VINS](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion) and an onboard controller, but without the simulator. However, to test the proposed system in simulation, the master branch is enough.
 
 *we will release the source code for experiment soon.*
 
@@ -59,13 +59,13 @@ We use **Mosek** for conic programming. To use mosek, you should request a free 
 
 We use **OOQP** for quadratic programming. 
 
-1. Get a copy of **MA27** from the [HSL Archive](http://www.hsl.rl.ac.uk/download/MA27/1.0.0/a/). Just select the **Personal Licence (allows use without redistribution)**, then fill the information table. You can download from an e-mail sent to you. Then, un-zip **MA27**, and follow the *README* in it, install it to your ubuntu.
+1. Get a copy of **MA27** from the [HSL Archive](http://www.hsl.rl.ac.uk/download/MA27/1.0.0/a/). Just select the **Personal Licence (allows use without redistribution)**, then fill the information table. You can download it from an e-mail sent to you. Then, un-zip **MA27**, and follow the *README* in it, install it to your Ubuntu.
 
-2. Manually un-zip packages *OOQP.zip* in the **installation** folder of this repo and install it follow the document *INSTALL* in **OOQP**, install it to your ubuntu.
+2. Manually un-zip packages *OOQP.zip* in the **installation** folder of this repo and install it follow the document *INSTALL* in **OOQP**, install it to your Ubuntu.
 
 **1.3**   **some tools**
 
-To install following dependencies, you can run the auto-install script by 
+To install the following dependencies, you can run the auto-install script by 
 ```
   ./install_tools.sh
 ```
@@ -104,12 +104,12 @@ CUDA will be turned-on to exploit your GPU.
  
 **local_sensing** is the simulated sensors. If ```ENABLE_CUDA``` **true**, it mimics the depth measured by stereo cameras and renders a depth image by GPU. If ```ENABLE_CUDA``` **false**, it will publish pointclouds with no ray-casting. Our local mapping module automatically selects whether depth images or pointclouds as its input.
 
-**polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor while teaching. If ```ENABLE_CUDA``` turn on, it can run much faster (depends on resolution and your graphics card) than ```ENABLE_CUDA``` off. 
+**polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor while teaching. If ```ENABLE_CUDA``` turn on, it can run much faster (depends on the resolution and your graphics card) than ```ENABLE_CUDA``` off. 
 
 For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.com/cuda-toolkit)
  
  ## 3.Build on ROS
-  I suggest to create an empty new workspace. Then clone the repository to your workspace and catkin_make:
+  I suggest creating an empty new workspace. Then clone the repository to your workspace and catkin_make:
 ```
   cd ~/your_catkin_ws/src
   git clone https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan.git
@@ -127,7 +127,7 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/joystick.png" width = "400" height = "248"/>
  </p>
  
-  Actually any USB joystick is fine, but its buttons may need to be re-maped in ```simulation/simulator.launch```.
+  Actually, any USB joystick is fine, but its buttons may need to be re-mapped in ```simulation/simulator.launch```.
   
   
   **4.2 Teaching and Repeating**
@@ -151,7 +151,7 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/teaching3.gif" width = "400" height = "248"/>
  </p>
  
- After the flight, press ```back``` button ont eh joystick, the drone will back to the mannual state and all visualization is cleared. You can start another teaching again.
+ After the flight, press ```back``` button on eh joystick, the drone will back to the manually controlling state and all visualization is cleared. You can start another teaching again.
  
   **4.3 Re-planning**
   
@@ -161,16 +161,16 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
  </p>
  
  Note, if you use the ```local_sensing``` with ```ENABLE_CUDA false```, the re-planning may not be triggered during repeating. Because in this mode the sensor acquisition is assumed perfect. We will fix this as soon as possible. 
- With ```ENABLE_CUDA true``` mode, measurement erros in the depth images can normally trigger re-plans. 
+ With ```ENABLE_CUDA true``` mode, measurement errors in the depth images can normally trigger re-plans. 
  
 ## 5. Acknowledgements
-We use [Sikang Liu's tool](https://github.com/sikang/DecompUtil) to visualize the polyhedrons, use [quickHull](https://github.com/akuukka/quickhull) to find the V-representaion of a convex polyhedron. We use [**Mosek**](https://www.mosek.com/), [**OOQP**](http://pages.cs.wisc.edu/~swright/ooqp/) and [**NLopt**](https://nlopt.readthedocs.io/en/latest/) for solving different problems in planning.
+We use [Sikang Liu's tool](https://github.com/sikang/DecompUtil) to visualize the polyhedrons, use [quickHull](https://github.com/akuukka/quickhull) to find the V-representation of a convex polyhedron. We use [**Mosek**](https://www.mosek.com/), [**OOQP**](http://pages.cs.wisc.edu/~swright/ooqp/) and [**NLopt**](https://nlopt.readthedocs.io/en/latest/) for solving different problems in planning.
 
 ## 6. Licence
 The source code is released under [GPLv3](http://www.gnu.org/licenses/) license.
 
 ## 7. Maintaince
-We are still working on extending the proposed system and improving the code reliability. 
+We are still working on extending the proposed system and improving code reliability. 
 Experimental code, detailed wiki, user tutorial would come up soon.
 
 For any technical issues, please contact Fei GAO <fgaoaa@connect.ust.hk> or Boyu Zhou <bzhouai@connect.ust.hk>.
