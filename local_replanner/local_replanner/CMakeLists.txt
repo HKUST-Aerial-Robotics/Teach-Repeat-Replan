@@ -55,4 +55,4 @@ add_executable ( local_replanner
     )
 target_link_libraries( local_replanner
     ${catkin_LIBRARIES} ${PCL_LIBRARIES}
-    /usr/local/lib/libnlopt.so )  
+    ${NLOPT_LIBRARIES} )  
