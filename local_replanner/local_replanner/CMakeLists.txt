@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
     tf  
     cv_bridge
     local_map
+    cmake_utils
 )
 
 # find_package(OpenCV REQUIRED)
