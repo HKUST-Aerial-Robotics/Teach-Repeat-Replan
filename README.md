@@ -24,6 +24,8 @@ Sub-modules integrated in our system include:
 
 **Controlling:**  [geometric controller on SE(3)](https://ieeexplore.ieee.org/document/5717652)
 
+[WIKI](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/wiki)
+
 **Architecture:**
   <div align=center>
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/sys_architecture.png" width = "767" height = "366">
@@ -88,17 +90,7 @@ The simulator requires C++17, which needs **gcc 7** to compile, which can be ins
 Then,
 
 ```
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 70 --slave /usr/bin/g++ g++ /usr/bin/g++-7
-```
-
-Then, use the following command to change the default compiler (choose 0 as default)
-```
-  sudo update-alternatives --config gcc 
-```
-
-check your current gcc compiler
-```
-  gcc --version  
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 50 --slave /usr/bin/g++ g++ /usr/bin/g++-7
 ```
 
 After the installation, you can switch your default compiler back to **gcc 5**. When you catkin_make, the simulator would automatically select gcc 7, so don't worry about your environment.
