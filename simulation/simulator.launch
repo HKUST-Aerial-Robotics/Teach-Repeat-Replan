@@ -61,6 +61,23 @@
     <param name="vertical_gain"             value="1.2"/>
     <param name="yaw_gain"                  value="0.8"/>
 
+    <!-- You may need to re-map these buttons if you use different joystick -->
+    <param name="joymap_thrust"             value="1"/>
+    <param name="joymap_yaw"                value="0"/>
+    <param name="joymap_pitch"              value="4"/>
+    <param name="joymap_roll"               value="3"/>
+
+    <param name="joymap_a"                  value="0"/>
+    <param name="joymap_a"                  value="1"/>
+    <param name="joymap_x"                  value="2"/>
+    <param name="joymap_y"                  value="3"/>
+
+    <param name="joymap_rb"                 value="5"/>
+    <param name="joymap_lb"                 value="4"/>
+
+    <param name="joymap_start"              value="7"/>
+    <param name="joymap_back"               value="6"/>
+
     <remap from="~odom"         to="drone_$(arg drone_number)/visual_slam/odom"/>
     <remap from="~rc/position"  to="drone_$(arg drone_number)/position_cmd"/>
     <remap from="~rc_input"     to="joy"/>
