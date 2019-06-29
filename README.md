@@ -163,3 +163,16 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
  Note, if you use the ```local_sensing``` with ```ENABLE_CUDA false```, the re-planning may not be triggered during repeating. Because in this mode the sensor acquisition is assumed perfect. We will fix this as soon as possible. 
  With ```ENABLE_CUDA true``` mode, measurement erros in the depth images can normally trigger re-plans. 
  
+## 5. Acknowledgements
+We use [Sikang Liu's tool](https://github.com/sikang/DecompUtil) to visualize the polyhedrons, use [quickHull](https://github.com/akuukka/quickhull) to find the convex hull. We use [**Mosek**](https://www.mosek.com/), [**OOQP**](http://pages.cs.wisc.edu/~swright/ooqp/) and [**NLopt**](https://nlopt.readthedocs.io/en/latest/) to solve different problems in planning.
+
+## 6. Licence
+The source code is released under [GPLv3](http://www.gnu.org/licenses/) license.
+
+## 7. Maintaince
+We are still working on extending the proposed system and improving the code reliability. 
+Experimental code, detailed wiki, user tutorial would come up soon.
+
+For any technical issues, please contact Fei GAO <fgaoaa@connect.ust.hk> or Boyu Zhou <bzhouai@connect.ust.hk>.
+
+For commercial inquiries, please contact Shaojie SHEN <eeshaojie@ust.hk>
