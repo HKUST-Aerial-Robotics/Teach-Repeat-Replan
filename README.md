@@ -65,6 +65,11 @@ We use **OOQP** for quadratic programming.
 
 **1.3**   **some tools**
 
+To install following dependencies, you can run the auto-install script by 
+```
+  ./install_tools
+```
+If failed, you can manually install them one by one:
 ```
   sudo apt-get install ros-kinetic-joy
   sudo apt-get install libnlopt-dev
@@ -72,11 +77,7 @@ We use **OOQP** for quadratic programming.
   sudo apt-get install libarmadillo-dev 
   sudo apt-get install glpk-utils libglpk-dev
   sudo apt-get install libcdd-dev
-```
 
-**1.4**   **gcc 7**
-
-```
   sudo add-apt-repository ppa:ubuntu-toolchain-r/test
   sudo apt-get update
   sudo apt-get install gcc-7 g++-7
