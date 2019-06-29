@@ -1,3 +1,4 @@
+roscore & sleep
 rosrun joy joy_node & sleep 0.1;
 roslaunch cascade_controller simulator.launch drone_number:=$i yaw:=true & sleep 1;
 roslaunch trr_global_planner  map_generator.launch   & sleep 1;

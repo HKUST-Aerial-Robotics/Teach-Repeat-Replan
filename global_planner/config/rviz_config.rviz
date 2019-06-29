@@ -1,0 +1,463 @@
+Panels:
+  - Class: rviz/Displays
+    Help Height: 0
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Grid1
+        - /TF1/Tree1
+        - /Drone11/Path1
+        - /Drone11/Marker2
+        - /ConvexHull1
+        - /Map1/Autocompute Value Bounds1
+        - /Planning1
+        - /Planning1/PolyBezier1
+        - /Planning1/PolyBezier1/Namespaces1
+        - /PolyhedronArray1
+      Splitter Ratio: 0.474426806
+    Tree Height: 636
+  - Class: rviz/Selection
+    Name: Selection
+  - Class: rviz/Tool Properties
+    Expanded:
+      - /2D Pose Estimate1
+      - /2D Nav Goal1
+      - /Publish Point1
+    Name: Tool Properties
+    Splitter Ratio: 0.588679016
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: Map
+  - Class: rviz/Displays
+    Help Height: 78
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /Status1
+        - /Map1/Autocompute Value Bounds1
+      Splitter Ratio: 0.5
+    Tree Height: 366
+  - Class: rviz/Tool Properties
+    Expanded: ~
+    Name: Tool Properties
+    Splitter Ratio: 0.655556023
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz/Tool Properties
+    Expanded: ~
+    Name: Tool Properties
+    Splitter Ratio: 0.5
+  - Class: mockamap/Teleop
+    Input: ""
+    Name: Teleop
+    Output: ""
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+Toolbars:
+  toolButtonStyle: 2
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 1
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 152; 152; 152
+      Enabled: true
+      Line Style:
+        Line Width: 0.0299999993
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 20
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Class: rviz/TF
+      Enabled: false
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        {}
+      Update Interval: 0
+      Value: false
+    - Class: rviz/Axes
+      Enabled: false
+      Length: 1
+      Name: Axes
+      Radius: 0.100000001
+      Reference Frame: <Fixed Frame>
+      Value: false
+    - Class: rviz/Group
+      Displays:
+        - Alpha: 1
+          Buffer Length: 1
+          Class: rviz/Path
+          Color: 255; 85; 255
+          Enabled: true
+          Head Diameter: 0.300000012
+          Head Length: 0.200000003
+          Length: 0.300000012
+          Line Style: Billboards
+          Line Width: 0.0599999987
+          Name: Path
+          Offset:
+            X: 0
+            Y: 0
+            Z: 0
+          Pose Color: 255; 85; 255
+          Pose Style: None
+          Radius: 0.0299999993
+          Shaft Diameter: 0.100000001
+          Shaft Length: 0.100000001
+          Topic: /odom_visualization_1/path
+          Unreliable: false
+          Value: true
+        - Alpha: 1
+          Axes Length: 1
+          Axes Radius: 0.100000001
+          Class: rviz/Pose
+          Color: 255; 25; 0
+          Enabled: false
+          Head Length: 0.300000012
+          Head Radius: 0.100000001
+          Name: Pose
+          Shaft Length: 1
+          Shaft Radius: 0.0500000007
+          Shape: Arrow
+          Topic: /odom_visualization_1/pose
+          Unreliable: false
+          Value: false
+        - Class: rviz/Marker
+          Enabled: false
+          Marker Topic: /odom_visualization_1/velocity
+          Name: Marker
+          Namespaces:
+            {}
+          Queue Size: 100
+          Value: false
+        - Class: rviz/Marker
+          Enabled: true
+          Marker Topic: /odom_visualization_1/robot
+          Name: Marker
+          Namespaces:
+            drone: true
+          Queue Size: 1
+          Value: true
+        - Class: rviz/Axes
+          Enabled: false
+          Length: 0.5
+          Name: Axes
+          Radius: 0.0299999993
+          Reference Frame: local_map_1
+          Value: false
+        - Alpha: 1
+          Axes Length: 1
+          Axes Radius: 0.100000001
+          Class: rviz/Pose
+          Color: 255; 25; 0
+          Enabled: false
+          Head Length: 0.300000012
+          Head Radius: 0.100000001
+          Name: RealPose
+          Shaft Length: 1
+          Shaft Radius: 0.0500000007
+          Shape: Arrow
+          Topic: /odom_visualization_1/pose
+          Unreliable: false
+          Value: false
+      Enabled: true
+      Name: Drone1
+    - Class: rviz/Group
+      Displays: ~
+      Enabled: true
+      Name: ConvexHull
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 4.88597965
+        Min Value: 0.0001278212
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: AxisColor
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: Map
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.100000001
+      Style: Flat Squares
+      Topic: /random_complex/global_map
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Class: rviz/Group
+      Displays:
+        - Class: rviz/Marker
+          Enabled: true
+          Marker Topic: /tr_node/trajectory_vis
+          Name: PolyBezier
+          Namespaces:
+            {}
+          Queue Size: 100
+          Value: true
+      Enabled: true
+      Name: Planning
+    - Class: rviz/Image
+      Enabled: false
+      Image Topic: /pcl_render_node/colordepth
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
+      Queue Size: 2
+      Transport Hint: raw
+      Unreliable: false
+      Value: false
+    - Alpha: 0.200000003
+      BoundColor: 255; 0; 0
+      Class: decomp_rviz_plugins/PolyhedronArray
+      Enabled: true
+      MeshColor: 0; 170; 255
+      Name: PolyhedronArray
+      Scale: 0.100000001
+      State: Mesh
+      Topic: /tr_node/polyhedron_corridor_mesh
+      Unreliable: false
+      Value: true
+      VsColor: 0; 255; 0
+      VsScale: 1
+  Enabled: true
+  Global Options:
+    Background Color: 255; 255; 127
+    Default Light: true
+    Fixed Frame: map
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz/Interact
+      Hide Inactive Objects: true
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+    - Class: rviz/FocusCamera
+    - Class: rviz/Measure
+    - Class: rviz/SetInitialPose
+      Topic: /initialpose
+    - Class: rviz/SetGoal
+      Topic: /move_base_simple/goal
+    - Class: rviz/PublishPoint
+      Single click: true
+      Topic: /clicked_point
+    - Class: rviz_plugins/Goal3DTool
+      Topic: goal
+    - Class: rviz_plugins/GameLikeInput
+      RangeX_max: 1.5
+      RangeX_min: -1.5
+      RangeY_max: 1
+      RangeY_min: -1
+      RangeZ_max: 1.5
+      RangeZ_min: 1.5
+      TopicPoint: point_list
+      TopicSelect: select_list
+      TopicSwarm: swarm
+  Value: true
+  Views:
+    Current:
+      Class: rviz/ThirdPersonFollower
+      Distance: 13.3421841
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.0599999987
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Focal Point:
+        X: -2.68851376
+        Y: 0.796672225
+        Z: 1.43051147e-06
+      Focal Shape Fixed Size: false
+      Focal Shape Size: 0.0500000007
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.00999999978
+      Pitch: 1.30979657
+      Target Frame: drone1
+      Value: ThirdPersonFollower (rviz)
+      Yaw: 2.14720726
+    Saved:
+      - Class: rviz/ThirdPersonFollower
+        Distance: 4.04827738
+        Enable Stereo Rendering:
+          Stereo Eye Separation: 0.0599999987
+          Stereo Focal Distance: 1
+          Swap Stereo Eyes: false
+          Value: false
+        Focal Point:
+          X: 3.29701161
+          Y: -0.134996831
+          Z: -1.09897709
+        Focal Shape Fixed Size: true
+        Focal Shape Size: 0.0500000007
+        Invert Z Axis: false
+        Name: ThirdPersonFollower
+        Near Clip Distance: 0.00999999978
+        Pitch: 0.153546393
+        Target Frame: drone1
+        Value: ThirdPersonFollower (rviz)
+        Yaw: 3.10686922
+      - Class: rviz/Orbit
+        Distance: 14.0313253
+        Enable Stereo Rendering:
+          Stereo Eye Separation: 0.0599999987
+          Stereo Focal Distance: 1
+          Swap Stereo Eyes: false
+          Value: false
+        Focal Point:
+          X: -7.73683214
+          Y: -7.34889984
+          Z: 0.897700787
+        Focal Shape Fixed Size: false
+        Focal Shape Size: 0.0500000007
+        Invert Z Axis: false
+        Name: Orbit
+        Near Clip Distance: 0.00999999978
+        Pitch: 1.0697968
+        Target Frame: map
+        Value: Orbit (rviz)
+        Yaw: 4.53892374
+      - Class: rviz/Orbit
+        Distance: 13.2777128
+        Enable Stereo Rendering:
+          Stereo Eye Separation: 0.0599999987
+          Stereo Focal Distance: 1
+          Swap Stereo Eyes: false
+          Value: false
+        Focal Point:
+          X: -9.28259659
+          Y: -8.47314358
+          Z: 1.77447903
+        Focal Shape Fixed Size: true
+        Focal Shape Size: 0.0500000007
+        Invert Z Axis: false
+        Name: Orbit
+        Near Clip Distance: 0.00999999978
+        Pitch: 1.15479648
+        Target Frame: map
+        Value: Orbit (rviz)
+        Yaw: 6.05452061
+      - Class: rviz/ThirdPersonFollower
+        Distance: 10.3910332
+        Enable Stereo Rendering:
+          Stereo Eye Separation: 0.0599999987
+          Stereo Focal Distance: 1
+          Swap Stereo Eyes: false
+          Value: false
+        Focal Point:
+          X: 1.03563166
+          Y: -0.488582611
+          Z: -0.000264883041
+        Focal Shape Fixed Size: true
+        Focal Shape Size: 0.0500000007
+        Invert Z Axis: false
+        Name: ThirdPersonFollower
+        Near Clip Distance: 0.00999999978
+        Pitch: 0.694796741
+        Target Frame: drone1
+        Value: ThirdPersonFollower (rviz)
+        Yaw: 2.71865487
+      - Class: rviz/ThirdPersonFollower
+        Distance: 22.4918346
+        Enable Stereo Rendering:
+          Stereo Eye Separation: 0.0599999987
+          Stereo Focal Distance: 1
+          Swap Stereo Eyes: false
+          Value: false
+        Focal Point:
+          X: 0.442049265
+          Y: 1.12085772
+          Z: 1.59767478e-06
+        Focal Shape Fixed Size: true
+        Focal Shape Size: 0.0500000007
+        Invert Z Axis: false
+        Name: ThirdPersonFollower
+        Near Clip Distance: 0.00999999978
+        Pitch: 1.02479684
+        Target Frame: drone1
+        Value: ThirdPersonFollower (rviz)
+        Yaw: 3.18274498
+      - Class: rviz/ThirdPersonFollower
+        Distance: 22.4423771
+        Enable Stereo Rendering:
+          Stereo Eye Separation: 0.0599999987
+          Stereo Focal Distance: 1
+          Swap Stereo Eyes: false
+          Value: false
+        Focal Point:
+          X: 3.61974001
+          Y: 0.562370181
+          Z: -3.21865082e-06
+        Focal Shape Fixed Size: true
+        Focal Shape Size: 0.0500000007
+        Invert Z Axis: false
+        Name: ThirdPersonFollower
+        Near Clip Distance: 0.00999999978
+        Pitch: 0.859797001
+        Target Frame: drone1
+        Value: ThirdPersonFollower (rviz)
+        Yaw: 3.26584053
+Window Geometry:
+  Displays:
+    collapsed: true
+  Height: 1049
+  Hide Left Dock: false
+  Hide Right Dock: true
+  Image:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd000000030000000000000184000003ecfc020000000efb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afc00000013000002b6000000c600fffffffa000000010100000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730000000000ffffffff0000008f00fffffffb000000100044006900730070006c00610079007301000000000000016a0000015600fffffffb0000000a0056006900650077007301000002cf000001300000009e00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730000000165000002590000005c00fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730000000312000000ac0000005c00fffffffb0000000c00540065006c0065006f007000000002f1000000cd0000006e00fffffffb0000000a0049006d0061006700650000000000ffffffff0000001600fffffffb0000000a0049006d00610067006500000000130000053f0000000000000000fb000000140043006f006c006f0072004400650070007400680100000467000000160000000000000000fb0000000a0049006d00610067006501000002fe0000010100000000000000000000000100000237000003e7fc0200000002fc00000013000003e70000000000fffffffaffffffff0100000004fb0000000a005600690065007700730000000000ffffffff0000010000fffffffb0000001200530065006c0065006300740069006f006e0000000000ffffffff0000006c00fffffffb000000100044006900730070006c0061007900730000000000ffffffff0000015600fffffffb0000000a0056006900650077007300000006300000010f0000010000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b20000000000000000000000030000071b0000003efc0100000002fb0000000800540069006d006500000000000000071b0000024400fffffffb0000000800540069006d00650100000000000004500000000000000000000004eb000003ec00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730000000000ffffffff0000000000000000
+  Selection:
+    collapsed: true
+  Teleop:
+    collapsed: false
+  Time:
+    collapsed: false
+  Tool Properties:
+    collapsed: false
+  Views:
+    collapsed: false
+  Width: 1653
+  X: 680
+  Y: 130

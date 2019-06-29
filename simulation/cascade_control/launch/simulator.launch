@@ -6,7 +6,7 @@
 <node pkg="so3_quadrotor_simulator"
       type="quadrotor_simulator_so3"
       name="quadrotor_simulator_so3_$(arg drone_number)"
-      output="screen">
+      output="log">
   <param name="rate/odom" value="100.0"/>
 
   <param name="simulator/init_state_x" value="-8.5"/>
@@ -25,7 +25,7 @@
       args="standalone router/RouterNode"
       name="RouterNode_$(arg drone_number)"
       required="true"
-      output="screen">
+      output="log">
 
     <param name="input" value="/position_cmd_input"/>
 
@@ -41,7 +41,7 @@
       args="standalone mission_template/MissionTemplateNode"
       name="MissionTemplateNode_$(arg drone_number)"
       required="true"
-      output="screen">
+      output="log">
 
     <remap from="~poller" to="state_machine_node_$(arg drone_number)/mission/trigger"/>
     <remap from="~enable" to="state_machine_node_$(arg drone_number)/rc/mission"/>
@@ -50,7 +50,7 @@
     <remap from="~position_command" to="/drone_$(arg drone_number)/position_cmd"/>
 </node>
 
-<node pkg="state_machine" type="state_machine_node" name="state_machine_node_$(arg drone_number)" output="screen">
+<node pkg="state_machine" type="state_machine_node" name="state_machine_node_$(arg drone_number)" output="log">
     <param name="simulation"    type="bool" value="$(arg simulation)" />
     <param name="mission/button_A"          value="RouterNode" />
     <param name="mission/button_B"          value="RouterNode" />
@@ -87,7 +87,7 @@
       args="standalone cascade_controller/CascadeControllerNode"
       name="cascade_control_$(arg drone_number)"
       required="true"
-      output="screen">
+      output="log">
       <!--parameters-->"
       <param name="simulation" type="bool" value="$(arg simulation)" />
       <param name="quadrotor_name" value="test" />
@@ -140,7 +140,7 @@
 <node pkg="odom_visualization"
       name="odom_visualization_$(arg drone_number)"
       type="odom_visualization"
-      output="screen">
+      output="log">
   <remap from="~odom"            to="drone_$(arg drone_number)/visual_slam/odom"/>
   <remap from="~odom_world"      to="/all_odom"/>
   <param name="base_frame"       value="/map"/>
@@ -155,5 +155,9 @@
   <param name="drone_scale"      value="0.8"/>
   <param name="id"               value="$(arg drone_number)"/>
 </node>
-</launch>
 
+ <node name="rviz" pkg="rviz" type="rviz" output="screen"
+       args="-d $(find trr_global_planner)/config/rviz_config.rviz"> 
+</node>
+
+</launch>

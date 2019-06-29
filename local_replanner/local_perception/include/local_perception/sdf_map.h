@@ -151,8 +151,9 @@ private:
   SynchronizerImagePose sync_image_pose_;
   SynchronizerImageOdom sync_image_odom_;
 
-  int pose_type_, use_indep_sub_;
-
+  int pose_type_;
+  string input_data_type_;
+  
   ros::Subscriber indep_depth_sub_, indep_odom_sub_, indep_pose_sub_, indep_cloud_sub_;
   ros::Publisher map_pub_, esdf_pub_, test_pub_, map_inf_pub_, update_range_pub_;
   ros::Timer occ_timer_, esdf_timer_;

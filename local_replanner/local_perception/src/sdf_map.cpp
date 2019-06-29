@@ -571,7 +571,7 @@ void SDFMap::initMap(ros::NodeHandle& nh)
   node_.param("sdf_map/use_uniform_update", use_uniform_update_, true);
 
   node_.param("sdf_map/pose_type", pose_type_, 1);
-  node_.param("sdf_map/use_indep_sub", use_indep_sub_, 1);
+  node_.param("sdf_map/input_data_type", input_data_type_, string("depth"));
 
   node_.param("sdf_map/frame_id", frame_id_, string("world"));
   node_.param("sdf_map/esdf_inflate", esdf_inflate_, 1.0);
@@ -666,17 +666,15 @@ void SDFMap::initMap(ros::NodeHandle& nh)
 
   output_buffer = new Eigen::Vector3d[200];
   output_points_cnt = 0;
-  /* ---------- init callback ---------- */
-  /*depth_sub_ = new message_filters::Subscriber<sensor_msgs::Image>(node_, "/pcl_render_node/depth", 10);
-  pose_sub_ = new message_filters::Subscriber<geometry_msgs::PoseStamped>(node_, "/pcl_render_node/camera_pose", 10);*/
 
-  depth_sub_.reset(new message_filters::Subscriber<sensor_msgs::Image>(node_, "/camera/depth/image_rect_raw", 100));
-  // depth_sub_.reset(new message_filters::Subscriber<sensor_msgs::Image>(node_, "/pcl_render_node/depth", 10));
+  /* ---------- init callback ---------- */
+  depth_sub_.reset(new message_filters::Subscriber<sensor_msgs::Image>(node_, "/sdf_map/depth", 100));
+
   if (pose_type_ == POSE_STAMPED)
   {
     pose_sub_.reset(
-        new message_filters::Subscriber<geometry_msgs::PoseStamped>(node_, "/vins_estimator/camera_pose", 50));
-    // new message_filters::Subscriber<geometry_msgs::PoseStamped>(node_, "/pcl_render_node/camera_pose", 10));
+        new message_filters::Subscriber<geometry_msgs::PoseStamped>(node_, "/sdf_map/pose", 50));
+
     sync_image_pose_.reset(
         new message_filters::Synchronizer<SyncPolicyImagePose>(SyncPolicyImagePose(100), *depth_sub_, *pose_sub_));
 
@@ -684,32 +682,21 @@ void SDFMap::initMap(ros::NodeHandle& nh)
   }
   else if (pose_type_ == ODOMETRY)
   {
-    odom_sub_.reset(new message_filters::Subscriber<nav_msgs::Odometry>(node_, "/vins_estimator/camera_pose", 100));
-    // odom_sub_.reset(new message_filters::Subscriber<nav_msgs::Odometry>(node_, "/pcl_render_node/camera_pose", 100));
+    odom_sub_.reset(new message_filters::Subscriber<nav_msgs::Odometry>(node_, "/sdf_map/odom", 100));
+
     sync_image_odom_.reset(
         new message_filters::Synchronizer<SyncPolicyImageOdom>(SyncPolicyImageOdom(100), *depth_sub_, *odom_sub_));
 
     sync_image_odom_->registerCallback(boost::bind(&SDFMap::depthOdomCallback, this, _1, _2));
   }
 
-  if (use_indep_sub_ == 1)
+  if (input_data_type_ != "depth")
   {
-    indep_depth_sub_ =
-        node_.subscribe<sensor_msgs::Image>("/camera/depth/image_rect_raw", 10, &SDFMap::depthCallback, this);
-
-    if (pose_type_ == POSE_STAMPED)
-    {
-      indep_pose_sub_ =
-          node_.subscribe<geometry_msgs::PoseStamped>("/vins_estimator/camera_pose", 10, &SDFMap::poseCallback, this);
-    }
-    else if (pose_type_ == ODOMETRY)
-    {
-      indep_odom_sub_ =
-          node_.subscribe<nav_msgs::Odometry>("/vins_estimator/camera_pose", 10, &SDFMap::odomCallback, this);
-    }
+    indep_odom_sub_ =
+        node_.subscribe<nav_msgs::Odometry>("/sdf_map/odom", 10, &SDFMap::odomCallback, this);
 
     indep_cloud_sub_ =
-        node_.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_surround", 10, &SDFMap::cloudCallback, this);
+        node_.subscribe<sensor_msgs::PointCloud2>("/sdf_map/cloud", 10, &SDFMap::cloudCallback, this);
   }
 
   occ_timer_ = node_.createTimer(ros::Duration(0.05), &SDFMap::updateOccupancyCallback, this);

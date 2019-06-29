@@ -1,5 +1,3 @@
-#include <cuda_runtime.h>
-#include <device_launch_parameters.h>
 #include <iostream>
 #include <stdio.h>
 #include <math.h>
@@ -29,40 +27,11 @@ class cudaPolytopeGeneration
 	    bool * h_can_can_result, * h_can_clu_result;
 	    int * vertex_idx, * vertex_idx_lst;
 
-	    uint8_t * d_map_data, 	 * d_inside_data;
-	    int  * d_cluster_xyz_id, * d_candidate_xyz_id, * d_vertex_idx;
-	    bool * d_result, 	     * d_inflate_result;
-	    bool * d_can_can_result, * d_can_clu_result;
-
-	    dim3 blocks_cube;
-    	dim3 threads_cube;
-	    
-	    dim3 blocks_cvx;
-	    dim3 threads_cvx;
-
-	    dim3 blocks_res_chk;
-	    dim3 threads_res_chk;
-
-	    std::vector<int> vis_grid_id_x, vis_grid_id_y, vis_grid_id_z;
-
-	    bool _is_gpu_on_stage_1, _is_gpu_on_stage_2, _is_cluster_on;
-	    std::vector<int> cube_grid_x, cube_grid_y, cube_grid_z;
-
 	public:
 		cudaPolytopeGeneration(){};
 		
 		~cudaPolytopeGeneration()
 		{
-			cudaFree(d_map_data);
-		    cudaFree(d_cluster_xyz_id);
-		    cudaFree(d_candidate_xyz_id);
-		    cudaFree(d_vertex_idx);
-		    cudaFree(d_result);
-		    cudaFree(d_inflate_result);
-
-		    cudaFree(d_can_can_result);
-		    cudaFree(d_can_clu_result);
-
 		    delete [] map_data;
 		    delete [] use_data;
 		    delete [] inside_data;
@@ -73,11 +42,11 @@ class cudaPolytopeGeneration
 		    delete [] vertex_idx;
 		    delete [] vertex_idx_lst;
 
-		    cudaFreeHost(cluster_xyz_id);
-		    cudaFreeHost(candidate_xyz_id);
-		    cudaFreeHost(h_can_can_result);
-		    cudaFreeHost(h_can_clu_result);
-		    cudaFreeHost(h_inflate_result);
+		    delete [] cluster_xyz_id;
+		    delete [] candidate_xyz_id;
+		    delete [] h_can_can_result;
+		    delete [] h_can_clu_result;
+		    delete [] h_inflate_result;
 
 		};
 
@@ -97,20 +66,12 @@ class cudaPolytopeGeneration
 		void inflateZ_p(int * vertex_idx);
 
 		void cubeInflation_cpu( int * vertex_idx_lst, int * vertex_idx );
-		void cubeInflation_gpu( int * vertex_idx_lst, int * vertex_idx, 
-                                double & time_upload_cube,  double & time_download_cube, double & time_cuda_cube );
-
-		void polytopeCluster_gpu( int & cluster_grid_num, int active_grid_num, 
-                                  double & time_upload, double & time_download, double & time_cuda );
-		
-		void polytopeCluster_cpu      ( int & cluster_grid_num, int & active_grid_num );
+		void polytopeCluster_cpu( int & cluster_grid_num, int & active_grid_num );
 
 		void polygonGeneration( std::vector<int> & cluster_x_idx, std::vector<int> & cluster_y_idx, std::vector<int> & cluster_z_idx);
 		
-		void mapUpload();
 		void mapClear();
-
-		void insideFlagUpload();
+		void mapUpload();
 		void flagClear();
 		
 		void setObs(const int & idx);

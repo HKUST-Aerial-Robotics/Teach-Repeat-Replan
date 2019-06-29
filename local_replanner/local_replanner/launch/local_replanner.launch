@@ -5,6 +5,8 @@
 <arg name="map_size_z" default="10.0"/>
 <arg name="poly_order" default=" 5"/>
 
+<arg name="sense_data_type" default="depth"/>
+
   <node pkg = "trr_local_replanner" type = "local_replanner" output = "screen" name = "local_replanner">
       <remap from = "~replan_mission"    to = "/time_optimal_traj_server/check_pts"/>
       <rosparam file="$(find trr_local_replanner)/config/generator_replan.yaml" command="load" />
@@ -17,6 +19,14 @@
       <param name="local_planner/max_vel"               value="3.0" /> 
       <param name="local_planner/max_acc"               value="2.0" /> 
 
+      <param name="sdf_map/input_data_type"    value="$(arg sense_data_type)"/>
+
+      <remap  from = "/sdf_map/depth"  to = "/pcl_render_node/depth"/>
+      <remap  from = "/sdf_map/pose"   to = "/pcl_render_node/camera_pose"/> 
+
+      <remap  from = "/sdf_map/odom"   to = "/drone_1/visual_slam/odom"/> 
+      <remap  from = "/sdf_map/cloud"  to = "/pointcloud_render_node/cloud"/> 
+
       <param name="sdf_map/resolution"       value="0.1" /> 
       <param name="sdf_map/global/x_size"    value="$(arg map_size_x)" /> 
       <param name="sdf_map/global/y_size"    value="$(arg map_size_y)" /> 
@@ -24,7 +34,7 @@
       <param name="sdf_map/local_radius_x"   value="4.0" /> 
       <param name="sdf_map/local_radius_y"   value="4.0" /> 
       <param name="sdf_map/local_radius_z"   value="1.5" /> 
-      <param name="sdf_map/inflate_val"   value="0.1" /> 
+      <param name="sdf_map/inflate_val"      value="0.1" /> 
 
       <param name="sdf_map/cx" value="385.754"/>
       <param name="sdf_map/cy" value="236.743"/>
@@ -53,7 +63,6 @@
       <param name="sdf_map/use_uniform_update" value="true"/>
 
       <param name="sdf_map/pose_type"     value="1"/>  
-      <param name="sdf_map/use_indep_sub" value="0"/>
       <param name="sdf_map/frame_id"      value="map"/>
   </node>
   
@@ -74,5 +83,40 @@
       <param name="local_planner/pub_lead_yaw"           value="true" /> 
       <param name="local_planner/use_lead_yaw_plan1"     value="false"/> 
   </node>
+
+  <node pkg="local_sensing_node" type="pcl_render_node" name="pcl_render_node" output="screen">
+        <rosparam command="load" file="$(find local_sensing_node)/params/camera.yaml" />
+
+        <param name="sensing_horizon"  value="10.0" />
+        <param name="sensing_rate"     value="30.0"/>
+        <param name="estimation_rate"  value="30.0"/>
+        <param name="map/resolution" value="$(arg resolution)"/>
+        <param name="map/x_size"     value="$(arg map_size_x)"/>
+        <param name="map/y_size"     value="$(arg map_size_y)"/>
+        <param name="map/z_size"     value="$(arg map_size_z)"/>
+
+        <remap from="~global_map" to="/random_complex/global_map"/>
+        <remap from="~local_map"  to="/click_obstacle_generation/click_new_obs"/>
+        <remap from="~odometry"   to="/drone_1/visual_slam/odom"/>
+  </node>
+
+  <!-- <node pkg="waypoint_generator" name="waypoint_generator" type="waypoint_generator" output="screen">
+      <remap from="~odom" to="/drone_1/visual_slam/odom"/>        
+      <remap from="~goal" to="/goal"/>
+      <param name="waypoint_type" value="manual-lonely-waypoint"/>    
+  </node>
+
+  <node pkg="trr_global_planner" name="click_obstacle_generation" type="click_obstacle_generation" output="screen">
+      <remap from = "~odometry" to = "/drone_1/visual_slam/odom"/>    
+      <remap from = "~goal"     to = "/goal"/>
+
+      <param name="map/resolution" value="$(arg resolution)"/>        
+      <param name="map/max_height" value="$(arg map_size_z)"/>       
+
+      <param name="ObstacleShape/lower_rad" value="0.2"/>
+      <param name="ObstacleShape/upper_rad" value="0.3"/>
+      <param name="ObstacleShape/lower_hei" value="2.0"/>
+      <param name="ObstacleShape/upper_hei" value="3.0"/>
+  </node> -->
 
 </launch>

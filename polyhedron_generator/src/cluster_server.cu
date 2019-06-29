@@ -762,7 +762,6 @@ void cudaPolytopeGeneration::polygonGeneration(
     flagClear();
     insideFlagUpload();
 // ### 
-    voxel_num = 0;
     // Data uploading
     ros::Time time_start_gpu_computing = ros::Time::now();
 
@@ -822,11 +821,6 @@ void cudaPolytopeGeneration::polygonGeneration(
     cube_grid_y.clear();
     cube_grid_z.clear();
     getVoxelsInCube(vertex_idx, cube_grid_x, cube_grid_y, cube_grid_z, inside_data, _max_yz_id, _max_z_id);
-    
-    //ROS_WARN("total grid num, after cube inflation, is : %d", (int)cube_grid_x.size());
-    
-    // # get number
-    voxel_num += cube_grid_x.size();
 
     vector<int> cube_outside_grid_x, cube_outside_grid_y, cube_outside_grid_z;
     int tmp_x, tmp_y, tmp_z;
@@ -923,24 +917,17 @@ void cudaPolytopeGeneration::polygonGeneration(
     double time_download_poly = 0.0;
 
     ros::Time time_upload_init1 = ros::Time::now();
-    //cudaMemcpyAsync(d_cluster_xyz_id, cluster_xyz_id, 3 * init_cluster_grid_num * sizeof(int), cudaMemcpyHostToDevice);   
     cudaMemcpy(d_cluster_xyz_id, cluster_xyz_id, 3 * init_cluster_grid_num * sizeof(int), cudaMemcpyHostToDevice);   
     ros::Time time_upload_init2 = ros::Time::now();
     time_upload_poly += (time_upload_init2 - time_upload_init1).toSec();
-    //ROS_WARN("time in initial data upload: %f", (time_upload_init2 - time_upload_init1).toSec());
 
     int cluster_grid_num = init_cluster_grid_num;
 
-    //cout<<"init cluster_grid_num: "<<cluster_grid_num<<endl;
 if  (_is_gpu_on_stage_2)
     polytopeCluster_gpu(cluster_grid_num, active_grid_num, time_upload_poly, time_download_poly, time_cuda_poly);
 else 
     polytopeCluster_cpu( cluster_grid_num, active_grid_num );
-
     time_2_poly = ros::Time::now();
-
-    /*ROS_WARN("[GPU-Convex Core] Time in cube inflation is: %f", (time_2_cube - time_1_cube).toSec() );
-    ROS_WARN("[GPU-Convex Core] Time in polytope clustering is: %f", (time_2_poly - time_1_poly).toSec() );*/
 
 if ( DEBUG_INFO_VERBOSE_LEVEL_1 && _is_gpu_on_stage_1 )
 {
@@ -954,11 +941,9 @@ if ( DEBUG_INFO_VERBOSE_LEVEL_1 && _is_gpu_on_stage_2 )
     ROS_INFO("<Clustering> Time in cuda kernel: %f",   time_cuda_poly     );
     ROS_INFO("<Clustering> Time in data upload: %f",   time_upload_poly   );
     ROS_INFO("<Clustering> Time in data download: %f", time_download_poly );
-    //ROS_INFO("<Clustering> Time in result check: %f",  time_check_candidate );
 }
 
     ros::Time time_finish_gpu_computing = ros::Time::now();
-//    ROS_WARN("[GPU-Convex Core] Time in all convex polygon computing is %f", (time_finish_gpu_computing - time_start_gpu_computing).toSec() );
 
     for(int i = 0; i < cluster_grid_num; i++)
     {
@@ -967,6 +952,5 @@ if ( DEBUG_INFO_VERBOSE_LEVEL_1 && _is_gpu_on_stage_2 )
         cluster_z_idx.push_back(cluster_xyz_id[3 * i + 2]);
     }
 
-    cluster_grid_num_lst_polygon = cluster_grid_num;
-    voxel_num += (cluster_grid_num - init_cluster_grid_num);
+    cout<<"[polyhedron_generator]{GPU} finish gpu cluster"<<endl;
 }   
