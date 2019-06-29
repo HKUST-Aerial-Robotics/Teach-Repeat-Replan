@@ -77,23 +77,11 @@ The simulator requires C++17, which needs **gcc 7** to compile, which can be ins
   sudo add-apt-repository ppa:ubuntu-toolchain-r/test
   sudo apt-get update
   sudo apt-get install gcc-7 g++-7
-```
-  for ubuntu 14.04:
-  ```
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
-  ```
-
-  for ubuntu 16.04:
-  ```
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5
-  ```
-Then,
-
-```
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 50 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+  sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5
+  sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 50 --slave /usr/bin/g++ g++ /usr/bin/g++-7
 ```
 
-After the installation, you can switch your default compiler back to **gcc 5**. When you catkin_make, the simulator would automatically select gcc 7, so don't worry about your environment.
+When you catkin_make, the simulator would automatically select gcc 7, so don't worry about your environment.
 
  ## 2.GPU Dependency
  Two packages in this repo, **local_sensing** and **polyhedron_generator** needs CUDA, GPU. 
