@@ -3,8 +3,6 @@ project(cascade_controller)
 
 add_compile_options(-std=c++11 -fPIC)
 
-#[[find_package(DJIOSDK)
-include_directories(${DJIOSDK_INCLUDE_DIR})]]
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
@@ -38,7 +36,6 @@ include_directories(
   test
   ${catkin_INCLUDE_DIRS}
   ${Eigen3_INCLUDE_DIRS}
-  #${GSL_INCLUDE_DIRS}
 )
 
 file(GLOB ${PROJECT_NAME}_SRCS src/*.cpp)
@@ -50,20 +47,6 @@ add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_gencfg)
 
 target_link_libraries(${PROJECT_NAME}
     ${catkin_LIBRARIES}
-#    ${GSL_LIBRARIES}
     )
 
 enable_testing()
-
-#[[macro (CMAKE_ADD_TEST NAME)
-   add_executable(${NAME}_test test/${NAME}_test.cpp)
-   target_link_libraries(${NAME}_test gtest ${GSL_LIBRARIES} ${PROJECT_NAME})
-   add_test(NAME ${NAME}_test
-            COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${NAME}_test)
-endmacro (CMAKE_ADD_TEST)]]
-
-#[[CMAKE_ADD_TEST(so3)
-CMAKE_ADD_TEST(translation_control)
-CMAKE_ADD_TEST(cascade_control)]]
-#CMAKE_ADD_TEST(gsl)
-
