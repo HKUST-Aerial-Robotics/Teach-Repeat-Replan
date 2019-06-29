@@ -21,14 +21,12 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(Eigen3  REQUIRED)
 include_directories(${EIGEN3_INCLUDE_DIR})
-find_package(Kalman REQUIRED)
-include_directories(${Kalman_INCLUDE_DIR})
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES mission_template
   CATKIN_DEPENDS roscpp pluginlib std_msgs quadrotor_msgs  geometry_msgs nav_msgs nodelet uav_utils state_machine
-  DEPENDS Eigen3  Kalman
+  DEPENDS Eigen3 
 )
 
 include_directories(
@@ -36,7 +34,6 @@ include_directories(
   test
   ${catkin_INCLUDE_DIRS}
   ${Eigen3_INCLUDE_DIRS}
-  ${Kalman_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -53,12 +50,3 @@ target_link_libraries(${PROJECT_NAME}
 add_dependencies(${PROJECT_NAME}
   ${catkin_EXPORTED_TARGETS}
 )
-
-enable_testing()
-
-macro (CMAKE_ADD_TEST NAME)
-   add_executable(${NAME}_test test/${NAME}_test.cpp)
-   target_link_libraries(${NAME}_test gtest ${PROJECT_NAME})
-   add_test(NAME ${NAME}_test
-            COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${NAME}_test)
-endmacro (CMAKE_ADD_TEST)
