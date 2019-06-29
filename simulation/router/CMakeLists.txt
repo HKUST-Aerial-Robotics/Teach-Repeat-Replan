@@ -1,14 +1,10 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(router)
 
-## Compile as C++11, supported in ROS Kinetic and newer
 set(CMAKE_C_COMPILER   "gcc-7")
 set(CMAKE_CXX_COMPILER "g++-7")
 add_compile_options(-std=c++14 -Wignored-attributes  ${CMAKE_CXX_FLAGS})
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
@@ -27,8 +23,6 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 find_package(Eigen3  REQUIRED)
 include_directories(${EIGEN3_INCLUDE_DIR})
-# find_package(Kalman REQUIRED)
-# include_directories(${Kalman_INCLUDE_DIR})
 
 catkin_package(
   INCLUDE_DIRS include
@@ -37,12 +31,6 @@ catkin_package(
   DEPENDS Eigen3 Kalman mission_template
 )
 
-###########
-## Build ##
-###########
-
-## Specify additional locations of header files
-## Your package locations should be listed before other locations
 include_directories(
   include
   test
@@ -68,13 +56,3 @@ target_link_libraries(${PROJECT_NAME}
 add_dependencies(${PROJECT_NAME}
   ${catkin_EXPORTED_TARGETS}
 )
-
-
-enable_testing()
-
-macro (CMAKE_ADD_TEST NAME)
-   add_executable(${NAME}_test test/${NAME}_test.cpp)
-   target_link_libraries(${NAME}_test gtest ${PROJECT_NAME})
-   add_test(NAME ${NAME}_test
-            COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${NAME}_test)
- endmacro (CMAKE_ADD_TEST)
