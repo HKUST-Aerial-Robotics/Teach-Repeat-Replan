@@ -66,6 +66,7 @@ We use **OOQP** for quadratic programming.
 **1.3**   **some math tools**
 
 ```
+  sudo apt-get install libnlopt-dev
   sudo apt-get install libarmadillo-dev 
   sudo apt-get install glpk-utils libglpk-dev
   sudo apt-get install libcdd-dev
@@ -98,7 +99,7 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   cd ~/your_catkin_ws/src
   git clone https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan.git
   cd ../
-  catkin_make
+  catkin_make -j1
   source ~/your_catkin_ws/devel/setup.bash
 ```
   ## 4.Run Teach-Repeat-Replan
