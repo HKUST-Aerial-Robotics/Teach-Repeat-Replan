@@ -67,7 +67,7 @@ We use **OOQP** for quadratic programming.
 
 To install following dependencies, you can run the auto-install script by 
 ```
-  ./install_tools
+  ./install_tools.sh
 ```
 If failed, you can manually install them one by one:
 ```
