@@ -1,7 +1,7 @@
 #include "frequencyalign.hpp"
 
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_fft_complex.h>
+/*#include <gsl/gsl_errno.h>
+#include <gsl/gsl_fft_complex.h>*/
 
 #include <algorithm>
 #include <cstring>
@@ -21,65 +21,6 @@ Signal::Signal()
 
 Signal::~Signal()
 {
-}
-
-Signal*
-Signal::fft()
-{
-  for (int i = 0; i < size; ++i)
-    re(i)    = value(i);
-  if ((size & (size - 1)) == 0)
-  {
-    gsl_fft_complex_radix2_forward(frequencyDomain.get(), 1, size);
-  }
-  else
-  {
-    gsl_fft_complex_wavetable* wt;
-    gsl_fft_complex_workspace* ws;
-    wt = gsl_fft_complex_wavetable_alloc(size);
-    ws = gsl_fft_complex_workspace_alloc(size);
-    gsl_fft_complex_forward(frequencyDomain.get(), 1, size, wt, ws);
-    gsl_fft_complex_wavetable_free(wt);
-    gsl_fft_complex_workspace_free(ws);
-  }
-  double norm = size / 2.0; // std::sqrt(size);
-  for (int i = 0; i < (2 * size); ++i)
-  {
-    frequencyDomain.get()[i] = frequencyDomain.get()[i] / norm;
-  }
-  return this;
-}
-
-Signal*
-Signal::ifft()
-{
-  std::memcpy(timeDomain.get(), frequencyDomain.get(),
-              size * 2 * sizeof(double));
-  double norm = size / 2.0;
-  for (int i = 0; i < (2 * size); ++i)
-  {
-    timeDomain.get()[i] = timeDomain.get()[i] * norm;
-  }
-  if ((size & (size - 1)) == 0)
-  {
-    gsl_fft_complex_radix2_inverse(timeDomain.get(), 1, size);
-  }
-  else
-  {
-    gsl_fft_complex_wavetable* wt;
-    gsl_fft_complex_workspace* ws;
-    wt = gsl_fft_complex_wavetable_alloc(size);
-    ws = gsl_fft_complex_workspace_alloc(size);
-    gsl_fft_complex_inverse(timeDomain.get(), 1, size, wt, ws);
-    gsl_fft_complex_wavetable_free(wt);
-    gsl_fft_complex_workspace_free(ws);
-  }
-  for (int i = 0; i < size; ++i)
-  {
-    timeDomain.get()[i] = timeDomain.get()[2 * i];
-  }
-  current = 0;
-  return this;
 }
 
 Signal

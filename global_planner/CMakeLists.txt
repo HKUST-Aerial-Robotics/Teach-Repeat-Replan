@@ -7,9 +7,9 @@ find_package(catkin REQUIRED COMPONENTS
     nav_msgs 
     visualization_msgs 
     quadrotor_msgs 
+    decomp_ros_msgs
     tf 
     polyhedron_generator 
-    decomp_ros_msgs
 )
 
 find_package(Eigen3 REQUIRED)

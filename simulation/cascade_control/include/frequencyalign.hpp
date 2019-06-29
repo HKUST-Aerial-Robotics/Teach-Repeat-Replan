@@ -14,9 +14,6 @@ public:
   ~Signal();
 
 public:
-  // signal processing
-  Signal* fft();
-  Signal* ifft();
   Signal xcorr(const Signal& other) const;
 
   int lag(const Signal& other) const;
