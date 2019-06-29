@@ -123,7 +123,7 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
  <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/joystick.png" width = "400" height = "248"/>
  </p>
-  Actually any USB joystick that suits ROS is fine, but its buttons may need to be re-maped. Re-map can be done in ```simulation/simulator.launch```. 
+  Actually any USB joystick that suits ROS is fine, but its buttons may need to be re-maped. Re-map can be done in simulation/simulator.launch.
   
   **4.2 Teaching**
   
