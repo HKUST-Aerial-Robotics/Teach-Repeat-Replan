@@ -66,6 +66,7 @@ We use **OOQP** for quadratic programming.
 **1.3**   **some math tools**
 
 ```
+  sudo apt-get install ros-kinetic-joy
   sudo apt-get install libnlopt-dev
   sudo apt-get install libf2c2-dev
   sudo apt-get install libarmadillo-dev 
