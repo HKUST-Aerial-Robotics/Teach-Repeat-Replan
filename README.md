@@ -27,9 +27,9 @@ Sub-modules integrated in our system include:
 [WIKI](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/wiki)
 
 **Architecture:**
-  <div align=center>
+ <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/sys_architecture.png" width = "767" height = "366">
-  </div>
+  </p>
 
 Our system can be applied to situations where the user has a preferable rough route but isn't able to pilot the drone ideally. For example, for drone racing or aerial filming, a beginner-level pilot is impossible to control the drone to finish the race safely or take an aerial video smoothly unless months of training. With our system, the huamn pilot can virtually control the drone with his/her navie operations, then our system automatically generate a very efficient repeating trajectory and autonomously execute it.
 
@@ -104,5 +104,8 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   ## 4.Run Teach-Repeat-Replan
   **4.1 Teaching (with joystick)**
   We use a USB joy-stick **Betop**, to control the drone virtually in simulation. 
-  
+ <p align="center">
+  <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/joystick.png" width = "400" height = "248"/>
+ </p>
+
   **4.2 Repeating**
