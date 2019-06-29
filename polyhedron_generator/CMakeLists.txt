@@ -10,6 +10,7 @@ set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_FLAGS "-std=c++11")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g -march=native")
 
+
 find_package(catkin REQUIRED COMPONENTS 
     rospy 
     std_msgs 
@@ -24,8 +25,6 @@ find_package(cmake_modules REQUIRED)
 find_package(CUDA REQUIRED )
 find_package(PCL REQUIRED)
 find_package(Eigen3  REQUIRED)
-find_package(OsqpEigen REQUIRED)
-find_package(osqp REQUIRED)
 
 set_directory_properties( PROPERTIES COMPILE_DEFINITIONS "" )
 
