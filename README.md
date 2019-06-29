@@ -103,9 +103,11 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
 ```
   ## 4.Run Teach-Repeat-Replan
   **4.1 Teaching (with joystick)**
-  We use a USB joy-stick **Betop**, to control the drone virtually in simulation. 
+  
+  We use a USB joy-stick [**Betop**](https://detail.tmall.com/item.htm?id=43773042338&spm=a1z09.2.0.0.18a42e8d0ZJzki&_u=t1hlsb1me213), which can be bought at **TaoBao** in mainland China, to control the drone virtually in simulation. 
  <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/joystick.png" width = "400" height = "248"/>
  </p>
+  Actually any USB joystick that suits ROS is fine, but its buttons may need to be re-maped. Re-mapped can be done in *simulation/simulator.launch*. 
 
   **4.2 Repeating**
