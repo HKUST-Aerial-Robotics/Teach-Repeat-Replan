@@ -67,6 +67,7 @@ We use **OOQP** for quadratic programming.
 
 ```
   sudo apt-get install libnlopt-dev
+  sudo apt-get install libf2c2-dev
   sudo apt-get install libarmadillo-dev 
   sudo apt-get install glpk-utils libglpk-dev
   sudo apt-get install libcdd-dev
