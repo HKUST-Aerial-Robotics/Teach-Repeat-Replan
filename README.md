@@ -63,7 +63,7 @@ We use **OOQP** for quadratic programming.
 
 2. Manually un-zip packages *OOQP.zip* in the **installation** folder of this repo and install it follow the document *INSTALL* in **OOQP**, install it to your ubuntu.
 
-**1.3**   **some math tools**
+**1.3**   **some tools**
 
 ```
   sudo apt-get install ros-kinetic-joy
@@ -99,11 +99,11 @@ The simulator requires C++17, which needs **gcc 7** to compile. When you catkin_
  set(ENABLE_CUDA true)
  ```
  
-The GPU functionalities are turned-on.
+CUDA will be turned-on to exploit your GPU.
  
-**local_sensing** is the simulated sensors. If *ENABLE_CUDA* turn on, it mimics the depth measured by stereo cameras and renders a depth image by GPU. If *ENABLE_CUDA* off, it publish pointclouds. Our local mapper takes both depth images and pointclouds.
+**local_sensing** is the simulated sensors. If ```ENABLE_CUDA``` turn on, it mimics the depth measured by stereo cameras and renders a depth image by GPU. If ```ENABLE_CUDA``` off, it publish pointclouds. Our local mapper takes both depth images and pointclouds.
 
-**polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor while teaching. If *ENABLE_CUDA* turn on, it can run much faster (depends on resolution and your graphics card) than *ENABLE_CUDA* off. 
+**polyhedron_generator** is used to find free convex polyhedrons which form the flight corridor while teaching. If ```ENABLE_CUDA``` turn on, it can run much faster (depends on resolution and your graphics card) than ```ENABLE_CUDA``` off. 
 
 For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.com/cuda-toolkit)
  
