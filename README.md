@@ -133,7 +133,18 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   ```
   Then, you can find a drone model in ```Rviz```. Piloting the drone by your joystick to fly around the complex environment, you can find polyhedrons are generated one by one, as:
  <p align="center">
-  <img src="" width = "400" height = "248"/>
+  <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/teaching1.gif" width = "400" height = "248"/>
  </p>
+ 
+  If you go back while flying, looping polyhedrons would be deleted from the corridor:
+ <p align="center">
+  <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/teaching2.gif" width = "400" height = "248"/>
+ </p>
+ 
+ When you feel enough for this teaching, press ```start``` button on your joystick. Then global spatial-temporal planning is conducted and the drone starts tracking the gnerated repeating trajectory:
+  <p align="center">
+  <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/teaching3.gif" width = "400" height = "248"/>
+ </p>
+ 
   
   **4.3 Repeating**
