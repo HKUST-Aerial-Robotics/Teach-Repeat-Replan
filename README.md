@@ -55,7 +55,7 @@ Our software is developed in Ubuntu 16.04. ROS Kinetic. ROS can be installed her
 
 **1.2**   **convex solvers**
 
-We use **mosek** for conic programming. To use mosek, you should approve a free academic license [here](https://www.mosek.com/products/academic-licenses/). Then create a folder named 'mosek' in your home directory and put your license in it. All header and library files are already included in this repo, so you don't need to download mosek again. 
+We use **Mosek** for conic programming. To use mosek, you should request a free **Personal Academic License** [here](https://www.mosek.com/products/academic-licenses/). Then create a folder named 'mosek' in your home directory and put your license in it. All header and library files are already included in this repo, so you don't need to download mosek again. 
 
 We use **OOQP** for quadratic programming. 
 
