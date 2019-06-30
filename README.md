@@ -175,12 +175,12 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/teaching2.gif" width = "400" height = "248"/>
  </p>
  
- When you feel enough for this teaching, press ```start``` button on your joystick. Then global spatial-temporal planning is conducted and the drone starts tracking the gnerated repeating trajectory:
+ When you feel enough for this teaching, press ```start``` button on your joystick/or press ```m``` in keyboard mode. Then global spatial-temporal planning is conducted and the drone starts tracking the gnerated repeating trajectory:
   <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/teaching3.gif" width = "400" height = "248"/>
  </p>
  
- After the flight, press ```back``` button on eh joystick, the drone will back to the manually controlling state and all visualization is cleared. You can start another teaching again.
+ After the flight, press ```back``` button on the joystick/or press ```n``` in keyboard mode, the drone will back to the manually controlling state and all visualization is cleared. You can start another teaching again.
  
   **4.3 Re-planning**
   
