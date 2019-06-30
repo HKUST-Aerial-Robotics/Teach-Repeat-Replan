@@ -155,6 +155,10 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   
   **Note**, run ```key2joy```, it will display a window named ```pygame window```. You have to keep this window **activie**, to input your control command from the keyboard. 
   
+   <p align="center">
+  <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/keyboard.png" width = "400" height = "248"/>
+ </p>
+ 
   **4.2 Teaching and Repeating**
   
   The whole system is launched by
