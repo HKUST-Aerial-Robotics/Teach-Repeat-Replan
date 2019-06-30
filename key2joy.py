@@ -11,7 +11,7 @@ def main():
 
     # initialize pygame to get keyboard event
     pygame.init()
-    window_size = Rect(0, 0, 150, 150)
+    window_size = Rect(0, 0, 300, 300)
     screen = pygame.display.set_mode(window_size.size)
 
     # initialize ros publisher

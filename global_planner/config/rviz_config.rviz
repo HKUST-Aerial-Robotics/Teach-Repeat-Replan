@@ -147,8 +147,8 @@ Visualization Manager:
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
-            Max Value: 4.53480291
-            Min Value: 0.000686909072
+            Max Value: 4.20822144
+            Min Value: 0.00100000005
             Value: true
           Axis: Z
           Channel Name: intensity
@@ -183,10 +183,7 @@ Visualization Manager:
           Marker Topic: /tr_node/trajectory_vis
           Name: SpatialCurve
           Namespaces:
-            trr_global_planner/trajectory0: true
-            trr_global_planner/trajectory1: true
-            trr_global_planner/trajectory2: true
-            trr_global_planner/trajectory_final: true
+            {}
           Queue Size: 100
           Value: true
         - Class: rviz/Marker
@@ -194,7 +191,7 @@ Visualization Manager:
           Marker Topic: /local_replanner/check_trajectory_vis
           Name: SlidingWindow
           Namespaces:
-            local_replan/local_trajectory: true
+            {}
           Queue Size: 100
           Value: true
         - Class: rviz/Marker
@@ -202,10 +199,7 @@ Visualization Manager:
           Marker Topic: /local_replanner/replaned_b_spline_vis
           Name: ReplanTraj
           Namespaces:
-            local_replan/traj1: true
-            local_replan/traj3: true
-            local_replan/traj4: true
-            local_replan/traj6: true
+            {}
           Queue Size: 100
           Value: true
       Enabled: true
@@ -395,25 +389,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 5.28746986
+      Distance: 8.92154503
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.726839066
-        Y: 0.508849978
+        X: -0.0573073626
+        Y: 0.436323643
         Z: 8.58306885e-06
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.979797482
+      Pitch: 1.17979729
       Target Frame: drone1
       Value: ThirdPersonFollower (rviz)
-      Yaw: 3.17722559
+      Yaw: 3.1372242
     Saved:
       - Class: rviz/ThirdPersonFollower
         Distance: 4.04827738
