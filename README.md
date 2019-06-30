@@ -150,7 +150,7 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   Then start the python script ```key2joy``` in this repo.
   
   ```
-  python key2joy
+  python key2joy.py
   ```
   
   **Note**, run ```key2joy```, it will display a window named ```pygame window```. You have to keep this window **active**, to input your control command from the keyboard. 
