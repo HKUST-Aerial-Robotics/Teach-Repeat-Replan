@@ -165,7 +165,7 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   ```
   ./trr_simulation.sh
   ```
-  Then, you can find a drone model in ```Rviz```. Piloting the drone by your joystick to fly around the complex environment, you can find polyhedrons are generated one by one, as:
+  Then, you can find a drone model in ```Rviz```. Piloting the drone by your joystick/keyboard to fly around the complex environment, you can find polyhedrons are generated one by one, as:
  <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/teaching1.gif" width = "400" height = "248"/>
  </p>
