@@ -15,13 +15,12 @@ def main():
     screen = pygame.display.set_mode(window_size.size)
 
     img = pygame.image.load("./files/keyboard3.jpg")
-    screen.blit(img, (1,1))
 
     # initialize ros publisher
     twist_pub = rospy.Publisher('keyboard/twist', Twist, queue_size=10)
     joy_pub = rospy.Publisher('/joy', Joy, queue_size=10)
     rospy.init_node('key2joy')
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(50)
 
     # init joy message
     joy_ = Joy()    
@@ -33,7 +32,8 @@ def main():
 
     while not rospy.is_shutdown():
         rate.sleep()
-
+        screen.blit(img, (1,1))
+        pygame.display.flip()
         # reset message axes
         for i in range(8):
           joy_.axes[i] = 0.0
