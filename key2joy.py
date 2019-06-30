@@ -11,8 +11,11 @@ def main():
 
     # initialize pygame to get keyboard event
     pygame.init()
-    window_size = Rect(0, 0, 300, 300)
+    window_size = Rect(0, 0, 691, 272)
     screen = pygame.display.set_mode(window_size.size)
+
+    img = pygame.image.load("./files/keyboard3.jpg")
+    screen.blit(img, (1,1))
 
     # initialize ros publisher
     twist_pub = rospy.Publisher('keyboard/twist', Twist, queue_size=10)
@@ -71,11 +74,11 @@ def main():
                     joy_.axes[0] = -1.0
                 # task control
                 elif event.key == pygame.K_n:
-                    print 'start'
-                    joy_.buttons[7] = 1
-                elif event.key == pygame.K_m:
                     print 'clear'
                     joy_.buttons[6] = 1
+                elif event.key == pygame.K_m:
+                    print 'start'
+                    joy_.buttons[7] = 1
                 joy_pub.publish(joy_)
 
             # when keyup, reset velcity
@@ -109,10 +112,10 @@ def main():
                 # task control
                 elif event.key == pygame.K_n:
                     # print 'start'
-                    joy_.buttons[7] = 0
+                    joy_.buttons[6] = 0
                 elif event.key == pygame.K_m:
                     # print 'clear'
-                    joy_.buttons[6] = 0
+                    joy_.buttons[7] = 0
                 joy_pub.publish(joy_)
 
 
