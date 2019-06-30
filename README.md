@@ -125,6 +125,8 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   
   **4.1 Human Interface**
   
+  *Since some users don't have a joystick, we will add a new huamn interface, to control the drone by normal keyboards*
+  
   We use a USB joy-stick [**Betop**](https://detail.tmall.com/item.htm?id=43773042338&spm=a1z09.2.0.0.18a42e8d0ZJzki&_u=t1hlsb1me213), which can be bought at **TaoBao** in mainland China, to control the drone virtually in simulation. 
  
  <p align="center">
