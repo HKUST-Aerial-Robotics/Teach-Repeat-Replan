@@ -35,12 +35,12 @@ def main():
         screen.blit(img, (1,1))
         pygame.display.flip()
         # reset message axes
-        for i in range(8):
-          joy_.axes[i] = 0.0
-
-        # reset buttons
-        for i in range(11):
-          joy_.buttons[i] = 0
+#        for i in range(8):
+#          joy_.axes[i] = 0.0
+#
+#        # reset buttons
+#        for i in range(11):
+#          joy_.buttons[i] = 0
 
         for event in pygame.event.get():
             # ---------------------- key dowm message ----------------------
@@ -50,33 +50,33 @@ def main():
                 if event.key == pygame.K_UP:
                     print 'forward'
                     joy_.axes[4] = 1.0
-                elif event.key == pygame.K_DOWN:
+                if event.key == pygame.K_DOWN:
                     print 'backward'
                     joy_.axes[4] = -1.0
-                elif event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT:
                     print 'left'
                     joy_.axes[3] = 1.0
-                elif event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT:
                     print 'right'
                     joy_.axes[3] = -1.0
                 # yaw and z control
-                elif event.key == pygame.K_w:
+                if event.key == pygame.K_w:
                     print 'up'
                     joy_.axes[1] = 1.0
-                elif event.key == pygame.K_s:
+                if event.key == pygame.K_s:
                     print 'down'
                     joy_.axes[1] = -1.0
-                elif event.key == pygame.K_a:
+                if event.key == pygame.K_a:
                     print 'turn left'
                     joy_.axes[0] = 1.0
-                elif event.key == pygame.K_d:
+                if event.key == pygame.K_d:
                     print 'turn right'
                     joy_.axes[0] = -1.0
                 # task control
-                elif event.key == pygame.K_n:
+                if event.key == pygame.K_n:
                     print 'clear'
                     joy_.buttons[6] = 1
-                elif event.key == pygame.K_m:
+                if event.key == pygame.K_m:
                     print 'start'
                     joy_.buttons[7] = 1
                 joy_pub.publish(joy_)
@@ -87,33 +87,33 @@ def main():
                 if event.key == pygame.K_UP:
                     # print 'forward'
                     joy_.axes[4] = 0.0
-                elif event.key == pygame.K_DOWN:
+                if event.key == pygame.K_DOWN:
                     # print 'backward'
                     joy_.axes[4] = -0.0
-                elif event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT:
                     # print 'left'
                     joy_.axes[3] = 0.0
-                elif event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT:
                     # print 'right'
                     joy_.axes[3] = -0.0
                 # yaw and z control
-                elif event.key == pygame.K_w:
+                if event.key == pygame.K_w:
                     # print 'up'
                     joy_.axes[1] = 0.0
-                elif event.key == pygame.K_s:
+                if event.key == pygame.K_s:
                     # print 'down'
                     joy_.axes[1] = -0.0
-                elif event.key == pygame.K_a:
+                if event.key == pygame.K_a:
                     # print 'turn left'
                     joy_.axes[0] = 0.0
-                elif event.key == pygame.K_d:
+                if event.key == pygame.K_d:
                     # print 'turn right'
                     joy_.axes[0] = -0.0
                 # task control
-                elif event.key == pygame.K_n:
+                if event.key == pygame.K_n:
                     # print 'start'
                     joy_.buttons[6] = 0
-                elif event.key == pygame.K_m:
+                if event.key == pygame.K_m:
                     # print 'clear'
                     joy_.buttons[7] = 0
                 joy_pub.publish(joy_)
