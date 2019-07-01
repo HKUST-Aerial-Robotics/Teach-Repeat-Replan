@@ -1,0 +1,17 @@
+<launch>
+<arg name="drone_number" default="1"/>
+<arg name="simulation" default="true"/>
+
+<node pkg="nodelet"
+      type="nodelet"
+      args="standalone circle/CircleNode"
+      name="CircleNode_$(arg drone_number)"
+      required="true"
+      output="screen">
+
+    <remap from="~poller" to="state_machine_node_$(arg drone_number)/mission/trigger"/>
+    <remap from="~enable" to="state_machine_node_$(arg drone_number)/rc/mission"/>
+    <remap from="~joy"    to="joy"/>
+</node>
+
+</launch>
