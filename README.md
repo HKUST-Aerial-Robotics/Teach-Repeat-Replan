@@ -1,6 +1,6 @@
-**This is the experiment verision of the Teach-Repeat-Replan system. To run this system in real-world, packages in ```localization```, ```controller``` and ```local_replanner``` should be deployed in the drone's onboard computer. Other packages are running on an offboard computer.**
+This is the experiment verision of the Teach-Repeat-Replan system. To run this system in real-world, packages in ```localization```, ```controller``` and ```local_replanner``` should be deployed in the drone's onboard computer. Other packages are running on an offboard computer.
 
-**To test Teach-Repeat-Replan system in simulation, please go to the [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) branch**
+To test Teach-Repeat-Replan system in simulation, please go to the [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) branch.
 
 # Teach-Repeat-Replan
 Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments
