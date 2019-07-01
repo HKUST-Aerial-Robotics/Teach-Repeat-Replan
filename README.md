@@ -1,3 +1,5 @@
+*What's New: We have released all packages for conducting real-world experiments, please visit [experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)*
+
 *What's New: We now provide a new interface for controlling the drone directly with the keyboard. Check it in the following Human Interface section.*
 
 # Teach-Repeat-Replan
