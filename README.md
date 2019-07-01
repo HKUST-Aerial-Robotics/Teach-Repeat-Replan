@@ -185,6 +185,8 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   **4.3 Re-planning**
   
  In simulation, the re-planning is triggered when collisions are reported in a horizon. We maintain a local ESDF map, which is built very efficiently on the flight, to detect collisions and provide gradient information for local trajectory optimization. The re-planning is done in a sliding-window fasion, details can be checked in paper, video, or wiki.
+ 
+ In following video, ```green``` curves are re-planned trajectories, ```blue``` one is the global trajectory.
  <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/replanning.gif" width = "600" height = "372"/>
  </p>
