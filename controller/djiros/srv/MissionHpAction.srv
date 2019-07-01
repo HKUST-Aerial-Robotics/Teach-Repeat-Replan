@@ -1,0 +1,14 @@
+#constant for action
+uint8 ACTION_START  = 0
+uint8 ACTION_STOP   = 1
+uint8 ACTION_PAUSE  = 2
+uint8 ACTION_RESUME = 3
+
+#response
+uint8 action          # see constants above for possible actions
+---
+bool result
+# for debugging usage
+uint8 cmd_set
+uint8 cmd_id
+uint32 ack_data

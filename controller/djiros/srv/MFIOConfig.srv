@@ -1,0 +1,13 @@
+#constant for mode
+uint8 MODE_PWM_OUT  = 0
+#uint8 MODE_PWM_IN  = 1 #PWM_IN is not functioning correctly
+uint8 MODE_GPIO_OUT = 2
+uint8 MODE_GPIO_IN  = 3
+uint8 MODE_ADC      = 4
+
+#request
+uint8 mode              # see constants above for possible modes
+uint8 channel           # 0-7
+uint32 init_on_time_us  # on time for pwm duty cycle in micro-seconds
+uint16 pwm_freq         # set pwm frequency in Hz
+---

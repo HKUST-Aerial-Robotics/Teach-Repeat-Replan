@@ -1,0 +1,2851 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Broadcast</class>
+ <widget class="QWidget" name="Broadcast">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1902</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_4">
+   <item>
+    <widget class="QGroupBox" name="gb_CoreData">
+     <property name="title">
+      <string>Broadcast Data Freq</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_33">
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="topMargin">
+       <number>12</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
+      </property>
+      <property name="bottomMargin">
+       <number>12</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="pushButtonBroadcastFreqSet">
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutTs">
+        <item>
+         <widget class="QLabel" name="labelTs">
+          <property name="text">
+           <string>Time stamp</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxTs">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutQ">
+        <item>
+         <widget class="QLabel" name="labelQ">
+          <property name="text">
+           <string>Quaternion</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxQ">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutAcc">
+        <item>
+         <widget class="QLabel" name="labelAcc">
+          <property name="text">
+           <string>Acceleration</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxAcc">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutVel">
+        <item>
+         <widget class="QLabel" name="labelVel">
+          <property name="text">
+           <string>Velocity</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxVel">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutW">
+        <item>
+         <widget class="QLabel" name="labelW">
+          <property name="text">
+           <string>Angular Rate</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxW">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutPos">
+        <item>
+         <widget class="QLabel" name="labelPos">
+          <property name="text">
+           <string>Position</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxPos">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutMag">
+        <item>
+         <widget class="QLabel" name="labelMag">
+          <property name="text">
+           <string>Magnetometer</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxMag">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutRC">
+        <item>
+         <widget class="QLabel" name="labelRC">
+          <property name="text">
+           <string>Radio Control</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxRC">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutGimbal">
+        <item>
+         <widget class="QLabel" name="labelGimbal">
+          <property name="text">
+           <string>Gimbal</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxGimbal">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutStatus">
+        <item>
+         <widget class="QLabel" name="labelStatus">
+          <property name="text">
+           <string>Status</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxStatus">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutBat">
+        <item>
+         <widget class="QLabel" name="labelBat">
+          <property name="text">
+           <string>Battery</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxBat">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutCtrlInfo">
+        <item>
+         <widget class="QLabel" name="labelCtrlInfo">
+          <property name="text">
+           <string>Control Info</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxCtrlInfo">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutRTK">
+        <item>
+         <widget class="QLabel" name="labelRTK">
+          <property name="text">
+           <string>RTK</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxRTK">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutGPS">
+        <item>
+         <widget class="QLabel" name="labelGPS">
+          <property name="text">
+           <string>GPS Detail</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxGPS">
+          <property name="currentText">
+           <string>0Hz</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>0Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>50Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>100Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200Hz</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400Hz</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1542</width>
+        <height>730</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="broadcastDisplay">
+         <property name="minimumSize">
+          <size>
+           <width>1503</width>
+           <height>655</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>820</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Flight Broadcast Data</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <property name="leftMargin">
+           <number>12</number>
+          </property>
+          <property name="topMargin">
+           <number>12</number>
+          </property>
+          <property name="rightMargin">
+           <number>12</number>
+          </property>
+          <property name="bottomMargin">
+           <number>12</number>
+          </property>
+          <property name="spacing">
+           <number>12</number>
+          </property>
+          <item row="0" column="3" rowspan="5">
+           <widget class="QGroupBox" name="gpsDisplay">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>450</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>GPS Detail</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_75">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>12</number>
+             </property>
+             <property name="topMargin">
+              <number>12</number>
+             </property>
+             <property name="rightMargin">
+              <number>12</number>
+             </property>
+             <property name="bottomMargin">
+              <number>12</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_149">
+               <item>
+                <widget class="QLabel" name="label_gps_date">
+                 <property name="text">
+                  <string>date</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_date">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_150">
+               <item>
+                <widget class="QLabel" name="label_84">
+                 <property name="text">
+                  <string>time</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_time">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_151">
+               <item>
+                <widget class="QLabel" name="label_85">
+                 <property name="text">
+                  <string>Lon</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_longitude">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_152">
+               <item>
+                <widget class="QLabel" name="label_86">
+                 <property name="text">
+                  <string>Lat</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_latitude">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_153">
+               <item>
+                <widget class="QLabel" name="label_87">
+                 <property name="text">
+                  <string>HMSL</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_hmsl">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_154">
+               <item>
+                <widget class="QLabel" name="label_88">
+                 <property name="text">
+                  <string>VN</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_VN">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_155">
+               <item>
+                <widget class="QLabel" name="label_89">
+                 <property name="text">
+                  <string>VE</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_VE">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_156">
+               <item>
+                <widget class="QLabel" name="label_90">
+                 <property name="text">
+                  <string>VD</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_VD">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_166">
+               <item>
+                <widget class="QLabel" name="label_98">
+                 <property name="text">
+                  <string>Hdop</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_hdop">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_167">
+               <item>
+                <widget class="QLabel" name="label_99">
+                 <property name="text">
+                  <string>Pdop</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_pdop">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_168">
+               <item>
+                <widget class="QLabel" name="label_100">
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;GNSSFlag&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_GNSSFlag">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_169">
+               <item>
+                <widget class="QLabel" name="label_101">
+                 <property name="text">
+                  <string>GLNNFix </string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_gnssFix">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_170">
+               <item>
+                <widget class="QLabel" name="label_102">
+                 <property name="text">
+                  <string>Hacc</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_hacc">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_171">
+               <item>
+                <widget class="QLabel" name="label_103">
+                 <property name="text">
+                  <string>Sacc</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_sacc">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_172">
+               <item>
+                <widget class="QLabel" name="label_104">
+                 <property name="text">
+                  <string>GPSUsed</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_guse">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_339">
+               <item>
+                <widget class="QLabel" name="label_204">
+                 <property name="text">
+                  <string>GNSSUsed</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_gnuse">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_340">
+               <item>
+                <widget class="QLabel" name="label_205">
+                 <property name="text">
+                  <string>SVN</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_svn">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_341">
+               <item>
+                <widget class="QLabel" name="label_206">
+                 <property name="text">
+                  <string>GPSStatus</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_gps_gps">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QGroupBox" name="accDisplay">
+            <property name="title">
+             <string>Acceleration</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_42">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>12</number>
+             </property>
+             <property name="topMargin">
+              <number>12</number>
+             </property>
+             <property name="rightMargin">
+              <number>12</number>
+             </property>
+             <property name="bottomMargin">
+              <number>12</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_69">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="accXlabel">
+                 <property name="text">
+                  <string>X</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_accx">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_70">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="accYLabel">
+                 <property name="text">
+                  <string>Y</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_accy">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_71">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="accZLabel">
+                 <property name="text">
+                  <string>Z</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_accz">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QGroupBox" name="wDisplay">
+            <property name="title">
+             <string>Angular Rate</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_43">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>12</number>
+             </property>
+             <property name="topMargin">
+              <number>12</number>
+             </property>
+             <property name="rightMargin">
+              <number>12</number>
+             </property>
+             <property name="bottomMargin">
+              <number>12</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_73">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="wXLabel">
+                 <property name="text">
+                  <string>X</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_palx">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_74">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="wYlabel">
+                 <property name="text">
+                  <string>Y</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_paly">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_75">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="wZlabel">
+                 <property name="text">
+                  <string>Z</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_palz">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QGroupBox" name="magDisplay">
+            <property name="title">
+             <string>Magnetometer</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_46">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>12</number>
+             </property>
+             <property name="topMargin">
+              <number>12</number>
+             </property>
+             <property name="rightMargin">
+              <number>12</number>
+             </property>
+             <property name="bottomMargin">
+              <number>12</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_91">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="magXLabel">
+                 <property name="text">
+                  <string>X</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_magx">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_92">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="magYLabel">
+                 <property name="text">
+                  <string>Y</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_magy">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_93">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="magZLabel">
+                 <property name="text">
+                  <string>Z</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_magz">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="4" rowspan="4">
+           <widget class="QGroupBox" name="rtkDisplay">
+            <property name="title">
+             <string>RTK</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_150">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>12</number>
+             </property>
+             <property name="topMargin">
+              <number>12</number>
+             </property>
+             <property name="rightMargin">
+              <number>12</number>
+             </property>
+             <property name="bottomMargin">
+              <number>12</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_343">
+               <item>
+                <widget class="QLabel" name="label_6">
+                 <property name="text">
+                  <string>date</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_rtk_date">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_344">
+               <item>
+                <widget class="QLabel" name="label_207">
+                 <property name="text">
+                  <string>time</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_rtk_time">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_345">
+               <item>
+                <widget class="QLabel" name="label_208">
+                 <property name="text">
+                  <string>Lon</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_rtk_longitude">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_346">
+               <item>
+                <widget class="QLabel" name="label_209">
+                 <property name="text">
+                  <string>Lat</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_rtk_latitude">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_347">
+               <item>
+                <widget class="QLabel" name="label_210">
+                 <property name="text">
+                  <string>HMSL</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_rtk_hmsl">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_348">
+               <item>
+                <widget class="QLabel" name="label_211">
+                 <property name="text">
+                  <string>VN</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_rtk_VN">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_349">
+               <item>
+                <widget class="QLabel" name="label_212">
+                 <property name="text">
+                  <string>VE</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_rtk_VE">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_350">
+               <item>
+                <widget class="QLabel" name="label_213">
+                 <property name="text">
+                  <string>VD</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_rtk_VD">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_351">
+               <item>
+                <widget class="QLabel" name="label_214">
+                 <property name="text">
+                  <string>yaw</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_rtk_yaw">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_356">
+               <item>
+                <widget class="QLabel" name="label_219">
+                 <property name="text">
+                  <string>posFlag</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_rtk_flag_1">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_357">
+               <item>
+                <widget class="QLabel" name="label_220">
+                 <property name="text">
+                  <string>yawFlag</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_rtk_flag_2">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QGroupBox" name="qDisplay">
+            <property name="minimumSize">
+             <size>
+              <width>172</width>
+              <height>180</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>Quaternion</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_41">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>12</number>
+             </property>
+             <property name="topMargin">
+              <number>12</number>
+             </property>
+             <property name="rightMargin">
+              <number>12</number>
+             </property>
+             <property name="bottomMargin">
+              <number>12</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_64">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="q0Label">
+                 <property name="text">
+                  <string>Q0</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_Q0">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_65">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="q1Label">
+                 <property name="text">
+                  <string>Q1</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_Q1">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_66">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="q2Label">
+                 <property name="text">
+                  <string>Q2</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_Q2">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_67">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="q3Label">
+                 <property name="text">
+                  <string>Q3</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_Q3">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QGroupBox" name="velDisplay">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>180</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>Velocity</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_44">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>12</number>
+             </property>
+             <property name="topMargin">
+              <number>12</number>
+             </property>
+             <property name="rightMargin">
+              <number>12</number>
+             </property>
+             <property name="bottomMargin">
+              <number>12</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_77">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="velXLabel">
+                 <property name="text">
+                  <string>X</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_Vx">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_78">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="velYLabel">
+                 <property name="text">
+                  <string>Y</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_Vy">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_79">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="velZlabel">
+                 <property name="text">
+                  <string>Z</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_Vz">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_80">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="velHealthLabel">
+                 <property name="text">
+                  <string>Health</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_VH">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_81">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="velSensorLabel">
+                 <property name="text">
+                  <string>Sensor</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_VS">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="4" column="4">
+           <widget class="QGroupBox" name="gimbalDisplay">
+            <property name="title">
+             <string>Gimbal Position</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>12</number>
+             </property>
+             <property name="topMargin">
+              <number>12</number>
+             </property>
+             <property name="rightMargin">
+              <number>12</number>
+             </property>
+             <property name="bottomMargin">
+              <number>12</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <property name="topMargin">
+                <number>2</number>
+               </property>
+               <item>
+                <widget class="QSplitter" name="splitter">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <widget class="QLabel" name="gimbalYawLabel">
+                  <property name="text">
+                   <string>Yaw</string>
+                  </property>
+                 </widget>
+                 <widget class="QLineEdit" name="le_cameraYaw">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="cb_cameraYawLimit">
+                 <property name="text">
+                  <string>At Limit</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <property name="topMargin">
+                <number>2</number>
+               </property>
+               <property name="bottomMargin">
+                <number>2</number>
+               </property>
+               <item>
+                <widget class="QSplitter" name="splitter_2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <widget class="QLabel" name="gimbalRollLabel">
+                  <property name="text">
+                   <string>Roll</string>
+                  </property>
+                 </widget>
+                 <widget class="QLineEdit" name="le_cameraRoll">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                 <widget class="QCheckBox" name="cb_cameraRollLimit">
+                  <property name="text">
+                   <string>At Limit</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <property name="topMargin">
+                <number>2</number>
+               </property>
+               <property name="bottomMargin">
+                <number>2</number>
+               </property>
+               <item>
+                <widget class="QSplitter" name="splitter_3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <widget class="QLabel" name="pitchGimbalLabel">
+                  <property name="text">
+                   <string>Pitch</string>
+                  </property>
+                 </widget>
+                 <widget class="QLineEdit" name="le_cameraPitch">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                 <widget class="QCheckBox" name="cb_cameraPitchLimit">
+                  <property name="text">
+                   <string>At Limit</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="2" rowspan="2">
+           <widget class="QGroupBox" name="posDisplay">
+            <property name="minimumSize">
+             <size>
+              <width>172</width>
+              <height>180</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>Position</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_54">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>12</number>
+             </property>
+             <property name="topMargin">
+              <number>12</number>
+             </property>
+             <property name="rightMargin">
+              <number>12</number>
+             </property>
+             <property name="bottomMargin">
+              <number>12</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_102">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="posHeightlabel">
+                 <property name="text">
+                  <string>Height</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_PosH">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_112">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="posLatLabel">
+                 <property name="text">
+                  <string>Lat</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_PosLa">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_117">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="posLonLabel">
+                 <property name="text">
+                  <string>Lon</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_PosLo">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_119">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="posAltLabel">
+                 <property name="text">
+                  <string>Alt</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_PosAl">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_120">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="posHealthLabel">
+                 <property name="text">
+                  <string>Health</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_Flight_PosHealth">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="3" column="0" rowspan="2" colspan="2">
+           <widget class="QGroupBox" name="groupBox_23">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>CoreStatus</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>12</number>
+             </property>
+             <property name="topMargin">
+              <number>12</number>
+             </property>
+             <property name="rightMargin">
+              <number>12</number>
+             </property>
+             <property name="bottomMargin">
+              <number>12</number>
+             </property>
+             <item>
+              <widget class="QFrame" name="tsDisplay">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>71</height>
+                </size>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_3">
+                <property name="leftMargin">
+                 <number>6</number>
+                </property>
+                <property name="topMargin">
+                 <number>6</number>
+                </property>
+                <property name="rightMargin">
+                 <number>6</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>6</number>
+                </property>
+                <property name="spacing">
+                 <number>1</number>
+                </property>
+                <item row="0" column="0" rowspan="2">
+                 <widget class="QLabel" name="label_2">
+                  <property name="text">
+                   <string>Ts</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout">
+                  <item>
+                   <widget class="QLabel" name="labelTsNs_2">
+                    <property name="text">
+                     <string>sec</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="le_coreTimeStamp">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>23</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>0</string>
+                    </property>
+                    <property name="readOnly">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <item>
+                   <widget class="QLabel" name="labelTsNs">
+                    <property name="text">
+                     <string>nsec</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="le_coreNanoStamp">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>22</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>0</string>
+                    </property>
+                    <property name="readOnly">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_95">
+               <item>
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>Battery</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_coreCapacity">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_111">
+               <item>
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>Flight Status</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_coreFlightStatus">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_113">
+               <item>
+                <widget class="QLabel" name="label_5">
+                 <property name="text">
+                  <string>Control Device</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_coreControlDevice">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="3" column="2" rowspan="2">
+           <widget class="QGroupBox" name="rcDisplay">
+            <property name="title">
+             <string>RC Data</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>12</number>
+             </property>
+             <property name="topMargin">
+              <number>12</number>
+             </property>
+             <property name="rightMargin">
+              <number>12</number>
+             </property>
+             <property name="bottomMargin">
+              <number>12</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_103">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label_71">
+                 <property name="text">
+                  <string>Roll</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_vrcRoll">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_105">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label_72">
+                 <property name="text">
+                  <string>Pitch</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_vrcPitch">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_97">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string>Yaw</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_vrcYaw">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_100">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label_69">
+                 <property name="text">
+                  <string>Thr</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_vrcThrottle">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_98">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label_67">
+                 <property name="text">
+                  <string>Mode</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_vrcMode">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_99">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label_68">
+                 <property name="text">
+                  <string>Gear</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_vrcGear">
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

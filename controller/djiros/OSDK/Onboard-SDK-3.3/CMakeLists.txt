@@ -1,0 +1,19 @@
+cmake_minimum_required(VERSION 2.8)
+project(onboardsdk)
+
+set(CMAKE_VERBOSE_MAKEFILE OFF)
+
+set(DJIOSDK 0)
+set(DJIOSDK_MINOR_VERSION 1)
+set(DJIOSDK_PATCH_VERSION 0)
+set(DJIOSDK_VERSION
+  ${DJIOSDK_MAJOR_VERSION}.${DJIOSDK_MINOR_VERSION}.${DJIOSDK_PATCH_VERSION})
+
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/libs)
+
+add_subdirectory(osdk-core)
+
+if (${CMAKE_SYSTEM_NAME} MATCHES Linux)
+  add_subdirectory(sample/linux)
+endif()

@@ -1,0 +1,9 @@
+#constant for camera_action
+uint8 CAMERA_ACTION_TAKE_PICTURE = 0
+uint8 CAMERA_ACTION_START_RECORD = 1
+uint8 CAMERA_ACTION_STOP_RECORD  = 2
+
+#request
+uint8 camera_action     # see constants above for possible camera_actions
+---
+bool result

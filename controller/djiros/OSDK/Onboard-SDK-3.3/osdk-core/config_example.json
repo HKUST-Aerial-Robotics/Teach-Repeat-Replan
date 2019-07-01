@@ -1,0 +1,7 @@
+{
+  "api_id": 123,
+  "api_key": "abc",
+  "device": "/dev/ttyUSB0",
+  "baudrate": 230400,
+  "version": "versionM100_31"
+}

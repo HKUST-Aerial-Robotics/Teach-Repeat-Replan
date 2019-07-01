@@ -1,0 +1,7 @@
+MissionWaypointTask waypoint_task   # see msg/MissionWaypointTask.msg
+---
+bool result
+# for debugging usage
+uint8 cmd_set
+uint8 cmd_id
+uint32 ack_data

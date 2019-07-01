@@ -1,0 +1,6 @@
+---
+MissionHotpointTask hotpoint_task
+# for debugging usage
+uint8 cmd_set
+uint8 cmd_id
+uint32 ack_data

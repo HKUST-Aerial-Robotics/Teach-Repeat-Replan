@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MFIOPanel</class>
+ <widget class="QWidget" name="MFIOPanel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>580</width>
+    <height>336</height>
+   </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>580</width>
+    <height>336</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>12</number>
+   </property>
+   <property name="topMargin">
+    <number>12</number>
+   </property>
+   <property name="rightMargin">
+    <number>12</number>
+   </property>
+   <property name="bottomMargin">
+    <number>12</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Initial Configuration and Setting Values</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="topMargin">
+       <number>12</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
+      </property>
+      <property name="bottomMargin">
+       <number>12</number>
+      </property>
+      <property name="horizontalSpacing">
+       <number>12</number>
+      </property>
+      <item row="0" column="0" colspan="2">
+       <widget class="QComboBox" name="cb_channel">
+        <item>
+         <property name="text">
+          <string>channel_F1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>channel_F2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>channel_F3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>channel_F4</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>channel_F5</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>channel_F6</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>channel_F7</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>channel_F8</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string/>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QComboBox" name="cb_mode">
+        <item>
+         <property name="text">
+          <string>PWMO</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>PWMI</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>GPO</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>GPI</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ADC</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="3" rowspan="2">
+       <widget class="QPushButton" name="btn_init">
+        <property name="text">
+         <string>Set 
+Configuration</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>value</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="le_val"/>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="1" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>freq</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="le_freq"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>90</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Reading Values</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QComboBox" name="cb_channel_get">
+        <property name="minimumSize">
+         <size>
+          <width>161</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_get">
+        <property name="text">
+         <string>Get Value</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_get">
+          <property name="text">
+           <string>value</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="le_val_get"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>89</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Writing Values</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QComboBox" name="cb_channel_set">
+        <property name="minimumSize">
+         <size>
+          <width>166</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_set">
+          <property name="text">
+           <string>value</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="le_val_set"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_set">
+        <property name="text">
+         <string>Set Value</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

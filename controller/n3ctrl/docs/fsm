@@ -1,0 +1,106 @@
+digraph {
+	graph [compound=true]
+	JS_DIRECT -> JS_CTRL [label="rc-api    " color=blue]
+	JS_DIRECT -> JS_CTRL_RAW [label="rc-api && raw-mode" color=blue]
+	JS_CTRL -> JS_DIRECT [label=" rc-api-off" color=purple ltail=cluster_ctrl]
+	JS_CTRL_RAW -> JS_DIRECT [label=" rc-api-off" color=purple]
+	HELP [label="                HELP                
+sw-to-cmd  : switch to cmd mode by RC 
+sw-to-js   : switch to js mode by RC  
+rc-api-on  : RC in API mode           
+rc-api-off : RC not in API mode       
+js-act     : User acts the joystick   
+odom-v     : odometry valid           
+odom-x     : odometry invalid         
+odom-o     : odometry loop-closure    
+cmd-v      : command valid            
+cmd-x      : command invalid          
+cmd-r      : command renewed          " fontname=Courier shape=box style=solid]
+	subgraph n3_graph {
+		graph [packMode="graph"]
+		JS_DIRECT [label="Joystick direct control" shape=ellipse style=filled]
+		JS_CTRL_RAW [label="Joystick control without odom" shape=ellipse style=filled]
+	}
+	subgraph cluster_ctrl {
+		graph [packMode="graph"]
+		CMD_CTRL -> CMD_HOVER [label="cmd-x
+|cmd-too-far
+|collision" color=red]
+		CMD_HOVER -> CMD_LOCK_Z_0_RP [label="odom-x" color=red]
+		CMD_CTRL -> CMD_LOCK_Z_0_RP [label="odom-x" color=red]
+		CMD_RESET_POS -> CMD_LOCK_Z_0_RP [label="odom-x" color=red]
+		JS_CTRL -> JS_LOCK_Z_0_RP [label="odom-x" color=red]
+		JS_RESET_POS -> JS_LOCK_Z_0_RP [label="odom-x" color=red]
+		CMD_CTRL -> CMD_RESET_POS [label="odom-o" color=red style=dashed]
+		CMD_HOVER -> CMD_RESET_POS [label="odom-o" color=red style=dashed]
+		JS_CTRL -> JS_RESET_POS [label="odom-o" color=red style=dashed]
+		CMD_RESET_POS -> CMD_HOVER [label="odom-v" color=green]
+		CMD_LOCK_Z_0_RP -> CMD_HOVER [label="odom-v" color=green]
+		JS_LOCK_Z_0_RP -> JS_CTRL [label="odom-v" color=green]
+		JS_RESET_POS -> JS_CTRL [label="odom-v" color=green]
+		CMD_LOCK_Z_0_RP -> CMD_RESET_POS [label="odom-o" color=green style=dashed]
+		JS_LOCK_Z_0_RP -> JS_RESET_POS [label="odom-o" color=green style=dashed]
+		JS_CTRL -> CMD_HOVER [label="sw-to-cmd" color=blue]
+		CMD_HOVER -> CMD_CTRL [label="cmd-v
+& cmd-r" color=blue]
+		CMD_HOVER -> JS_CTRL [label="sw-to-js" color=purple]
+		CMD_CTRL -> JS_CTRL [label="sw-to-js" color=purple]
+		CMD_HOVER -> JS_DIRECT [label="js-act / rc-api-off" color=purple]
+		CMD_CTRL -> JS_DIRECT [label="js-act / rc-api-off" color=purple]
+		JS_CTRL -> Fix [color=dimgray dir=none style=dashed]
+		JS_CTRL -> JS_AXIS_OMIT1 [color=dimgray dir=none style=dashed]
+		JS_CTRL -> JS_AXIS_OMIT2 [color=dimgray dir=none style=dashed]
+		subgraph js {
+			JS_CTRL [label="Joystick control with odom" shape=ellipse style=filled]
+			JS_RESET_POS [label="Reset pos for js ctrl" fillcolor=yellow shape=ellipse style=filled]
+			JS_LOCK_Z_0_RP [label="Lock z, r=p=0 for js ctrl" fillcolor=yellow shape=ellipse style=filled]
+			subgraph cluster_rc_ctrl {
+				graph [color=dimgray label="sub-states for joystick control" style=dashed]
+				subgraph cluster_0 {
+					Fix [label=Fix]
+					Move [label=Move]
+					Break [label=Break]
+					Fix -> Move [label="Joystick operated"]
+					Move -> Break [label="Joystick released"]
+					Break -> Fix [label="Speed down"]
+				label="axis X"
+				color=dimgray
+				style=solid
+				}
+				subgraph cluster_1 {
+					JS_AXIS_OMIT1 [label="same as X" shape=folder]
+				label="axis Y"
+				color=dimgray
+				style=solid
+				}
+				subgraph cluster_2 {
+					JS_AXIS_OMIT2 [label="same as X" shape=folder]
+				label="axis Z"
+				color=dimgray
+				style=solid
+				}
+			}
+		}
+		subgraph cmd {
+			CMD_HOVER [label="Hover for cmd ctrl" shape=ellipse style=filled]
+			CMD_CTRL [label="Command control" shape=ellipse style=filled]
+			CMD_RESET_POS [label="Reset pos for cmd ctrl" fillcolor=yellow shape=ellipse style=filled]
+			CMD_LOCK_Z_0_RP [label="Lock z, r=p=0 for cmd ctrl" fillcolor=yellow shape=ellipse style=filled]
+		}
+	}
+	subgraph cluster_legend {
+		graph [color=dimgray fontname=Courier label=LEGEND orientation=90 rankdir=LR style=solid]
+		EX_LOW_LEVEL [label="Low level ctrl" shape=ellipse style=filled]
+		EX_HIGH_LEVEL [label="High level ctrl" shape=ellipse style=filled]
+		EX_LC [label="Loop-closure" fillcolor=yellow shape=ellipse style=filled]
+		EX_ERR [label=Error fillcolor=yellow shape=ellipse style=filled]
+		EX_HIGH_LEVEL -> EX_ERR [label="error(lost)" color=red]
+		EX_LC -> EX_ERR [label="error(lost)" color=red]
+		EX_HIGH_LEVEL -> EX_LC [label="loop-closure" color=red style=dashed]
+		EX_ERR -> EX_HIGH_LEVEL [label=recovery color=green]
+		EX_LC -> EX_HIGH_LEVEL [label=recovery color=green]
+		EX_ERR -> EX_LC [label="half-recovery" color=green style=dashed]
+		EX_LOW_LEVEL -> EX_HIGH_LEVEL [label="go to higher level" color=blue]
+		EX_HIGH_LEVEL -> EX_LOW_LEVEL [label="go to lower level" color=purple]
+	}
+}
