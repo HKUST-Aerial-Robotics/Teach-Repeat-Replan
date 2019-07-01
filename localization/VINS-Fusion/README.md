@@ -41,13 +41,3 @@ Publishers:
  /vins_estimator/imu_propagate: [nav_msgs/Odometry]          pose of the drone at high frequence, used for control the drone
  /loop_fusion/pg_T_vio:         [geometry_msgs/Pose]         relative pose between current vio frame and global map frame
 ```
-
-## 4. Acknowledgements
-We use [ceres solver](http://ceres-solver.org/) for non-linear optimization and [DBoW2](https://github.com/dorian3d/DBoW2) for loop detection, a generic [camera model](https://github.com/hengli/camodocal) and [GeographicLib](https://geographiclib.sourceforge.io/).
-
-## 5. License
-The source code is released under [GPLv3](http://www.gnu.org/licenses/) license.
-
-We are still working on improving the code reliability. For any technical issues, please contact Tong Qin <qintonguavATgmail.com>.
-
-For commercial inquiries, please contact Shaojie Shen <eeshaojieATust.hk>.
