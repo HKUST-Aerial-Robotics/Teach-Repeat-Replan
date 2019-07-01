@@ -1,2 +1,0 @@
-ID:You can edit file
-KEY:UserConfig.txt too

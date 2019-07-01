@@ -1,6 +1,0 @@
-build/
-logs/
-*.sh
-temp
-test/DJI_HardDriver_Manifold.h
-config.json
