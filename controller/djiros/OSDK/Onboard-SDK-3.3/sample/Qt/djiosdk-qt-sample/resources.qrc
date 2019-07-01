@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>stylesheets/material-blue.qss</file>
+        <file>images/caret-down.png</file>
+        <file>images/check-square.png</file>
+        <file>UserConfig.txt</file>
+        <file>images/dji_logo_gray.png</file>
+    </qresource>
+</RCC>

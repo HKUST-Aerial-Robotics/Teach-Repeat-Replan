@@ -1,0 +1,45 @@
+<launch>
+    <node pkg="djiros" type="djifox_node" name="djiros" output="screen" launch-prefix="">
+        <param name="log_level" type="string" value="info"/>
+        <param name="serial_name" type="string" value="/dev/ttyTHS2"/>
+        <param name="baud_rate" type="int" value="1000000"/>
+        <param name="app_id" type="int" value="$(env DJIROS_APPID)"/>
+        <param name="enc_key" type="string" value="$(env DJIROS_ENCKEY)"/>  
+        <param name="app_version" type="int" value="1"/>
+        <param name="sensor_mode" type="bool" value="false"/>
+        <param name="align_with_fmu" type="bool" value="true"/>
+        <rosparam>
+            # common setting and default individual settings
+            verbose_output: false
+            cam_cnt: 2
+            fps:  20
+            gain: 1.0
+            use_auto_exposure: false
+            fast_mode: false
+            aec_desired_gray_value: 60 # desired overall gray value for the image
+            aec_control_delay_frame: 1 # larger values cause slower convergence
+
+            # individual setting for camera 0
+            camera0:
+                serial: "25001276"
+                topic: image0
+                use_auto_exposure: false
+                exposure_time_us: 8000
+                # aec_desired_gray_value: 60
+                # aec_control_delay_frame: 1
+                auto_speed: 0 # 0--1--2, slow--medium--fast converge to desired value
+                gain: 1.0
+                is_slave: true
+            camera1:
+                serial: "25001254"
+                topic: image1
+                use_auto_exposure: false
+                exposure_time_us: 8000
+                # aec_desired_gray_value: 60
+                # aec_control_delay_frame: 1
+                auto_speed: 0 # 0--1--2, slow--medium--fast converge to desired value
+                gain: 1.0
+                is_slave: true
+        </rosparam>
+    </node> 
+</launch>

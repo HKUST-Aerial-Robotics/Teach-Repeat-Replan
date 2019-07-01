@@ -1,0 +1,8 @@
+float32 yaw_rate    # degree/s
+uint8 direction     # 0: counter-clockwise, 1: clockwise
+---
+bool result
+# for debugging usage
+uint8 cmd_set
+uint8 cmd_id
+uint32 ack_data

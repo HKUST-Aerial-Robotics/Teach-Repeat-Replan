@@ -1,0 +1,12 @@
+#constant for control_enable
+uint8 RELEASE_CONTROL = 0
+uint8 REQUEST_CONTROL = 1
+
+#request
+uint8 control_enable    # see constants above
+---
+bool result
+# for debugging usage
+uint8 cmd_set
+uint8 cmd_id
+uint32 ack_data
