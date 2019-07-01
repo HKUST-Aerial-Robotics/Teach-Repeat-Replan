@@ -1,7 +1,8 @@
 # VINS-Fusion
 ## An optimization-based multi-sensor state estimator
+**In our experiment, we use images from realsense D435i and Imu from N3 controller to run VINS-Fusion.** 
 
-**This folder is modified from VINS-Fusion, we change some code for our Teach-Repeat-Replan system. In our experiment, we use images from realsense D435i and Imu from N3 controller to run VINS-Fusion.**
+**This folder is modified from VINS-Fusion, we change some code for our Teach-Repeat-Replan system. In the mapping phase, the map is based on that VIO frame which is regard as the global frame. While during the Repeat-Replan phase, the current VIO frame may be different from the global frame. So we publish the relative pose between these two coordinate systems to control the drone.**
 
 **For technical details, please check [VINS-Fusion](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion)**  
 
@@ -18,11 +19,11 @@ Follow [Ceres Installation](http://ceres-solver.org/installation.html).
 ## 2. Build VINS-Fusion
 Clone the repository and catkin_make:
 ```
-    cd ~/catkin_ws/src
-    git clone https://github.com/HKUST-Aerial-Robotics/VINS-Fusion.git
-    cd ../
-    catkin_make
-    source ~/catkin_ws/devel/setup.bash
+ cd ~/catkin_ws/src
+ git clone https://github.com/HKUST-Aerial-Robotics/VINS-Fusion.git
+ cd ../
+ catkin_make
+ source ~/catkin_ws/devel/setup.bash
 ```
 (if you fail in this step, try to find another computer with clean system or reinstall Ubuntu and ROS)
 
