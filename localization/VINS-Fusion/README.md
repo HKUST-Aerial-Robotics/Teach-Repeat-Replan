@@ -2,7 +2,7 @@
 ## An optimization-based multi-sensor state estimator
 **In our experiment, we use images from realsense D435i and Imu from N3 controller to run VINS-Fusion.** 
 
-**This folder is modified from VINS-Fusion, we change some code for our Teach-Repeat-Replan system. In the mapping phase, the map is based on that VIO frame which is regard as the global frame. While during the Repeat-Replan phase, the current VIO frame may be different from the global frame. So we publish the relative pose between these two coordinate systems to control the drone.**
+This folder is a customized VINS-Fusion, with some code and logic changed for our Teach-Repeat-Replan system. In the mapping phase, the map is based on a global frame determined by the pose graph optimization. While during the Repeat-Replan phase, the current VIO frame may drift a lot from the global frame. We publish relative poses between these two frames when controlling the drone, to compensate for the pose drifts.
 
 **For technical details, please check [VINS-Fusion](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion)**  
 
