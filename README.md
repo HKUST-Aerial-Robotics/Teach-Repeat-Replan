@@ -24,13 +24,13 @@ All from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
 Sub-modules integrated into our system include:
 
-**Planning:**     flight corridor generation, global spatial-temporal planning, [local online re-planning]()
+**Planning:**     flight corridor generation, global spatial-temporal planning, [local online re-planning](https://github.com/HKUST-Aerial-Robotics/Fast-Planner)
 
 **Perception:**   [global deformable surfel mapping](https://github.com/HKUST-Aerial-Robotics/DenseSurfelMapping), [local online ESDF mapping](https://github.com/hlx1996/FIESTA)
 
 **Localization:** [global pose graph optimization, local visual-inertial fusion](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion)
 
-**Controlling:**  [geometric controller on SE(3)](https://ieeexplore.ieee.org/document/5717652)
+**Controlling:**  [geometric controller on SE(3)](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/controller)
 
 [WIKI](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/wiki)
 
