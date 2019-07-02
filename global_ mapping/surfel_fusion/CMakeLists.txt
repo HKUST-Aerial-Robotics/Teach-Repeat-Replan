@@ -21,6 +21,9 @@ find_package(Eigen3 REQUIRED)
 include_directories(${EIGEN3_INCLUDE_DIR})
 find_package(OpenCV REQUIRED)
 
+catkin_package(
+)
+
 include_directories(
   src
   ${catkin_INCLUDE_DIRS}
