@@ -2,7 +2,7 @@
 
 *What's New: We now provide a new interface for controlling the drone directly with the keyboard. Check it in the following Human Interface section.*
 
-# Teach-Repeat-Replan
+# Teach-Repeat-Replan (Autonomous Drone Race)
 Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments
 
 **Teach-Repeat-Replan** is a complete and robust system enables **Autonomous Drone Race**. It contains all components for UAV aggressive flight in complex environments. It is built upon on the classical robotics teach-and-repeat framework, which is widely adopted in infrastructure inspection, aerial transportation, and search-and-rescue. Our system can capture users' intention of a flight mission, convert an arbitrarily jerky teaching trajectory to a guaranteed smooth and safe repeating trajectory, and generate safe local re-plans to avoid unmapped or moving obstacles on the flight.
@@ -15,7 +15,7 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 
 **Video Links:** [Video1](https://youtu.be/urEC2AAGEDs)    [Video2](https://youtu.be/Ut8WT0BURrM/)
 
-**Video for Mainland China:** [Video1](https://www.bilibili.com/video/av57116775/)    [Video2](https://www.bilibili.com/video/av57117018/)
+**Video Links (Mainland China):** [Video1](https://www.bilibili.com/video/av57116775/)    [Video2](https://www.bilibili.com/video/av57117018/)
 
 **Authors / Maintainers:** [Fei Gao](https://ustfei.com/), [Boyu Zhou](https://github.com/ZbyLGsc), and [Shaojie Shen](http://uav.ust.hk/group/).
 
