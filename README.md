@@ -18,7 +18,7 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 
 **Authors / Maintainers:** [Fei Gao](https://ustfei.com/), [Boyu Zhou](https://github.com/ZbyLGsc), and [Shaojie Shen](http://uav.ust.hk/group/).
 
-**Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [William Wu](https://github.com/justwillim), Jie Pan, [Hao Xu](http://www.xuhao1.me/) 
+**Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [Luxin Han](https://github.com/hlx1996), [William Wu](https://github.com/justwillim), Jie Pan, [Hao Xu](http://www.xuhao1.me/) 
 
 All from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
