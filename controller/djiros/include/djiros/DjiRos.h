@@ -213,8 +213,6 @@ public:
 
     bool isTakeOff = false;
     bool isEmergency = false;
-    ros::Subscriber system_state_sub;
-    void system_state_callback(std_msgs::Int16 msg);
     // extern bool isn1ctrlReady = false;
     ros::ServiceServer drone_arm_server;
     bool initServices(ros::NodeHandle &nh);
