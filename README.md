@@ -39,14 +39,21 @@ Put the folder ```ground_station``` into the workspace of a ground station compu
 
 Put the folder ```onboard_computer``` into the workspace of the onboard computer of your drone. 
 
-For local mapping and re-planning, the local replanner dependes on ```NLopt```, install in by 
+For **sensors**, in this project we use [**Realsense D435i**](https://www.intelrealsense.com/depth-camera-d435i/), which is a stereo pair with IMU. However, we use the IMU from DJI N3 autopilot since it's more stable. Therefore, you can also use [**Realsense D435**](https://www.intelrealsense.com/depth-camera-d435/).
+
+To use **Realsense**, you should first install its driver [librealsense](https://github.com/IntelRealSense/librealsense).
+*We found that by the date 30/06/2019, the latest version of realsense driver has bug, so we recommand to use a [older version](https://github.com/IntelRealSense/librealsense/releases) 19.1*
+
+Then install its [ros-wrapper](https://github.com/IntelRealSense/realsense-ros).
+
+For **local mapping** and **re-planning**, the local replanner dependes on ```NLopt```, install in by 
 ```
   sudo apt-get install libnlopt-dev
 ```
 
-For localization, install **VINS** follow the [instruction](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/localization/VINS-Fusion).
+For **localization**, install **VINS** follow the [instruction](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/localization/VINS-Fusion).
 
-For onboard controller, install **DJI_ROS** and **N3Ctrl** follow the [instruction1](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/djiros) and [instruction2](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/n3ctrl).
+For **controller**, install **DJI_ROS** and **N3Ctrl** follow the [instruction1](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/djiros) and [instruction2](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/n3ctrl).
 
 **1**   **Usage**
 
