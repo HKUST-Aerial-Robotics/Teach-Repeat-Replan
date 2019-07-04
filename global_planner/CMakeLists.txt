@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(trr_global_planner)
 
+set(ENABLE_CUDA true)
+
 find_package(catkin REQUIRED COMPONENTS 
     roscpp 
     std_msgs 
@@ -14,7 +16,11 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(Eigen3 REQUIRED)
 find_package(PCL 1.7 REQUIRED)
-find_package(CUDA REQUIRED )
+
+if(ENABLE_CUDA)
+    find_package(CUDA REQUIRED )
+endif(ENABLE_CUDA)
+
 set(Eigen3_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR})
 
 catkin_package(
@@ -29,8 +35,13 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
     ${Eigen3_INCLUDE_DIRS} 
     ${PCL_INCLUDE_DIRS}
-    ${CUDA_INCLUDE_DIRS}
 )
+
+if(ENABLE_CUDA)
+    include_directories( 
+        ${CUDA_INCLUDE_DIRS}
+    )
+endif(ENABLE_CUDA)
 
 link_directories(${PROJECT_SOURCE_DIR}/third_party/mosek/lib/mosek8_1)
 link_directories(${PCL_LIBRARY_DIRS})
