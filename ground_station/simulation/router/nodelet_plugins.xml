@@ -1,0 +1,9 @@
+<library path="lib/librouter">
+    <class name="router/RouterNode"
+           type="RouterNode"
+           base_class_type="nodelet::Nodelet">
+    <description>
+        mission template nodelet
+    </description>
+    </class>
+</library>

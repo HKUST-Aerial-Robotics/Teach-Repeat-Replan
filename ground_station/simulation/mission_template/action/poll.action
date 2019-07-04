@@ -1,0 +1,9 @@
+#note unused, action is not suitable for such a MIMO case
+#goal definition
+bool enable
+---
+#result definition
+uint8_t status
+---
+#feedback
+uint8_t status

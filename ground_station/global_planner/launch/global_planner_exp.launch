@@ -1,0 +1,45 @@
+<launch>
+
+<arg name="map_size_x" default="20.0"/>
+<arg name="map_size_y" default="20.0"/>
+<arg name="map_size_z" default=" 3.0"/>
+
+<arg name="init_x" default="-8.0"/>
+<arg name="init_y" default="-8.0"/>
+<arg name="init_z" default=" 2.0"/>
+
+<arg name="max_vel" default="2.0"/>
+<arg name="max_acc" default="2.0"/>
+
+<arg name="resolution" default="0.15"/>
+<arg name="poly_order" default="5"/>
+
+  <node pkg="trr_global_planner" type="tr_node" name="tr_node" output="screen" required = "true">
+      <remap from="~waypoints"   to="/waypoint_generator/waypoints"/>
+      <remap from="~odometry"    to="/drone_1/visual_slam/odom" />
+      <remap from="~map"         to="/random_complex/global_map"/> 
+      <remap from="~joystick"    to="/joy"/> 
+      
+      <param name="write_path"  value="false" /> 
+      <param name="read_path"   value="false" /> 
+
+      <param name="optimization/poly_order"  value="$(arg poly_order)"     /> 
+      <param name="optimization/min_order"   value="3.0"   /> 
+      
+      <param name="map/x_size"       value="$(arg map_size_x)"/>
+      <param name="map/y_size"       value="$(arg map_size_y)"/>
+      <param name="map/z_size"       value="$(arg map_size_z)"/>
+      
+      <param name="map/map_margin"   value="0.0" />
+      <param name="map/resolution"   value="$(arg resolution)" />
+      
+      <param name="planning/rho_time"      value="10.0"/>
+      <param name="planning/max_vel"       value="$(arg max_vel)" />
+      <param name="planning/max_acc"       value="$(arg max_acc)" />
+      <param name="planning/max_d_acc"     value="1.0" />
+      <param name="planning/max_inf_iter"  value="20"  />
+      <param name="planning/max_clu_iter"  value="20"  />
+
+      <param name="vis/vis_traj_width"     value="0.1  "/>
+  </node>
+</launch>

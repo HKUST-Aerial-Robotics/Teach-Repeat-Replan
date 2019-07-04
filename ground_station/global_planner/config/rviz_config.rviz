@@ -28,7 +28,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: GlobalMap
+    SyncSource: ""
   - Class: rviz/Displays
     Help Height: 78
     Name: Displays
@@ -404,10 +404,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.17979729
+      Pitch: 1.01979744
       Target Frame: drone1
       Value: ThirdPersonFollower (rviz)
-      Yaw: 3.1372242
+      Yaw: 3.05222249
     Saved:
       - Class: rviz/ThirdPersonFollower
         Distance: 4.04827738

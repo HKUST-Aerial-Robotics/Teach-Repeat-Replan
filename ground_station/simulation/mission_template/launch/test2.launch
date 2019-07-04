@@ -1,0 +1,59 @@
+<launch>
+<arg name="drone_number" default="1"/>
+<arg name="simulation" default="true"/>
+
+<node pkg="nodelet"
+      type="nodelet"
+      args="standalone cascade_controller/CascadeControllerNode"
+      name="cascade_control_$(arg drone_number)"
+      required="true"
+      output="screen">
+      <!--parameters-->"
+      <param name="simulation" type="bool" value="$(arg simulation)" />
+      <param name="quadrotor_name" value="test" />
+      <!--parameters for simulator, useless-->
+      <param name="gains/rot/x"    value="1.5" />
+      <param name="gains/rot/y"    value="1.5" />
+      <param name="gains/rot/z"    value="1.0" />
+      <param name="gains/ang/x"    value="0.13" />
+      <param name="gains/ang/y"    value="0.13" />
+      <param name="gains/ang/z"    value="0.1" />
+      <param name="corrections/z"  value="0" />
+      <param name="corrections/r"  value="0" />
+      <param name="corrections/p"  value="0" />
+      <!--parameters for modeling-->
+      <param name="mass"    value="0.98" /><!--unit kg-->
+
+      <!--parameters for controller internal parameter-->
+      <rosparam>
+      <!--attention param will always exist until roscore shutdown-->
+      #controller coeff:    [p,i,d] x [x,y,z]
+      position_coeff:       [  1.30,  0.001, 0.0001,   1.30,  0.001,  0.0001,   1.00, 0.003, 0.0001]
+      velocity_coeff:       [  1.20,  0.002, 0.0050,   1.20,  0.002,  0.0050,   1.80, 0.004, 0.0100]
+      acceleration_coeff:   [  0.50,  0.000, 0.0010,   0.50,  0.000,  0.0010,   0.50, 0.000, 0.0010]
+      #output limitation:   [max, min, intergration_threshold] x [x,y,z]
+      position_limit:       [50,  -50,    0.1,50,   -50,    0.1,50,   -50,    0.1]
+      velocity_limit:       [50,  -50,    0.2,50,   -50,    0.2,50,   -50,    0.2]
+      acceleration_limit:   [50,  -50,    0.2,50,   -50,    0.2,50,   -50,    0.2]
+      </rosparam>
+
+      <!--subscribers-->
+      <remap from="~position_command" to="drone_$(arg drone_number)/position_cmd"/> <!--linked to planner-->
+      <remap from="~odom_correction"  to="drone_$(arg drone_number)/odom_correction"/>
+<!--          <remap from="~odom"             to="/state_ukf/odom"/>-->
+      <remap from="~odom"             to="drone_$(arg drone_number)/visual_slam/odom"/>
+      <remap from="~imu_world"        to="drone_$(arg drone_number)sim/imu"/>
+      <remap from="~view"             to="drone_$(arg drone_number)/view"/>
+      <remap from="~thrust"           to="drone_$(arg drone_number)/thrust"/>
+
+      <!--publisher-->
+      <remap from="~debug/velocity_error"       to="/debug/velocity_error"/>
+      <remap from="~debug/acceleration_desire"  to="/debug/acceleration_desire"/>
+      <remap from="~debug/euler_angles"         to="/debug/euler_angles"/>
+      <remap from="~so3_command"       to="drone_$(arg drone_number)/so3_command"/>
+      <remap from="~palstance_command" to="drone_$(arg drone_number)/palstance_command"/>
+      <remap from="~attitude_command"  to="dji_sdk/flight_control_setpoint_generic"/>
+      <remap from="~translation_error" to="drone_$(arg drone_number)/translation_error"/>
+      <remap from="~sdk/flight_status" to="dji_sdk/flight_status"/>
+</node>
+</launch>
