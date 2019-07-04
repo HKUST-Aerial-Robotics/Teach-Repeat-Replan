@@ -10,7 +10,8 @@
 #include <quickhull/QuickHull.hpp>
 #include <decomp_ros_msgs/Polyhedron.h>
 #include <decomp_ros_msgs/PolyhedronArray.h>
-#include <polyhedron_generator/cluster_server.cuh>
+/*#include <polyhedron_generator/cluster_server.cuh>*/
+#include <polyhedron_generator/cluster_server_cpu.h>
 
 #include "glpk.h"
 #include "data_type.h"
