@@ -1,4 +1,4 @@
-This is the experiment verision of the Teach-Repeat-Replan system. To run this system in real-world, please follow the tutorial in this page.
+This is the experiment verision of the Teach-Repeat-Replan system. To run this system in real-world, please follow the **tutorial** in this page.
 
 To test Teach-Repeat-Replan system in simulation, please go to the [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) branch.
 
