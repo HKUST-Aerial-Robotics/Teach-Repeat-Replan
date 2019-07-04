@@ -29,7 +29,7 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 
 # Hardware
 
-The onboard computer (carried on the drone) communicates with the ground station with Wifi or Ethernet. As shown in the below figure. Remember to start the roscore on the onboard computer, to reduce transfering delay while controlling the drone.
+The onboard computer (carried on the drone) communicates with the ground station with Wifi or Ethernet. As shown in the below figure. Remember to start the roscore on the onboard computer, to reduce the delay of data transfer while controlling the drone.
 
  <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/experiment/files/hardware.png" width = "757" height = "562">
@@ -49,15 +49,15 @@ Put the folder ```ground_station``` into the workspace of a ground station compu
 
 Put the folder ```onboard_computer``` into the workspace of the onboard computer of your drone. 
 
-For **sensors**, in this project we use [**realsense D435i**](https://www.intelrealsense.com/depth-camera-d435i/), which is a stereo pair with IMU. However, we use the IMU from DJI N3 autopilot since it's more stable. Therefore, you can also use [**realsense D435**](https://www.intelrealsense.com/depth-camera-d435/).
+For **sensors**, in this project, we use [**realsense D435i**](https://www.intelrealsense.com/depth-camera-d435i/), which is a stereo pair with IMU. However, we use the IMU from DJI N3 autopilot since it's more stable. Therefore, you can also use [**realsense D435**](https://www.intelrealsense.com/depth-camera-d435/).
 
 You should first install its SDK [librealsense](https://github.com/IntelRealSense/librealsense).
 
-*We found that by the date 30/06/2019, the latest version of realsense driver has bug, so we recommand to use a [older version](https://github.com/IntelRealSense/librealsense/releases) 19.1*
+*We found that by the date 30/06/2019, the latest version of realsense driver has a bug, so we recommend to use a [older version](https://github.com/IntelRealSense/librealsense/releases) 19.1*
 
 Then install its [ros-wrapper](https://github.com/IntelRealSense/realsense-ros).
 
-For **local mapping** and **re-planning**, the local replanner dependes on ```NLopt```, install in by 
+For **local mapping** and **re-planning**, the local replanner depends on ```NLopt```, install in by 
 ```
   sudo apt-get install libnlopt-dev
 ```
@@ -70,7 +70,7 @@ For **controller**, install **DJI_ROS** and **N3Ctrl** follow the [instruction1]
 
 **2.1**  Mapping Phase
 
-The mapping process builds a dense and globally consistent map, which works as a prior map for following autonomous flight.
+The mapping process builds a dense and globally consistent map, which works as a prior map for following the autonomous flight.
 To start mapping, in the ```ground_station``` folder, run:
 
 ```
@@ -89,16 +89,16 @@ After mapping, shut down both programs in the ground station and in the onboard 
 
 **2.2**  Teaching Phase
 
-For experiments, the teaching can be done as the same as in the simulation. Follow the intruction in [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) to teach the drone your expected path. The script to run the teaching is
+For experiments, the teaching can be done as the same as in the simulation. Follow the instruction in [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) to teach the drone your expected path. The script to run the teaching is
 
 ```
     ./teaching_planning.sh
 ```
-After the teaching, **Do Not** shun dwon this program, because global planning will be done later in the ground station.
+After the teaching, **Do Not** shut down this program, because global planning will be done later in the ground station.
 
 **2.3**  Repeating Phase
 
-After all above procedures are done, run:
+After all the above procedures are done, run:
 ```
     ./ctrl_estimation_replanning.sh
 ```
