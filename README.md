@@ -36,7 +36,7 @@ All from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 *If you use Teach-Repeat-Replan or its sub-modules for your application or research, please cite our related papers.* [bib](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/bib.txt)
 
 ## Tutorial
-**1**   Installation
+**1**   **Installation**
 
 To try the **Teach-Repeat-Replan** system in real-world experiments, the installation should be done in a ground station and an onboard computer, respectively.
 
@@ -57,3 +57,11 @@ For local mapping and re-planning, the local replanner dependes on ```NLopt```, 
 For localization, install **VINS** follow the [instruction](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/localization/VINS-Fusion).
 
 For onboard controller, install **DJI_ROS** and **N3Ctrl** follow the [instruction1](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/djiros) and [instruction2](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/n3ctrl).
+
+**1**   **Usage**
+
+**1.1**  Mapping Phase
+
+**1.2**  Teaching Phase
+
+**1.3**  Repeating Phase
