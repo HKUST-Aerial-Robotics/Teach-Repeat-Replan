@@ -25,23 +25,23 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 
 *If you use Teach-Repeat-Replan or its sub-modules for your application or research, please cite our related papers.* [bib](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/bib.txt)
 
-## Tutorial
-**1**   **Installation**
+# Tutorial
+## 1. Installation
 
 To try the **Teach-Repeat-Replan** system in real-world experiments, the installation should be done in a ground station and an onboard computer, respectively.
 
-**1.1**  Ground Station
+**1.1**  **Ground Station**
 
 Put the folder ```ground_station``` into the workspace of a ground station computer. Install all dependencies following the 
 ```install_tools```. Compile it by ```catkin_make```.
 
-**1.2**  Onboard Computer
+**1.2**  **Onboard Computer**
 
 Put the folder ```onboard_computer``` into the workspace of the onboard computer of your drone. 
 
-For **sensors**, in this project we use [**Realsense D435i**](https://www.intelrealsense.com/depth-camera-d435i/), which is a stereo pair with IMU. However, we use the IMU from DJI N3 autopilot since it's more stable. Therefore, you can also use [**Realsense D435**](https://www.intelrealsense.com/depth-camera-d435/).
+For **sensors**, in this project we use [**realsense D435i**](https://www.intelrealsense.com/depth-camera-d435i/), which is a stereo pair with IMU. However, we use the IMU from DJI N3 autopilot since it's more stable. Therefore, you can also use [**realsense D435**](https://www.intelrealsense.com/depth-camera-d435/).
 
-To use **Realsense**, you should first install its SDK [librealsense](https://github.com/IntelRealSense/librealsense).
+You should first install its SDK [librealsense](https://github.com/IntelRealSense/librealsense).
 
 *We found that by the date 30/06/2019, the latest version of realsense driver has bug, so we recommand to use a [older version](https://github.com/IntelRealSense/librealsense/releases) 19.1*
 
@@ -56,7 +56,7 @@ For **localization**, install **VINS** follow the [instruction](https://github.c
 
 For **controller**, install **DJI_ROS** and **N3Ctrl** follow the [instruction1](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/djiros) and [instruction2](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/n3ctrl).
 
-**1**   **Usage**
+## 1. Installation
 
 **1.1**  Mapping Phase
 
