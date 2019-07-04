@@ -12,16 +12,6 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/drone_race_2.gif" width = "413" height = "264" border="5" />
 </p>
 
-**Video Links:** [Video1](https://youtu.be/urEC2AAGEDs)    [Video2](https://youtu.be/Ut8WT0BURrM/)
-
-**Video Links (Mainland China):** [Video1](https://www.bilibili.com/video/av57116775/)    [Video2](https://www.bilibili.com/video/av57117018/)
-
-**Authors / Maintainers:** [Fei Gao](https://ustfei.com/), [Boyu Zhou](https://github.com/ZbyLGsc), and [Shaojie Shen](http://uav.ust.hk/group/).
-
-**Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [William Wu](https://github.com/justwillim), Jie Pan, [Hao Xu](http://www.xuhao1.me/) 
-
-All from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
-
 **Architecture:**
  <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/sys_architecture.png" width = "767" height = "366">
