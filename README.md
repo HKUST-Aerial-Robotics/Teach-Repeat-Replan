@@ -37,7 +37,8 @@ All from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
 ## 1. Tutorial
 **1.1**   Installation
-To distribute the **Teach-Repeat-Replan** system in real-world experiments, the installation is the same as in the [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) branch. 
+
+To try the **Teach-Repeat-Replan** system in real-world experiments, the installation is the same as in the [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) branch. 
  
 ## 5. Acknowledgements
 We use [Sikang Liu's tool](https://github.com/sikang/DecompUtil) to visualize the polyhedrons, use [quickHull](https://github.com/akuukka/quickhull) to find the V-representation of a convex polyhedron. We use [**Mosek**](https://www.mosek.com/), [**OOQP**](http://pages.cs.wisc.edu/~swright/ooqp/) and [**NLopt**](https://nlopt.readthedocs.io/en/latest/) for solving different problems in planning.
