@@ -1,4 +1,6 @@
-This is the experiment verision of the Teach-Repeat-Replan system. To run this system in real-world, please follow the tutorial in this page.
+This is the experiment verision of the Teach-Repeat-Replan system. To run this system in real-world, please follow the **Tutorial** in this page.
+
+*We will soon complete the Tutorial*
 
 To test Teach-Repeat-Replan system in simulation, please go to the [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) branch.
 
@@ -11,16 +13,6 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/drone_race_1.gif" width = "413" height = "264" border="5" />
 <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/drone_race_2.gif" width = "413" height = "264" border="5" />
 </p>
-
-**Video Links:** [Video1](https://youtu.be/urEC2AAGEDs)    [Video2](https://youtu.be/Ut8WT0BURrM/)
-
-**Video Links (Mainland China):** [Video1](https://www.bilibili.com/video/av57116775/)    [Video2](https://www.bilibili.com/video/av57117018/)
-
-**Authors / Maintainers:** [Fei Gao](https://ustfei.com/), [Boyu Zhou](https://github.com/ZbyLGsc), and [Shaojie Shen](http://uav.ust.hk/group/).
-
-**Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [William Wu](https://github.com/justwillim), Jie Pan, [Hao Xu](http://www.xuhao1.me/) 
-
-All from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
 **Architecture:**
  <p align="center">
@@ -35,21 +27,41 @@ All from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
 *If you use Teach-Repeat-Replan or its sub-modules for your application or research, please cite our related papers.* [bib](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/bib.txt)
 
-## 1. Tutorial
-**1.1**   Installation
+# Tutorial
+## 1. Installation
 
-To try the **Teach-Repeat-Replan** system in real-world experiments, the installation is the same as in the [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) branch. 
- 
-## 5. Acknowledgements
-We use [Sikang Liu's tool](https://github.com/sikang/DecompUtil) to visualize the polyhedrons, use [quickHull](https://github.com/akuukka/quickhull) to find the V-representation of a convex polyhedron. We use [**Mosek**](https://www.mosek.com/), [**OOQP**](http://pages.cs.wisc.edu/~swright/ooqp/) and [**NLopt**](https://nlopt.readthedocs.io/en/latest/) for solving different problems in planning.
+To try the **Teach-Repeat-Replan** system in real-world experiments, the installation should be done in a ground station and an onboard computer, respectively.
 
-## 6. Licence
-The source code is released under [GPLv3](http://www.gnu.org/licenses/) license.
+**1.1**  **Ground Station**
 
-## 7. Maintaince
-We are still working on extending the proposed system and improving code reliability. 
-Experimental code, detailed wiki, user tutorial would come up soon.
+Put the folder ```ground_station``` into the workspace of a ground station computer. Install all dependencies following the 
+```install_tools```. Compile it by ```catkin_make```.
 
-For any technical issues, please contact Fei GAO <fgaoaa@connect.ust.hk> or Boyu Zhou <bzhouai@connect.ust.hk>.
+**1.2**  **Onboard Computer**
 
-For commercial inquiries, please contact Shaojie SHEN <eeshaojie@ust.hk>
+Put the folder ```onboard_computer``` into the workspace of the onboard computer of your drone. 
+
+For **sensors**, in this project we use [**realsense D435i**](https://www.intelrealsense.com/depth-camera-d435i/), which is a stereo pair with IMU. However, we use the IMU from DJI N3 autopilot since it's more stable. Therefore, you can also use [**realsense D435**](https://www.intelrealsense.com/depth-camera-d435/).
+
+You should first install its SDK [librealsense](https://github.com/IntelRealSense/librealsense).
+
+*We found that by the date 30/06/2019, the latest version of realsense driver has bug, so we recommand to use a [older version](https://github.com/IntelRealSense/librealsense/releases) 19.1*
+
+Then install its [ros-wrapper](https://github.com/IntelRealSense/realsense-ros).
+
+For **local mapping** and **re-planning**, the local replanner dependes on ```NLopt```, install in by 
+```
+  sudo apt-get install libnlopt-dev
+```
+
+For **localization**, install **VINS** follow the [instruction](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/localization/VINS-Fusion).
+
+For **controller**, install **DJI_ROS** and **N3Ctrl** follow the [instruction1](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/djiros) and [instruction2](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/n3ctrl).
+
+## 2. Usage
+
+**2.1**  Mapping Phase
+
+**2.2**  Teaching Phase
+
+**2.3**  Repeating Phase
