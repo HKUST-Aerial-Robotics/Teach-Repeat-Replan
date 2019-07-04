@@ -2,23 +2,23 @@
 
 *What's New: We now provide a new interface for controlling the drone directly with the keyboard. Check it in the following Human Interface section.*
 
-# Teach-Repeat-Replan
+# Teach-Repeat-Replan (Autonomous Drone Race)
 Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments
 
 **Teach-Repeat-Replan** is a complete and robust system enables **Autonomous Drone Race**. It contains all components for UAV aggressive flight in complex environments. It is built upon on the classical robotics teach-and-repeat framework, which is widely adopted in infrastructure inspection, aerial transportation, and search-and-rescue. Our system can capture users' intention of a flight mission, convert an arbitrarily jerky teaching trajectory to a guaranteed smooth and safe repeating trajectory, and generate safe local re-plans to avoid unmapped or moving obstacles on the flight.
 
-**Videos:**
+<p align = "center">
+<img src="files/drone_race_1.gif" width = "413" height = "264" border="5" />
+<img src="files/drone_race_2.gif" width = "413" height = "264" border="5" />
+</p>
 
-<a href="https://youtu.be/urEC2AAGEDs" target="_blank"><img src="https://img.youtube.com/vi/urEC2AAGEDs/0.jpg" 
-alt="video" width="376" height="240" border="5" /></a>
-<a href="https://youtu.be/Ut8WT0BURrM" target="_blank"><img src="https://img.youtube.com/vi/Ut8WT0BURrM/0.jpg" 
-alt="video" width="376" height="240" border="5" /></a>
+**Video Links:** [Video1](https://youtu.be/urEC2AAGEDs)    [Video2](https://youtu.be/Ut8WT0BURrM/)
 
-**Videos for Mainland China:** [Video1](https://www.bilibili.com/video/av57116775/) [Video2](https://www.bilibili.com/video/av57117018/)
+**Video Links (Mainland China):** [Video1](https://www.bilibili.com/video/av57116775/)    [Video2](https://www.bilibili.com/video/av57117018/)
 
 **Authors / Maintainers:** [Fei Gao](https://ustfei.com/), [Boyu Zhou](https://github.com/ZbyLGsc), and [Shaojie Shen](http://uav.ust.hk/group/).
 
-**Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [William Wu](https://github.com/justwillim), Jie Pan, [Hao Xu](http://www.xuhao1.me/) 
+**Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [Kaixuan Wang](https://wang-kx.github.io/al-folio/), [Luxin Han](https://github.com/hlx1996), [William Wu](https://github.com/justwillim), Jie Pan, [Chuhao Liu](https://www.linkedin.com/in/chuhaoliu/?originalSubdomain=hk), [Hao Xu](http://www.xuhao1.me/) 
 
 All from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
@@ -45,7 +45,7 @@ Our system can also be used for normal autonomous navigations, like our previous
 
 **Related Papers**
 
-* [**Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments**](https://arxiv.org/abs/1907.00520), Fei Gao, Luqi Wang, Boyu Zhou, Luxin Han, Jie Pan, shaojie Shen, submitted to IEEE Transactions on Robotics (**T-RO**).
+* [**Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments**](https://arxiv.org/abs/1907.00520), Fei Gao, Luqi Wang, Boyu Zhou, Luxin Han, Jie Pan, Shaojie Shen, submitted to IEEE Transactions on Robotics (**T-RO**).
 
 * [**Optimal Trajectory Generation for Quadrotor Teach-and-Repeat**](https://ieeexplore.ieee.org/abstract/document/8625495), Fei Gao, Luqi Wang, Kaixuan Wang, William Wu, Boyu Zhou, Luxin Han, Shaojie Shen, IEEE Robotics and Automation Letters (**RA-L**), 2019.
 
