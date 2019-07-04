@@ -56,10 +56,10 @@ For **localization**, install **VINS** follow the [instruction](https://github.c
 
 For **controller**, install **DJI_ROS** and **N3Ctrl** follow the [instruction1](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/djiros) and [instruction2](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/n3ctrl).
 
-## 1. Installation
+## 2. Usage
 
-**1.1**  Mapping Phase
+**2.1**  Mapping Phase
 
-**1.2**  Teaching Phase
+**2.2**  Teaching Phase
 
-**1.3**  Repeating Phase
+**2.3**  Repeating Phase
