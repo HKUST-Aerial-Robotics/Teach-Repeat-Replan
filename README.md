@@ -2,19 +2,19 @@ This is the experiment verision of the Teach-Repeat-Replan system. To run this s
 
 To test Teach-Repeat-Replan system in simulation, please go to the [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) branch.
 
-# Teach-Repeat-Replan
+# Teach-Repeat-Replan (Autonomous Drone Race)
 Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments
 
-**Teach-Repeat-Replan** is a complete and robust system containing all components for **UAV** aggressive **autonomous flight** in complex environments. It is built upon on the classical robotics teach-and-repeat framework, which is widely adopted in infrastructure inspection, aerial transportation, and search-and-rescue. Our system can capture users' intention of a flight mission, convert an arbitrarily jerky teaching trajectory to a guaranteed smooth and safe repeating trajectory, and generate safe local re-plans to avoid unmapped or moving obstacles on the flight.
+**Teach-Repeat-Replan** is a complete and robust system enables **Autonomous Drone Race**. It contains all components for UAV aggressive flight in complex environments. It is built upon on the classical robotics teach-and-repeat framework, which is widely adopted in infrastructure inspection, aerial transportation, and search-and-rescue. Our system can capture users' intention of a flight mission, convert an arbitrarily jerky teaching trajectory to a guaranteed smooth and safe repeating trajectory, and generate safe local re-plans to avoid unmapped or moving obstacles on the flight.
 
-**Videos:**
+<p align = "center">
+<img src="files/drone_race_1.gif" width = "413" height = "264" border="5" />
+<img src="files/drone_race_2.gif" width = "413" height = "264" border="5" />
+</p>
 
-<a href="https://youtu.be/urEC2AAGEDs" target="_blank"><img src="https://img.youtube.com/vi/urEC2AAGEDs/0.jpg" 
-alt="video" width="376" height="240" border="5" /></a>
-<a href="https://youtu.be/Ut8WT0BURrM" target="_blank"><img src="https://img.youtube.com/vi/Ut8WT0BURrM/0.jpg" 
-alt="video" width="376" height="240" border="5" /></a>
+**Video Links:** [Video1](https://youtu.be/urEC2AAGEDs)    [Video2](https://youtu.be/Ut8WT0BURrM/)
 
-**Videos for Mainland China:** [Video1](https://www.bilibili.com/video/av57116775/) [Video2](https://www.bilibili.com/video/av57117018/)
+**Video Links (Mainland China):** [Video1](https://www.bilibili.com/video/av57116775/)    [Video2](https://www.bilibili.com/video/av57117018/)
 
 **Authors / Maintainers:** [Fei Gao](https://ustfei.com/), [Boyu Zhou](https://github.com/ZbyLGsc), and [Shaojie Shen](http://uav.ust.hk/group/).
 
