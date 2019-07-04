@@ -1,4 +1,4 @@
-This is the experiment verision of the Teach-Repeat-Replan system. To run this system in real-world, please follow the **tutorial** in this page.
+This is the experiment verision of the Teach-Repeat-Replan system. To run this system in real-world, please follow the **Tutorial** in this page.
 
 To test Teach-Repeat-Replan system in simulation, please go to the [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) branch.
 
@@ -35,21 +35,22 @@ All from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
 *If you use Teach-Repeat-Replan or its sub-modules for your application or research, please cite our related papers.* [bib](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/bib.txt)
 
-## 1. Tutorial
-**1.1**   Installation
+## Tutorial
+**1**   Installation
 
-To try the **Teach-Repeat-Replan** system in real-world experiments, the installation is the same as in the [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) branch. 
- 
-## 5. Acknowledgements
-We use [Sikang Liu's tool](https://github.com/sikang/DecompUtil) to visualize the polyhedrons, use [quickHull](https://github.com/akuukka/quickhull) to find the V-representation of a convex polyhedron. We use [**Mosek**](https://www.mosek.com/), [**OOQP**](http://pages.cs.wisc.edu/~swright/ooqp/) and [**NLopt**](https://nlopt.readthedocs.io/en/latest/) for solving different problems in planning.
+To try the **Teach-Repeat-Replan** system in real-world experiments, the installation should be done in a ground station and an onboard computer, respectively.
 
-## 6. Licence
-The source code is released under [GPLv3](http://www.gnu.org/licenses/) license.
+**1.1**  Ground Station
 
-## 7. Maintaince
-We are still working on extending the proposed system and improving code reliability. 
-Experimental code, detailed wiki, user tutorial would come up soon.
+Put the folder ```ground_station``` into the workspace of a ground station computer. Install all dependencies following the 
+```install_tools```. Compile it by ```catkin_make```.
 
-For any technical issues, please contact Fei GAO <fgaoaa@connect.ust.hk> or Boyu Zhou <bzhouai@connect.ust.hk>.
+**1.2**  Onboard Computer
+Put the folder ```onboard_computer``` into the workspace of the onboard computer of your drone. 
+The local replanner dependes on ```NLopt```, install in by 
+```
+  sudo apt-get install libnlopt-dev
+```
+For localization, install **VINS** follow the [instruction](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/localization/VINS-Fusion).
 
-For commercial inquiries, please contact Shaojie SHEN <eeshaojie@ust.hk>
+For onboard controller, install **DJI_ROS** and **N3Ctrl** follow the [instruction1](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/djiros) and [instruction2](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/n3ctrl).
