@@ -29,6 +29,9 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 
 # Hardware
 
+ <p align="center">
+  <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/experiment/files/hardware.jpg" width = "480" height = "360">
+  </p>
 
 # Tutorial
 ## 1. Installation
