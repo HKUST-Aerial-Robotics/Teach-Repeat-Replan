@@ -8,8 +8,8 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 **Teach-Repeat-Replan** is a complete and robust system enables **Autonomous Drone Race**. It contains all components for UAV aggressive flight in complex environments. It is built upon on the classical robotics teach-and-repeat framework, which is widely adopted in infrastructure inspection, aerial transportation, and search-and-rescue. Our system can capture users' intention of a flight mission, convert an arbitrarily jerky teaching trajectory to a guaranteed smooth and safe repeating trajectory, and generate safe local re-plans to avoid unmapped or moving obstacles on the flight.
 
 <p align = "center">
-<img src="files/drone_race_1.gif" width = "413" height = "264" border="5" />
-<img src="files/drone_race_2.gif" width = "413" height = "264" border="5" />
+<img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/master/files/drone_race_1.gif" width = "413" height = "264" border="5" />
+<img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/master/files/drone_race_2.gif" width = "413" height = "264" border="5" />
 </p>
 
 **Video Links:** [Video1](https://youtu.be/urEC2AAGEDs)    [Video2](https://youtu.be/Ut8WT0BURrM/)
