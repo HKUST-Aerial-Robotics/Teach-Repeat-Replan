@@ -1,5 +1,7 @@
 This is the experiment verision of the Teach-Repeat-Replan system. To run this system in real-world, please follow the **Tutorial** in this page.
 
+*We will soon complete the **Tutorial** *
+
 To test Teach-Repeat-Replan system in simulation, please go to the [master](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) branch.
 
 # Teach-Repeat-Replan (Autonomous Drone Race)
