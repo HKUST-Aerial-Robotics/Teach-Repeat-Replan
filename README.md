@@ -46,11 +46,14 @@ Put the folder ```ground_station``` into the workspace of a ground station compu
 ```install_tools```. Compile it by ```catkin_make```.
 
 **1.2**  Onboard Computer
+
 Put the folder ```onboard_computer``` into the workspace of the onboard computer of your drone. 
-The local replanner dependes on ```NLopt```, install in by 
+
+For local mapping and re-planning, the local replanner dependes on ```NLopt```, install in by 
 ```
   sudo apt-get install libnlopt-dev
 ```
+
 For localization, install **VINS** follow the [instruction](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/localization/VINS-Fusion).
 
 For onboard controller, install **DJI_ROS** and **N3Ctrl** follow the [instruction1](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/djiros) and [instruction2](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/n3ctrl).
