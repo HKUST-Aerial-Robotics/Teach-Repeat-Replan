@@ -29,8 +29,10 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 
 # Hardware
 
+The onboard computer (carried on the drone) communicates with the ground station with Wifi or Ethernet. As shown in the below figure. Remember to start the roscore on the onboard computer, to reduce transfering delay while controlling the drone.
+
  <p align="center">
-  <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/experiment/files/hardware.jpg" width = "480" height = "360">
+  <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/experiment/files/hardware.png" width = "757" height = "562">
   </p>
 
 # Tutorial
