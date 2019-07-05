@@ -59,7 +59,7 @@ Then install its [ros-wrapper](https://github.com/IntelRealSense/realsense-ros).
 
 For the **autopilot**, we use the DJI N3 autopilot, we recommend to use N3 with *Onboard SDK (OSDK) 3.7*. If you use A3 autopilot, or N3 with other verisions OSDK, you may have to check the interface of **djiros** and slightly modify it.
 
-For **local mapping** and **re-planning**, the local replanner depends on ```NLopt```, install in by 
+For **local mapping** and **re-planning**, the local replanner depends on ```NLopt```, install it by 
 ```
   sudo apt-get install libnlopt-dev
 ```
