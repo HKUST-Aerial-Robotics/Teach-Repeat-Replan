@@ -4,9 +4,9 @@
 <arg name="map_size_y" default="20.0"/>
 <arg name="map_size_z" default=" 3.0"/>
 
-<arg name="init_x" default="-8.0"/>
-<arg name="init_y" default="-8.0"/>
-<arg name="init_z" default=" 2.0"/>
+<arg name="init_x" default="0.0"/>
+<arg name="init_y" default="0.0"/>
+<arg name="init_z" default="2.0"/>
 
 <arg name="max_vel" default="2.0"/>
 <arg name="max_acc" default="2.0"/>
@@ -15,7 +15,6 @@
 <arg name="poly_order" default="5"/>
 
   <node pkg="trr_global_planner" type="tr_node" name="tr_node" output="screen" required = "true">
-      <remap from="~waypoints"   to="/waypoint_generator/waypoints"/>
       <remap from="~odometry"    to="/drone_1/visual_slam/odom"    />
       <remap from="~map"         to="/random_complex/global_map"   /> 
       <remap from="~joystick"    to="/joy"/> 

@@ -62,7 +62,7 @@ vector<Vector3d> _manual_path;
 decomp_ros_msgs::PolyhedronArray _poly_array_msg;
 
 // ros related
-ros::Subscriber _map_sub, _odom_sub, _joy_sub;
+ros::Subscriber _map_sub, _odom_sub, _joy_sub, _trig_sub;
 ros::Publisher _vis_polytope_pub, _vis_traj_pub, _vis_grid_path_pub, _vis_inf_map_pub;
 ros::Publisher _space_time_pub;
 
@@ -91,14 +91,30 @@ void clearVisualization(int grid_path_mk_num, int traj_mk_iter_num);
 
 quadrotor_msgs::SpatialTemporalTrajectory getSpaceTimeTraj(const timeAllocator * time_allocator, const MatrixXd & bezier_coeff, const VectorXd & range );
 
-fstream path_record;
-void rcvWaypointsCallBack(const nav_msgs::Path & wp)
-{    
-    _end_pt << wp.poses[0].pose.position.x,
-               wp.poses[0].pose.position.y,
-               wp.poses[0].pose.position.z;
+void rcvTriggerCallBack(const geometry_msgs::PoseStamped & start_pose)
+{
+    ROS_WARN("[trr_global_planner] Enter in autonomous mode");  
+    _start_pt(0)  = start_pose.pose.position.x;
+    _start_pt(1)  = start_pose.pose.position.y;
+    _start_pt(2)  = start_pose.pose.position.z;
+
+    if(_manual_path.size() == 0) return;
+
+    _path_finder->AstarSearch(_start_pt, _manual_path.front());
+    vector<Vector3d> connect_path = _path_finder->getPath();
+    _path_finder->resetMap();
+
+    if( _polyhedronGenerator->corridorInsertGeneration(connect_path, _poly_array_msg) == 1 )    
+        visCorridor(_poly_array_msg);
+    
+    for(auto coord: _manual_path) connect_path.push_back(coord);
+    _manual_path = connect_path;
+    visGridPath( );
+
+    trajPlanning(); 
 }
 
+fstream path_record;
 bool _WRITE_PATH, _READ_PATH;
 void rcvJoyCallBack(const sensor_msgs::Joy joy)
 {   
@@ -277,6 +293,23 @@ void rcvPointCloudCallBack(const sensor_msgs::PointCloud2 & pointcloud_map)
     _vis_inf_map_pub.publish(map_inflation);
 
     _has_map = true;
+
+    if (_READ_PATH)
+    {   
+        ROS_WARN("Start generating global corridor");
+        std::ifstream infile(_your_file_path);
+        double x, y, z;
+        while (infile >> x >> y >> z){
+            Vector3d pt(x, y, z);
+            _manual_path.push_back(pt);
+        }
+
+        _polyhedronGenerator->corridorIncreGeneration(_manual_path, _poly_array_msg);
+
+        ROS_WARN("Visualize the Flight Corridor");
+        visCorridor(_poly_array_msg);
+    }
+
 }
 
 void initTimeAllocation(decomp_cvx_space::FlightCorridor & corridor)
@@ -493,7 +526,7 @@ void trajPlanning()
     if( _has_map == false || _has_odom == false) 
         return;
 
-    _start_pt = _manual_path.front();
+    //_start_pt = _manual_path.front();
     _end_pt   = _manual_path.back();
 
     decomp_cvx_space::FlightCorridor corridor = _polyhedronGenerator->getCorridor();
@@ -638,6 +671,7 @@ int main(int argc, char** argv)
     _map_sub  = nh.subscribe( "map",       1, rcvPointCloudCallBack );
     _odom_sub = nh.subscribe( "odometry",  1, rcvOdometryCallBack);
     _joy_sub  = nh.subscribe( "joystick",  1, rcvJoyCallBack );
+    _trig_sub = nh.subscribe( "trigger",   1, rcvTriggerCallBack );
 
     // for visualization of the planning results
     _vis_traj_pub      = nh.advertise<visualization_msgs::Marker>("trajectory_vis", 1);    

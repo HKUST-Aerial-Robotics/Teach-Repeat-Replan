@@ -15,10 +15,10 @@
 <arg name="poly_order" default="5"/>
 
   <node pkg="trr_global_planner" type="tr_node" name="tr_node" output="screen" required = "true">
-      <remap from="~waypoints"   to="/waypoint_generator/waypoints"/>
       <remap from="~odometry"    to="/drone_1/visual_slam/odom" />
       <remap from="~map"         to="/random_complex/global_map"/> 
       <remap from="~joystick"    to="/joy"/> 
+      <remap from="~trigger"     to="/time_optimal_traj_server/start_pose"/> 
       
       <param name="write_path"  value="false" /> 
       <param name="read_path"   value="false" /> 
