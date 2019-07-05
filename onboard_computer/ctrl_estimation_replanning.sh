@@ -1,5 +1,4 @@
-roscore & sleep 1;
-
+#roscore & sleep 1;
 roslaunch djiros djiros.launch & sleep 5;
 
 roslaunch local_replanner local_replanning.launch & sleep 1;
