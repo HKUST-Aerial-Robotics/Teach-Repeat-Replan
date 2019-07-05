@@ -174,7 +174,8 @@ void rcvJoyCallBack(const sensor_msgs::Joy joy)
 
 Vector3i _pose_idx, _pose_idx_lst;
 void rcvOdometryCallBack(const nav_msgs::Odometry odom)
-{
+{   
+    if(!_has_map) return;
     _odom = odom;
     _odom_time = odom.header.stamp;
     _time_update_odom = ros::Time::now();
@@ -232,7 +233,9 @@ void rcvOdometryCallBack(const nav_msgs::Odometry odom)
     if( _has_traj || _READ_PATH) return;
 
     if( _polyhedronGenerator->corridorIncreGeneration(coord_set, _poly_array_msg) == 1 )
+    {   
         visCorridor(_poly_array_msg);
+    }
 }
 
 void rcvPointCloudCallBack(const sensor_msgs::PointCloud2 & pointcloud_map)
@@ -281,7 +284,6 @@ void rcvPointCloudCallBack(const sensor_msgs::PointCloud2 & pointcloud_map)
             }
         }
     }
-
     _polyhedronGenerator->finishMap();
 
     cloud_inf.width    = cloud_inf.points.size();
@@ -294,21 +296,21 @@ void rcvPointCloudCallBack(const sensor_msgs::PointCloud2 & pointcloud_map)
 
     _has_map = true;
 
-    if (_READ_PATH)
-    {   
-        ROS_WARN("Start generating global corridor");
-        std::ifstream infile(_your_file_path);
-        double x, y, z;
-        while (infile >> x >> y >> z){
-            Vector3d pt(x, y, z);
-            _manual_path.push_back(pt);
-        }
+    // if (_READ_PATH)
+    // {   
+    //     ROS_WARN("Start generating global corridor");
+    //     std::ifstream infile(_your_file_path);
+    //     double x, y, z;
+    //     while (infile >> x >> y >> z){
+    //         Vector3d pt(x, y, z);
+    //         _manual_path.push_back(pt);
+    //     }
 
-        _polyhedronGenerator->corridorIncreGeneration(_manual_path, _poly_array_msg);
+    //     _polyhedronGenerator->corridorIncreGeneration(_manual_path, _poly_array_msg);
 
-        ROS_WARN("Visualize the Flight Corridor");
-        visCorridor(_poly_array_msg);
-    }
+    //     ROS_WARN("Visualize the Flight Corridor");
+    //     visCorridor(_poly_array_msg);
+    // }
 
 }
 

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(trr_global_planner)
 
-set(ENABLE_CUDA true)
+set(ENABLE_CUDA false)
 
 find_package(catkin REQUIRED COMPONENTS 
     roscpp 

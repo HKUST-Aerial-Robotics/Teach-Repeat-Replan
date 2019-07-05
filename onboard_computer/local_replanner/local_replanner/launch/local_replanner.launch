@@ -9,8 +9,8 @@
       <rosparam file="$(find trr_local_replanner)/config/generator_replan.yaml" command="load" />
       <remap from = "~replan_mission" to = "/time_optimal_traj_server/check_pts"/>
      
-      <remap from = "/sdf_map/depth"  to = "/pcl_render_node/depth"/>
-      <remap from = "/sdf_map/pose"   to = "/pcl_render_node/camera_pose"/> 
+      <remap from = "/sdf_map/depth"  to = "/camera/depth/image_rect_raw"/>
+      <remap from = "/sdf_map/pose"   to = "/vins_estimator/camera_pose"/> 
       <remap from = "/sdf_map/odom"   to = "/drone_1/visual_slam/odom"/> 
       <remap from = "/sdf_map/cloud"  to = "/pcl_render_node/local_pointcloud"/> 
 
@@ -36,10 +36,10 @@
       <param name="sdf_map/local_map_margin" value="0"/>
       <param name="sdf_map/ground_z"        value="0.0"/>
 
-      <param name="sdf_map/cx" value="385.754"/>
-      <param name="sdf_map/cy" value="236.743"/>
-      <param name="sdf_map/fx" value="385.754"/>
-      <param name="sdf_map/fy" value="257.296"/>
+      <param name="sdf_map/cx" value="3.2247735741936430e+02"/>
+      <param name="sdf_map/cy" value="2.3707634648111778e+02"/>
+      <param name="sdf_map/fx" value="3.8445808939187248e+02"/>
+      <param name="sdf_map/fy" value="3.8398275569654390e+02"/>
 
       <param name="sdf_map/use_depth_filter" value="true"/>
       <param name="sdf_map/depth_filter_tolerance" value="0.15"/>
@@ -69,8 +69,8 @@
   
   <node pkg = "trr_local_replanner" type = "time_optimal_traj_server" output = "screen" name = "time_optimal_traj_server">
       <remap  from = "~trajectory"        to = "/tr_node/space_time_traj"/>
-      <remap  from = "~odometry"          to = "/drone_1/visual_slam/odom"/>
-      <remap  from = "~position_command"  to = "/position_cmd_input"/>
+      <remap  from = "~odometry"          to = "/vins_estimator/imu_propagate"/>
+      <remap  from = "~position_command"  to = "/position_cmd"/>
       <remap  from = "~view"              to = "/view" /> 
       <remap  from = "~bspline"           to = "/local_replanner/bspline" />
       <remap  from = "~w_T_odom"          to = "/loop_fusion/pg_T_vio" />

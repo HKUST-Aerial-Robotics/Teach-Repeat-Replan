@@ -42,6 +42,6 @@
   </node>
 
   <node pkg="map_server" type="map_server" name="map_server">
-      <param name="save_name" value="$(find surfel_fusion)/model.pcd" />
+      <param name="save_name" value="$(find surfel_fusion)/model" />
   </node>
 </launch>
