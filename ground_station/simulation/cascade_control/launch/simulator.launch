@@ -9,9 +9,9 @@
       output="log">
   <param name="rate/odom" value="100.0"/>
 
-  <param name="simulator/init_state_x" value="-8.5"/>
-  <param name="simulator/init_state_y" value="-8.5"/>
-  <param name="simulator/init_state_z" value=" 0.5"/>
+  <param name="simulator/init_state_x" value="0.0"/>
+  <param name="simulator/init_state_y" value="0.0"/>
+  <param name="simulator/init_state_z" value="0.5"/>
   <remap from="~odom" to="drone_$(arg drone_number)/visual_slam/odom"/>
   <remap from="~cmd" to="drone_$(arg drone_number)/so3_command"/>
   <remap from="~imu" to="drone_$(arg drone_number)/sim/imu"/>

@@ -8,6 +8,7 @@ Panels:
         - /Planning1/SpatialCurve1
         - /Planning1/SpatialCurve1/Namespaces1
         - /LocalMap1
+        - /GlobalMap2
       Splitter Ratio: 0.474426806
     Tree Height: 488
   - Class: rviz/Selection
@@ -28,7 +29,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: GlobalMap
   - Class: rviz/Displays
     Help Height: 78
     Name: Displays
@@ -352,6 +353,36 @@ Visualization Manager:
           Value: true
       Enabled: true
       Name: Sensors
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 2.15881062
+        Min Value: -0.196916938
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: AxisColor
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: GlobalMap
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.150000006
+      Style: Flat Squares
+      Topic: /cloud_pcd
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 255; 255; 127
@@ -389,25 +420,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 8.92154503
+      Distance: 15.9093723
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.0573073626
-        Y: 0.436323643
-        Z: 8.58306885e-06
+        X: 2.1240406
+        Y: 0.191737652
+        Z: 9.53674316e-06
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.01979744
+      Pitch: 0.86979723
       Target Frame: drone1
       Value: ThirdPersonFollower (rviz)
-      Yaw: 3.05222249
+      Yaw: 3.39224243
     Saved:
       - Class: rviz/ThirdPersonFollower
         Distance: 4.04827738

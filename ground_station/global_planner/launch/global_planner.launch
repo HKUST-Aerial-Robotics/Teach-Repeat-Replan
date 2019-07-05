@@ -18,7 +18,6 @@
       <remap from="~odometry"    to="/drone_1/visual_slam/odom" />
       <remap from="~map"         to="/random_complex/global_map"/> 
       <remap from="~joystick"    to="/joy"/> 
-      <remap from="~trigger"     to="/time_optimal_traj_server/start_pose"/> 
       
       <param name="write_path"  value="false" /> 
       <param name="read_path"   value="false" /> 

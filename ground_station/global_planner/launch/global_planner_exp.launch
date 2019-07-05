@@ -1,7 +1,7 @@
 <launch>
 
-<arg name="map_size_x" default="20.0"/>
-<arg name="map_size_y" default="20.0"/>
+<arg name="map_size_x" default="30.0"/>
+<arg name="map_size_y" default="30.0"/>
 <arg name="map_size_z" default=" 3.0"/>
 
 <arg name="init_x" default="0.0"/>
@@ -16,9 +16,10 @@
 
   <node pkg="trr_global_planner" type="tr_node" name="tr_node" output="screen" required = "true">
       <remap from="~odometry"    to="/drone_1/visual_slam/odom"    />
-      <remap from="~map"         to="/random_complex/global_map"   /> 
+      <remap from="~map"         to="/cloud_pcd"   /> 
       <remap from="~joystick"    to="/joy"/> 
-      
+      <remap from="~trigger"     to="/time_optimal_traj_server/start_pose"/> 
+
       <param name="write_path"  value="false" /> 
       <param name="read_path"   value="false" /> 
 
@@ -37,7 +38,7 @@
       <param name="planning/max_acc"       value="$(arg max_acc)" />
       <param name="planning/max_d_acc"     value="1.0" />
       <param name="planning/max_inf_iter"  value="20"  />
-      <param name="planning/max_clu_iter"  value="20"  />
+      <param name="planning/max_clu_iter"  value="5"  />
 
       <param name="vis/vis_traj_width"     value="0.1  "/>
   </node>

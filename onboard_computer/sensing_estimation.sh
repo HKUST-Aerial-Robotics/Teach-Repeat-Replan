@@ -1,5 +1,4 @@
-roscore & sleep 1;
-
+#roscore & sleep 1;
 roslaunch djiros djiros.launch & sleep 5;
 
 # your sensor suits VINS, such as:
