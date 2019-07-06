@@ -17,7 +17,7 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Video Links (Mainland China):** [Video1](https://www.bilibili.com/video/av57116775/)    [Video2](https://www.bilibili.com/video/av57117018/)
 
 
-**Authors / Maintainers:** [Fei Gao](https://ustfei.com/), [Boyu Zhou](https://github.com/ZbyLGsc), and [Shaojie Shen](http://uav.ust.hk/group/).
+**Authors / Maintainers:** [Fei Gao](https://ustfei.com/), [Boyu Zhou](http://boyuzhou.net), and [Shaojie Shen](http://uav.ust.hk/group/).
 
 **Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [Kaixuan Wang](https://wang-kx.github.io/al-folio/), [Luxin Han](https://github.com/hlx1996), [William Wu](https://github.com/justwillim), Jie Pan, [Chuhao Liu](https://www.linkedin.com/in/chuhaoliu/?originalSubdomain=hk), [Hao Xu](http://www.xuhao1.me/) 
 
