@@ -109,7 +109,7 @@ The simulator requires C++17, which needs **gcc 7** to compile. When you catkin_
  set(ENABLE_CUDA true)
  ```
  
-CUDA will be turned-on to exploit your GPU.
+CUDA will be turned-on to exploit your GPU. **Note**: if you enable CUDA, remember also to set ```set(ENABLE_CUDA true)``` in CMakeList.txt of the package ```global_planner```.
  
 **local_sensing** is the simulated sensors. If ```ENABLE_CUDA``` **true**, it mimics the depth measured by stereo cameras and renders a depth image by GPU. If ```ENABLE_CUDA``` **false**, it will publish pointclouds with no ray-casting. Our local mapping module automatically selects whether depth images or pointclouds as its input.
 
