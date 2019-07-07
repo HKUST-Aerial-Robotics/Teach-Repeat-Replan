@@ -147,8 +147,8 @@ Visualization Manager:
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
-            Max Value: 4.20822144
-            Min Value: 0.00100000005
+            Max Value: 4.27991915
+            Min Value: 0.000782866962
             Value: true
           Axis: Z
           Channel Name: intensity
@@ -183,7 +183,10 @@ Visualization Manager:
           Marker Topic: /tr_node/trajectory_vis
           Name: SpatialCurve
           Namespaces:
-            {}
+            trr_global_planner/trajectory0: true
+            trr_global_planner/trajectory1: true
+            trr_global_planner/trajectory2: true
+            trr_global_planner/trajectory_final: true
           Queue Size: 100
           Value: true
         - Class: rviz/Marker
@@ -191,7 +194,7 @@ Visualization Manager:
           Marker Topic: /local_replanner/check_trajectory_vis
           Name: SlidingWindow
           Namespaces:
-            {}
+            local_replan/local_trajectory: true
           Queue Size: 100
           Value: true
         - Class: rviz/Marker
