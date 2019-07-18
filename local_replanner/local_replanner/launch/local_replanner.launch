@@ -34,7 +34,7 @@
       <param name="sdf_map/inflate_val"     value="0.15" /> 
       <param name="sdf_map/esdf_inflate"    value="0.075"/>
       <param name="sdf_map/local_map_margin" value="0"/>
-      <param name="sdf_map/ground_z"        value="0.0"/>
+      <param name="sdf_map/ground_z"        value="-1.0"/>
 
       <param name="sdf_map/cx" value="385.754"/>
       <param name="sdf_map/cy" value="236.743"/>
