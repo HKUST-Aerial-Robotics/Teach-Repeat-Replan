@@ -51,10 +51,6 @@ Panels:
     Expanded: ~
     Name: Tool Properties
     Splitter Ratio: 0.5
-  - Class: mockamap/Teleop
-    Input: ""
-    Name: Teleop
-    Output: ""
   - Class: rviz/Views
     Expanded:
       - /Current View1
