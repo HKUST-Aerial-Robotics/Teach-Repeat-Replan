@@ -1575,7 +1575,7 @@ void SDFMap::checkDist()
 
         if (fabs(dist) > 10.0)
         {
-          cout << "fuck: " << pos.transpose() << ", " << dist << endl;
+          // cout << "fuck: " << pos.transpose() << ", " << dist << endl;
         }
       }
 }

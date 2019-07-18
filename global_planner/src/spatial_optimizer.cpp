@@ -540,9 +540,9 @@ int spatialTrajOptimizer::bezierCurveGeneration(
     else if( ierr == 3)
         cout << "The program is provably infeasible, check the formulation.\n";
     else if (ierr == 4)
-        cout << "Ther program is very slow in convergence, may have numerical issue.\n";
+        cout << "The program is very slow in convergence, may have numerical issue.\n";
     else
-        cout << "Don't know what the fuck it is, should not happen.\n";
+        cout << "Solver numerical error.\n";
     
     return ierr;
 }
