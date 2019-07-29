@@ -20,7 +20,7 @@
 
       <param name="map/circle_num" value="40"/>        
       <param name="map/obs_num"    value="300"/>        
-      <param name="map/resolution" value="0.05"/>        
+      <param name="map/resolution" value="0.1"/>        
 
       <param name="ObstacleShape/lower_rad" value="0.1"/>
       <param name="ObstacleShape/upper_rad" value="0.7"/>
@@ -30,7 +30,7 @@
       <param name="CircleShape/lower_circle_rad"   value="0.6"/>        
       <param name="CircleShape/upper_circle_rad"   value="2.0"/>        
       
-      <param name="sensing/rate"   value="1.0"/>        
+      <param name="sensing/rate"   value="0.5"/>        
   </node>
 
 </launch>

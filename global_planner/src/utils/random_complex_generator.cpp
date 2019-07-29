@@ -178,6 +178,9 @@ void RandomMapGenerate()
    cloudMap.is_dense = true;
 
    _has_map = true;
+   
+   pcl::toROSMsg(cloudMap, globalMap_pcd);
+   globalMap_pcd.header.frame_id = "map";
 }
 
 void rcvOdometryCallbck(const nav_msgs::Odometry odom)
@@ -190,8 +193,6 @@ void pubSensedPoints()
    //if(!_has_map || !_has_odom)
    if( !_has_map ) return;
 
-   pcl::toROSMsg(cloudMap, globalMap_pcd);
-   globalMap_pcd.header.frame_id = "map";
    _all_map_pub.publish(globalMap_pcd);
 }
 
@@ -222,7 +223,7 @@ int main (int argc, char** argv)
    n.param("CircleShape/lower_circle_rad", _w_c_l, 0.3);
    n.param("CircleShape/upper_circle_rad", _w_c_h, 0.8);
 
-   n.param("sensing/rate", _sense_rate, 10.0);
+   n.param("sensing/rate", _sense_rate, 1.0);
 
    _x_l = - _x_size / 2.0;
    _x_h = + _x_size / 2.0;
