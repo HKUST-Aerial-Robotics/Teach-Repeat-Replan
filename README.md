@@ -33,8 +33,6 @@ Sub-modules integrated into our system include:
 
 **Controlling:**  [geometric controller on SE(3)](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/controller)
 
-[WIKI](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/wiki)
-
 **Architecture:**
  <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/sys_architecture.png" width = "767" height = "366">
@@ -50,12 +48,10 @@ Our system can also be used for normal autonomous navigations, like our previous
 
 * [**Optimal Trajectory Generation for Quadrotor Teach-and-Repeat**](https://ieeexplore.ieee.org/abstract/document/8625495), Fei Gao, Luqi Wang, Kaixuan Wang, William Wu, Boyu Zhou, Luxin Han, Shaojie Shen, IEEE Robotics and Automation Letters (**RA-L**), 2019.
 
-*If you use Teach-Repeat-Replan or its sub-modules for your application or research, please cite our related papers.* [bib](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/bib.txt)
+*If you use Teach-Repeat-Replan or its sub-modules for your application or research, please star this repo and cite our related papers.* [bib](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/bib.txt)
 
 ## Simulation or Real-World
 To use the Teach-Repeat-Replan system in the real world, you can check this branch **[experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)**. Compared to the master branch, **[experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)** has modified versions of [dense-surfel-mapping](https://github.com/HKUST-Aerial-Robotics/DenseSurfelMapping) and [stereo-VINS](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion) and an onboard controller, but without the simulator. However, to test the proposed system in simulation, the master branch is enough.
-
-*we will release the source code for experiment soon.*
 
 ## 1. Prerequisites
 **1.1**   **Ubuntu** and **ROS**
