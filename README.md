@@ -66,7 +66,20 @@ We use **OOQP** for quadratic programming.
 
 1. Get a copy of **MA27** from the [HSL Archive](http://www.hsl.rl.ac.uk/download/MA27/1.0.0/a/). Just select the **Personal Licence (allows use without redistribution)**, then fill the information table. You can download it from an e-mail sent to you. Then, un-zip **MA27**, and follow the *README* in it, install it to your Ubuntu.
 
+**If you are new to Ubuntu, or too lazy to follow the README, see here, just type 3 commands in MA27's folder :**
+```
+./configure
+make 
+sudo make install
+```
+
 2. Manually un-zip packages *OOQP.zip* in the **installation** folder of this repo and install it follow the document *INSTALL* in **OOQP**, install it to your Ubuntu.
+**As above, just type 3 commands in OOQP's folder :**
+```
+./configure
+make 
+sudo make install
+```
 
 **1.3**   **some tools**
 
