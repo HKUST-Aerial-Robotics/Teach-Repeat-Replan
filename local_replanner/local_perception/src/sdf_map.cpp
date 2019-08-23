@@ -1378,6 +1378,13 @@ void SDFMap::cloudCallback(const sensor_msgs::PointCloud2ConstPtr& img)
   posToIndex(Eigen::Vector3d(max_x, max_y, max_z), esdf_max_);
   posToIndex(Eigen::Vector3d(min_x, min_y, min_z), esdf_min_);
 
+  /* avoid exceed global range */
+  esdf_max_ = esdf_max_.array().min((grid_size - Eigen::Vector3i::Ones()).array());
+  esdf_max_ = esdf_max_.array().max(Eigen::Vector3i::Zero().array());
+
+  esdf_min_ = esdf_min_.array().min((grid_size - Eigen::Vector3i::Ones()).array());
+  esdf_min_ = esdf_min_.array().max(Eigen::Vector3i::Zero().array());
+
   has_first_depth_ = true;
   esdf_need_update_ = true;
 }

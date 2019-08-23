@@ -33,8 +33,6 @@ Sub-modules integrated into our system include:
 
 **Controlling:**  [geometric controller on SE(3)](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/controller)
 
-[WIKI](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/wiki)
-
 **Architecture:**
  <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/sys_architecture.png" width = "767" height = "366">
@@ -50,12 +48,10 @@ Our system can also be used for normal autonomous navigations, like our previous
 
 * [**Optimal Trajectory Generation for Quadrotor Teach-and-Repeat**](https://ieeexplore.ieee.org/abstract/document/8625495), Fei Gao, Luqi Wang, Kaixuan Wang, William Wu, Boyu Zhou, Luxin Han, Shaojie Shen, IEEE Robotics and Automation Letters (**RA-L**), 2019.
 
-*If you use Teach-Repeat-Replan or its sub-modules for your application or research, please cite our related papers.* [bib](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/bib.txt)
+*If you use Teach-Repeat-Replan or its sub-modules for your application or research, please star this repo and cite our related papers.* [bib](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/bib.txt)
 
 ## Simulation or Real-World
 To use the Teach-Repeat-Replan system in the real world, you can check this branch **[experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)**. Compared to the master branch, **[experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)** has modified versions of [dense-surfel-mapping](https://github.com/HKUST-Aerial-Robotics/DenseSurfelMapping) and [stereo-VINS](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion) and an onboard controller, but without the simulator. However, to test the proposed system in simulation, the master branch is enough.
-
-*we will release the source code for experiment soon.*
 
 ## 1. Prerequisites
 **1.1**   **Ubuntu** and **ROS**
@@ -70,7 +66,21 @@ We use **OOQP** for quadratic programming.
 
 1. Get a copy of **MA27** from the [HSL Archive](http://www.hsl.rl.ac.uk/download/MA27/1.0.0/a/). Just select the **Personal Licence (allows use without redistribution)**, then fill the information table. You can download it from an e-mail sent to you. Then, un-zip **MA27**, and follow the *README* in it, install it to your Ubuntu.
 
+**If you are new to Ubuntu, or too lazy to follow the README, see here, just type 3 commands in MA27's folder :**
+```
+./configure
+make 
+sudo make install
+```
+
 2. Manually un-zip packages *OOQP.zip* in the **installation** folder of this repo and install it follow the document *INSTALL* in **OOQP**, install it to your Ubuntu.
+
+**As above, just type 3 commands in OOQP's folder :**
+```
+./configure
+make 
+sudo make install
+```
 
 **1.3**   **some tools**
 
@@ -130,19 +140,9 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
   
   **4.1 Human Interface**
   
-  You can use either a joystick, or the keyboard to control the drone. 
+  You can use either a keyboard, or a joystick to control the drone. 
   
-  **4.1.1 Joystick**
-  
-  For joystick, we use [**Betop**](https://detail.tmall.com/item.htm?id=43773042338&spm=a1z09.2.0.0.18a42e8d0ZJzki&_u=t1hlsb1me213), which can be bought at **TaoBao** in mainland China, to control the drone virtually in simulation. 
- 
- <p align="center">
-  <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/joystick.png" width = "400" height = "248"/>
- </p>
- 
-  Actually, any USB joystick is fine, but its buttons may need to be re-mapped in ```simulation/simulator.launch```.
-  
-  **4.1.2 Keyboard**
+  **4.1.1 Keyboard**
   
   For keyboard, you should install ```pygame``` first, by:
   
@@ -161,6 +161,16 @@ For installation of CUDA, please go to [CUDA ToolKit](https://developer.nvidia.c
    <p align="center">
   <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/keyboard2.png" width = "500" height = "200"/>
  </p>
+ 
+  **4.1.2 Joystick**
+  
+  For joystick, we use [**Betop**](https://detail.tmall.com/item.htm?id=43773042338&spm=a1z09.2.0.0.18a42e8d0ZJzki&_u=t1hlsb1me213), which can be bought at **TaoBao** in mainland China, to control the drone virtually in simulation. 
+ 
+ <p align="center">
+  <img src="https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/blob/master/files/joystick.png" width = "400" height = "248"/>
+ </p>
+ 
+  Actually, any USB joystick is fine, but its buttons may need to be re-mapped in ```simulation/simulator.launch```.
  
   **4.2 Teaching and Repeating**
   
