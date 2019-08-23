@@ -82,6 +82,7 @@ make
 sudo make install
 ```
 
+**NOTE: Compile ma27, you will get a static library file named libma27.a in its /src folder. Then when you compile OOQP, the original OOQP would search the libma27.a file in its current top folder, so you have to copy and paste libma27.a into OOQP's folder. I modify OOQP's configure to let it search libma27 in your ubuntu system. So if you use OOQP form this repo, just follow the above commands in README**
 **1.3**   **some tools**
 
 To install the following dependencies, you can run the auto-install script by 
