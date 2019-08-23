@@ -74,6 +74,7 @@ sudo make install
 ```
 
 2. Manually un-zip packages *OOQP.zip* in the **installation** folder of this repo and install it follow the document *INSTALL* in **OOQP**, install it to your Ubuntu.
+
 **As above, just type 3 commands in OOQP's folder :**
 ```
 ./configure
