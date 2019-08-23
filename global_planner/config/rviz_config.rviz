@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /FlghtCorridor1
+        - /GlobalMap1
         - /GlobalMap1/GlobalMap1
         - /Planning1
         - /Planning1/SpatialCurve1/Namespaces1
@@ -144,8 +145,8 @@ Visualization Manager:
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
-            Max Value: 4.17273378
-            Min Value: 3.87313703e-05
+            Max Value: 4.28547335
+            Min Value: 0.000899873383
             Value: true
           Axis: Z
           Channel Name: intensity
@@ -374,25 +375,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 17.8840008
+      Distance: 23.9258823
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -3.25525331
-        Y: 1.18575418
-        Z: 8.67267227e-06
+        X: 2.21250582
+        Y: 3.23904467
+        Z: 6.76532363e-06
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.02479649
+      Pitch: 0.919796944
       Target Frame: drone1
       Value: ThirdPersonFollower (rviz)
-      Yaw: 3.0522089
+      Yaw: 3.85720968
     Saved:
       - Class: rviz/ThirdPersonFollower
         Distance: 4.04827738
