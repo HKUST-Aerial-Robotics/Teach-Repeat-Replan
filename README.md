@@ -223,6 +223,6 @@ The source code is released under [GPLv3](http://www.gnu.org/licenses/) license.
 We are still working on extending the proposed system and improving code reliability. 
 Experimental code, detailed wiki, user tutorial would come up soon.
 
-For any technical issues, please contact Fei GAO <fgaoaa@connect.ust.hk> or Boyu Zhou <bzhouai@connect.ust.hk>.
+For any technical issues, please contact Fei GAO <fgaoaa@connect.ust.hk> or Boyu ZHOU <bzhouai@connect.ust.hk>.
 
 For commercial inquiries, please contact Shaojie SHEN <eeshaojie@ust.hk>
