@@ -121,8 +121,19 @@ void cudaPolytopeGeneration::paramSet( bool is_gpu_on_stage_1, bool is_gpu_on_st
         itr_cluster_max = 0;   
     }
 
-    _cluster_buffer_size   = 50000;
-    _candidate_buffer_size = 10000;
+    if(_resolution >= 0.2){
+        _cluster_buffer_size   = 5000;
+        _candidate_buffer_size = 2000;
+    }
+    else if(_resolution >= 0.15){
+        _cluster_buffer_size   = 20000;
+        _candidate_buffer_size = 5000;
+    }
+    else{
+        _cluster_buffer_size   = 50000;
+        _candidate_buffer_size = 10000;   
+    }
+
     _cluster_buffer_size_square = _candidate_buffer_size * _candidate_buffer_size;
 
 //###### Host data
