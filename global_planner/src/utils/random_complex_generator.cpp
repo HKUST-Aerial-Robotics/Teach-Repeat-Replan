@@ -136,8 +136,7 @@ void RandomMapGenerate()
       y    = rand_y(eng);
       w    = rand_w(eng);
 
-      //if(sqrt( pow(x - _init_x, 2) + pow(y - _init_y, 2) ) < 2.0 ) 
-      if(sqrt( pow(x - _init_x, 2) + pow(y - _init_y, 2) ) < 0.8 ) 
+      if(sqrt( pow(x - _init_x, 2) + pow(y - _init_y, 2) ) < 1.0 ) 
          continue;
       
       pcl::PointXYZ searchPoint(x, y, (_h_l + _h_h)/2.0);

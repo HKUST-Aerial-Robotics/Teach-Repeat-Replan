@@ -145,8 +145,8 @@ Visualization Manager:
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
-            Max Value: 4.28547335
-            Min Value: 0.000899873383
+            Max Value: 4.3065815
+            Min Value: 0.00100000005
             Value: true
           Axis: Z
           Channel Name: intensity
@@ -382,18 +382,18 @@ Visualization Manager:
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 2.21250582
-        Y: 3.23904467
+        X: 1.80598497
+        Y: 3.19927025
         Z: 6.76532363e-06
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.919796944
+      Pitch: 1.03479695
       Target Frame: drone1
       Value: ThirdPersonFollower (rviz)
-      Yaw: 3.85720968
+      Yaw: 3.58220744
     Saved:
       - Class: rviz/ThirdPersonFollower
         Distance: 4.04827738
@@ -533,5 +533,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1653
-  X: 736
-  Y: 77
+  X: 264
+  Y: 25

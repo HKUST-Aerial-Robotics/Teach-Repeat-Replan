@@ -158,7 +158,11 @@ void rcvJoyCallBack(const sensor_msgs::Joy joy)
 
 Vector3i _pose_idx, _pose_idx_lst;
 void rcvOdometryCallBack(const nav_msgs::Odometry odom)
-{
+{   
+    if(!_has_map)
+        return;
+
+//    cout<<"odom"<<endl;
     _odom = odom;
     _odom_time = odom.header.stamp;
     _time_update_odom = ros::Time::now();
