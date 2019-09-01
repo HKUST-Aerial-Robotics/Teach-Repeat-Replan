@@ -1,0 +1,238 @@
+README:    Mike Gertz 14-Oct-2013
+
+=head1 NAME
+
+OOQP - A package for solving convex quadratic programming problems.
+
+=for html
+This page is part of the <A HREF=../index.html> OOQP documentation </A>.
+
+=head1 SYNOPSIS
+
+This directory contains OOQP, a package for solving convex quadratic
+programming problems (QP). These are optimization problems in which the
+objective function is a convex quadratic function and the constraints
+are linear functions of a vector of real variables. They have the
+following general form:
+
+    minimize (1/2) * x' * Q * x + c' * x
+    subject to                     A * x  = b
+                                   C * x >= d
+
+where Q is a symmetric positive semidefinite n by n matrix, x is a
+n-vector of variables, A and C are matrices of dimensions m_a by n
+and m_c by n, respectively, and c, b, and d are vectors of appropriate
+dimensions.
+
+Many QPs that arise in practice are highly structured. That is, the
+matrices that define them have properties that can be exploited in
+designing efficient solution techniques. In addition to the wide
+variations in problem structure, there is wide divergence in the ways
+in which the problem data and variables for a QP can be stored on a
+computer. This distribution of OOQP contains code for the
+implementation of solvers for a number of QP formulations, including a
+formulation for general QPs in which the Hessian and constraint
+matrices are sparse. The code in the distribution also provides a
+framework and examples for users who wish to implement solvers that
+are tailored to their own specific structured QPs and their specific
+computational environments.
+
+=head1 OBTAINING OOQP
+
+Visit L<http://www.cs.wisc.edu/~swright/ooqp> to obtain the latest
+version of OOQP.
+
+=head1 GETTING STARTED
+
+The file L<INSTALL|distribution-docs::INSTALL>, included in this directory, is the
+installation guide for the OOQP package.
+
+Further documentation is available in the doc/ directory. For an index
+of the available documentation, point your favorite html viewer
+(e.g. Firefox) at the file doc/index.html. On many systems, this can
+be done by entering a string of the following form into the location
+window on the browser:
+
+    file:/full/path/OOQP/doc/index.html
+
+The OOQP Users Guide, which contains a more complete description of
+OOQP and its capabilities, can be found at doc/ooqp-userguide.pdf.
+This file is in PDF format, which may be read by such programs as
+Adobe Acrobat Reader.  If your browser contains a PDF plug-in, you may
+simply click on the link "Users Guide" from the doc/index.html file to
+display the Guide.
+
+Those wishing to use the OOQP framework to develop customized QP
+solvers should first read the Users Guide, and then browse through the
+reference manual, which is presented as a collection of web pages in
+the directory doc/reference_manual, also available as a link from
+doc/index.html
+
+=head1 PROBLEM FORMULATIONS SUPPORTED IN THE OOQP DISTRIBUTION
+
+The OOQP distribution contains a solver for general sparse QPs,
+together a number of modules for solving certain structured
+QPs. Documentation for these modules can be found in the
+doc/formulations directory. The modules are as follows.
+
+=over 4
+
+=item QpGen
+
+This module solves general convex quadratic programs with sparse
+data. This problem is discussed at length in the Users Guide.
+
+=item L<QpBound|formulations::QpBound>
+
+This module solves bound-constrained quadratic programs, in which the
+ only constraints are bounds on the variables. The formulation is as
+follows.
+
+    minimize   (1/2) * x' * Q * x + c' * x
+    subject to                      l <= x <= u
+
+See L<QpBound|formulations::QpBound> for more information.
+
+=item L<Svm|formulations::Svm> 
+
+This module creates a support vector machine classifier for solving
+the pattern classification problem in machine learning. See the L<Svm|formulations::Svm>
+for more information.
+
+=item L<Huber|formulations::Huber>
+
+Solves the Huber regression problem. See L<Huber|formulations::Huber>.
+
+=back
+
+=head1 COMMAND LINE EXECUTABLES
+
+The installation process will generate a number of command-line
+executables. A typical executable will be named
+
+     formulation-linag-solver.exe
+
+Where the strings "formulation", "linalg" and "solver" will be
+replaced by appropriate values.  The "formulation" string will be one
+of the problem formulations given in the preceding section, expressed
+in lowercase characters: qpgen, qpbound, svm, or huber. The "solver"
+string indicates the optimization algorithm used to solve the QP. It
+will have one of the following values:
+
+=over 4
+
+=item mehrotra
+
+Mehrotra's predictor-corrector algorithm
+
+=item gondzio
+
+Mehrotra's algorithm with Gondzio's higher-order corrections
+
+=back
+
+The "linalg" string is meant to represent how the linear algebra
+operations are performed. Typical values are "sparse", "dense" and
+"petsc". In some cases, the string will more specific, also referring
+to the linear solver used to solve linear equations, for instance
+"sparse-ma57." The linalg string does not appear in the names of the
+executables "svm-gondzio.exe" and "huber-gondzio.exe", for which we
+felt it would be redundant. (In these formulations, dense matrices are
+used to represent the larger, structured matrices that appear in the
+QP formulation.)
+
+Not all combinations of formulations, algorithms, and linear algebra
+packages are supported or provided. See the L<INSTALL|distribution-docs::INSTALL> file
+for information on how to build all supported executables.  A users
+guide for executables based on the QpGen formulation may be found in
+doc/ooqp-userguide.pdf. For other executables, see the man page of
+their respective formulation in doc/formulations.
+
+=head1 USE WITH MATLAB
+
+Some QP solvers supplied with OOQP may be invoked within the Matlab
+environment. Installation instructions, in addition to the general
+instructions found in L<INSTALL|distribution-docs::INSTALL>, have been supplied in the
+L<README_Matlab|distribution-docs::README_Matlab> file. Once the Matlab interface has
+been properly installed, documentation is available from within
+Matlab, as described in the README_Matlab file.
+
+=head1 USE WITH AMPL
+
+A solver for the QpGen formulation may be invoked from within
+Ampl. Use of this solver is documented in the OOQP Users Guide.
+
+=head1 EXAMPLES
+
+The examples/ directory contains sample data and example programs
+demonstrating the use of OOQP. See the
+L<examplesE<sol>README|examples::README> file for information on the
+contents of the examples directory.
+
+The src/QpExample directory contains an implementation of the
+formulation discussed extensively in the OOQP Users Guide. These files
+can be modified in the manner described in the Users Guide to create a
+specialized QP solver.
+
+=head1 CONTENTS OF THE DISTRIBUTION
+
+The OOQP distribution contains the following top-level subdirectories:
+
+=over 4
+
+=item config/
+
+Helper files for configuring OOQP. This is part of the GNU Autoconf
+system and is of no interest to most users.
+
+=item doc/ 
+
+Documentation for the distribution. Point a browser at doc/index.html
+to see the available documentation.
+
+=item doc-src/ 
+
+Files use to create the documentation for the distribution. These are
+of no interest to most users.
+
+=item examples/ 
+
+Example problems and programs. See L<examplesE<sol>README|examples::README>.
+
+=item include/
+
+Header files for OOQP. The header files are copied from src/ into this
+directory as part of the installation process.
+
+=item lib/
+
+Compiled libraries for OOQP (once you compile them).
+
+=item src/ 
+
+Source files for the OOQP distribution. 
+
+=back
+
+
+=head1 CREDITS
+
+OOQP is maintained by:
+
+=over 4
+
+=item E. Michael Gertz  
+
+emgertz@mac.com
+
+=item Stephen Wright
+
+Computer Sciences Department, University of Wisconsin, Madison.
+L<http://www.cs.wisc.edu/~swright/>
+
+=back
+
+=for html
+Back to the <A HREF=../index.html> Documentation Roadmap </A>.
+
+=cut

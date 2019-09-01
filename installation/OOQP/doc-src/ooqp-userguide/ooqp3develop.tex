@@ -1,0 +1,351 @@
+\section{Overview of the OOQP Development Framework}
+\label{ooqp-develop-overview}
+
+In this section, we start by describing the layered design of OOQP,
+which is the fundamental organizing principle for the classes that
+make it up. We then discuss the directory structure of the OOQP
+distribution, and the makefile-based build process that is used to
+construct executables.
+
+\subsection{The Three Layers of OOQP}
+\label{sec.ooqp-develop-layers}
+
+OOQP has a layered design in which each layer is built from
+abstract operations defined by the layer below it. We sketch these
+layers and their chief components in turn.
+
+\paragraph{QP Solver Layer.} The top layer of OOQP contains the high-level
+algorithms and heuristics for solving quadratic programming
+problems. OOQP implements primal-dual interior-point algorithms, that
+are motivated by the optimality (Karush-Kuhn-Tucker) conditions for a
+QP. We write these conditions for the formulation \eqnok{qpintro} by
+introducing Lagrange multiplier vectors $y$ and $z$ (for the equality
+and inequality constraints, respectively) and a slack vector $s$ to
+yield the following system:
+\begin{subequations} \label{resids}
+\beqa
+\label{resids.1}
+c + Q x -  A^T y - C^T z & = & 0, \\
+\label{resids.2}
+A x - b & = & 0, \\
+\label{resids.3}
+C x - s - d & = & 0, \\
+\label{resids.4}
+S Z e & = & 0, \\
+\label{resids.5}
+s, z & \ge & 0,
+\eeqa
+\end{subequations}
+where $S$ and $Z$ are diagonal matrices whose diagonal elements are
+the components of the vectors $s$ and $z$, respectively. A primal-dual
+interior-point algorithm finds a solution to \eqnok{qpintro} by
+applying Newton-like methods to the nonlinear system of equations
+formed by \eqnok{resids.1}, \eqnok{resids.2}, \eqnok{resids.3}, and
+\eqnok{resids.4}, constraining all iterates $(x^k,y^k,z^k,s^k)$,
+$k=0,1,2,\dots$ to satisfy the bounds \eqnok{resids.5} {\em strictly}
+(that is, all components of $z^k$ and $s^k$ are strictly positive for
+all $k$). 
+
+OOQP implements the primal-dual interior point algorithm of
+Mehrotra~\cite{Meh92b} for linear programming, and the variant
+proposed by Gondzio~\cite{Gon94d} that includes higher-order
+corrections.  See Section~\ref{sec.pdip.algorithms} below, and the
+text of Wright~\cite{IPPD96} for further description of these methods.
+
+\paragraph{Problem Formulation Layer.}
+
+Algorithms in the QP solver layer are built entirely from abstract
+operations defined in the problem formulation layer. This layer
+consists of several classes each of which represents an object of
+interest to a primal-dual interior-point algorithm. The major classes
+are as follows.
+\begin{description}
+  
+\item[Data] Stores the data $(Q, A, C, c, b, d)$ defining the QP
+\eqnok{qpintro}, in an economical format suited to the specific
+structure of the data and the operations needed to perform on it.
+  
+\item[Variables] Contains storage for the primal and dual variables
+$(x, y, z, s)$ of the problem, in a format suited to the specific
+structure of the problem.  Also implements various methods associated
+with the variables, including the computation of a maximum steplength,
+saxpy operations, and calculation of $\mu = (s\T z)/m_{C}$.
+  
+\item[Residuals] Contains storage for the residuals---the vectors that
+indicate infeasibility with respect to the KKT conditions---along with
+methods to calculate these residuals from formulae such as
+(\ref{resids.1}--\ref{resids.4}).  This class also contains methods for
+performing the projection operations needed by the Gondzio approach,
+calculating residual norms, and calculating the current duality gap
+(see Section~\ref{sec:residualsclass} for a discussion of the duality
+gap.)
+  
+\item[LinearSystem] Contain methods to factor the coefficient matrix
+used in the Newton-like iterations of the QP solver and methods that
+use the information from the factorization to solve the linear systems
+for different right-hand sides. The systems that must be solved are
+described in Section~\ref{sec.pdip.algorithms}.
+
+\end{description}
+
+To be concrete in our discussion, we have referred to the QP
+formulation~(\ref{qpintro}) given in the introduction, but the problem
+formulation layer provides abstract operations suitable to many
+different problem formats. For instance, the quadratic program that
+arises from classical support vector machine problems is
+\begin{equation}
+  \label{svm-formulation}
+    \min  \norm{w}^2 + \rho e\T u, \ 
+    \subject \ D ( V w - \beta e ) \geq  e - u, \;\; v \ge 0,
+\end{equation}
+where $V$ is a matrix of empirical observations, $D$ is a diagonal
+matrix whose entries are $\pm 1$, $\rho$ is a positive scalar
+constant, and $e$ is a constant vector of all ones. In OOQP's
+implementation of the solver for this problem, we avoid expressing the
+problem in the form \eqnok{qpgen} by forming the matrices $Q$ and $C$
+explicitly. Rather, the problem formulation layer provides methods to
+perform operations involving $Q$, $C$, and the other data objects that
+define the problem. The QP solver layer implements a solver by calling
+these methods, rather than operating on the data and variables
+explicitly.
+
+Since a solver for general problems of the form \eqnok{qpgen} is
+useful in many circumstances, OOQP provides a solver for this
+formulation, as well as for several specialized formulations such as
+\eqnok{svm-formulation}. Users may readily specialize the abstract
+operations in this layer and thereby create solvers that are
+specialized to yet more problem formulations.
+Section~\ref{sec.new-qp-formulation} gives instructions on how to
+develop specialized implementations of this class.
+ 
+\paragraph{Linear Algebra Layer.} 
+
+Many of the linear algebra operations and data structures in OOQP are
+shared by several problem types.  For instance, regardless of the
+particular QP formulation, the Variable, Data, and LinearSystems
+classes will need to perform saxpy, dot product, and norm calculations
+on vectors of doubles.  Furthermore, most sparse problems will need to
+store matrices in a Harwell-Boeing format. Reimplementing the linear
+algebra operations in each of the problem-dependent classes would
+result in an unacceptable explosion in code size and complexity. The
+solution we implemented in OOQP is to define another layer that
+provides the linear algebra functionality needed by many different
+problem formulations. An added advantage is that by confining linear
+algebra to its own layer, we can implement solvers for distributed
+platforms with little change in the code.
+
+The linear algebra classes are somewhat a different from
+the classes in the QP solver and problem formulation layers. The two
+topmost layers of OOQP consist of small, abstract interfaces with no
+behavior whatsoever. We have provided concrete implementations based
+on these interfaces, but even our concrete classes tend to contain
+only a small number of methods. Hence, these classes are easy to
+understand and easy to override.
+
+By contrast, implementations of linear algebra classes such as
+\texttt{DoubleMatrix} and \texttt{OoqpVector} must supply a relatively
+large amount of behavior. This complexity appears to be inevitable.
+The widely used BLAS library, which is meant to contain only the most
+basic linear algebra operations, consists of forty-nine families of
+functions and subroutines.
+% (each family consists of versions of the
+% routine for different numerical precisions.) 
+As well as defining operations, the linear algebra classes also have
+to handle the storage of their component elements.
+
+Our approach to the linear algebra classes is to identify and provide
+as methods the basic operations that are used repeatedly in our
+implementations of the problem formulation layer. As much as possible,
+we use existing packages such as BLAS~\cite{lawson79basic},
+LAPACK~\cite{lapack} and
+PETSc~\cite{petsc-home-page,petsc-efficient,petsc-manual} to supply
+the behavior needed to implement these methods. Since our goal is
+simplicity, we provide only the functionality that we use. We are not
+striving for a complete linear algebra package but for a package
+that may be conveniently used in the setting of interior point
+optimization algorithms. For this reason, many BLAS operations are not
+provided; and certain operations common in interior-point algorithms,
+but rare elsewhere, are given equal status with BLAS routines.
+
+
+\subsection{OOQP Directory Structure and Build Process}
+
+The OOQP installation process will generate compiled libraries in the
+directory \texttt{lib} and a directory named \texttt{include}
+containing header files.  These libraries and headers may be copied
+into a more permanent system-dependent location. Users who wish to
+call OOQP code from within their own C or C++ programs may use any
+build process they wish to compile and link against the installed
+headers and libraries.
+
+Users who wish to do more complex development with OOQP may find it
+more convenient to work within the source directory \texttt{src}
+and use the OOQP build system to compile their executables. OOQP has a
+modular directory structure in which source and header files that
+logically belong together are placed in their own subdirectory of
+\texttt{src}. For example, code that implements the solver for
+the formulation \eqnok{qpgen} can be found in \texttt{src/QpGen},
+while code that defines classes for dense matrices and dense linear
+equation solvers can be found in \texttt{src/DenseLinearAlgebra}.
+
+
+Any system of building executables in a complex project is necessarily
+complex. This is especially true for object-oriented code, as the most
+common methods for building executables are designed for use with
+procedural (rather than object-oriented) languages. In OOQP, we have
+designed a relatively simple process but one that requires some
+effort to learn and understand.  Users who intend to develop a
+customized solver for a new QP formulation or to replace the linear
+algebra subsystem need to understand something of this process, and
+this section is aimed primarily at them. Users who do not have an
+interest in the details of the build process may safely skip this
+section.
+
+OOQP is built by using the GNU version of the standard Unix
+\verb-make- utility. GNU \verb-make- is freely and widely available,
+yields predictable performance across a wide variety of platforms, and
+has a number of useful features absent in many vendor-provided
+versions of \verb-make-. In this section, we assume that the user has
+a basic understanding of how to write makefiles, which are the files
+used as input to the \verb-make- utility.
+
+OOQP uses a \verb-configure- script, generated by the GNU Autoconf
+utility, to set machine-dependent variables within the makefiles that
+appear in various subdirectories. In the top-level directory,
+\texttt{OOQP}, \verb-configure- generates the global makefile
+\verb-GNUmakefile- from an input file named \verb-GNUmakefile.in-.
+The user who wishes to modify this makefile should alter
+\verb-GNUmakefile.in- and then re-run \verb-configure- to obtain a new
+\verb-GNUmakefile-, rather than altering \verb-GNUmakefile- directly.
+(Users will seldom have cause to alter this makefile or any other file
+under the control of Autoconf but should be aware of the fact that
+some makefiles are generated in this way.)
+
+All subdirectories of the \texttt{src} that contain C++ code also
+contain a file named $\mathtt{Makefile.inc}$.  We give an example of
+such a file from the directory \verb-src/QpExample-, which contains an
+example problem formulation based directly on (\ref{qp}). In the
+\texttt{src/QpExample} directory, the \texttt{Makefile.inc} reads
+as follows.
+\begin{verbatim}
+QPEXAMPLEDIR = $(srcdir)/QpExample
+
+QPEXAMPLEOBJ = \
+    $(QPEXAMPLEDIR)/QpExampleData.o \
+    $(QPEXAMPLEDIR)/QpExampleVars.o \
+    $(QPEXAMPLEDIR)/QpExampleResids.o  \
+    $(QPEXAMPLEDIR)/QpExampleDenseLinsys.o \
+    $(QPEXAMPLEDIR)/QpExampleDense.o 
+
+qpexample_dense_gondzio_OBJECTS = \
+    $(QPEXAMPLEDIR)/QpExampleGondzioDriver.o \
+    $(QPEXAMPLEOBJ) \
+    $(libooqpgondzio_STATIC) \
+    $(libooqpdense_STATIC) $(libooqpbase_STATIC)
+\end{verbatim}
+% I put a $ here to get the highlighting to work in emacs.
+This file contains three makefile variable definitions, specifying the
+subdirectory name (\texttt{QPEXAMPLEDIR}), the list of object files
+specific to the SVM solver (\texttt{QPEXAMPLEOBJ}), and the full list
+of object files that must be linked to create the executable for the
+solver (\texttt{qpexample\_dense\_gondzio\_OBJECTS}).  Every module of
+OOQP contains a similar \texttt{Makefile.inc} file to define variables
+relevant to that module. (Another example is the variable
+\texttt{libooqpgondzio\_STATIC}, used in the definition of
+\texttt{qpexample\_dense\_gondzio\_OBJECTS}, which is defined in
+\texttt{src/QpSolvers/Makefile.inc}.) Note that the variable
+\texttt{srcdir} in this example refers to the OOQP source directory
+and does not need to be defined in
+\texttt{src/QpExample/Makefile.inc}.
+
+Some subdirectories of the \texttt{src} that contain C++ code
+also contain a file named $\mathtt{MakefileTargets.inc}$.  This file
+defines targets relevant to the build process. An example of such a
+file is \verb-src/QpExample/MakefileTargets.inc-, which is as
+follows.
+\begin{verbatim}
+qpexample-dense-gondzio.exe: $(qpexample_dense_gondzio_OBJECTS)
+    $(CXX) -o $@ $(CXXFLAGS) $(LDFLAGS) $(LIBS) \
+        $(qpexample_dense_gondzio_OBJECTS) $(BLAS) $(FLIBS)
+\end{verbatim}
+%%
+%% $ - an extra dollar sign to balance out the one in verbatim
+%% so that the syntaxtic highlighting in emacs works properly.
+The \texttt{qpexample-dense-gondzio.exe} target specifies the
+dependency of the executable on the object list that was defined
+in the corresponding \verb-Makefile.inc- file.
+
+In using \verb-Makefile.inc- and \verb-MakefileTargets.inc- files, we
+separate target definitions from variable definitions because
+unpredictable behavior can occur if the targets are read before all
+variables are defined.
+
+When a user invokes GNU {\tt make} from the {\tt OOQP} directory, the
+utility ensures that
+\begin{itemize}
+  \item all variables defined in files named \verb-Makefile.inc- in
+    {\em direct} subdirectories of the {\tt src} directory are
+    made available in the build;
+
+  \item all targets defined in similarly located files named
+    \verb-MakefileTargets.inc- are also made available;
+    
+  \item {\em direct} subdirectories of the {\tt src} directory that
+    contain a file that is named \verb-Makefile.inc- are placed on the
+    path on which to search for header (.h) files.
+\end{itemize}
+Thus, when the GNU {\tt make} utility is named \verb-gmake-, one may
+build the executable \verb|qpexample-dense-gondzio.exe| by typing
+\begin{verbatim}
+    gmake qpexample-dense-gondzio.exe
+\end{verbatim}
+from the command line from within the {\tt OOQP} directory.
+
+The makefile system can also be used to perform dependency checking.
+Typing 
+\begin{verbatim}
+    gmake depend
+\end{verbatim}
+will cause the Unix \verb-makedepend- utility to generate dependency
+information for all source files in direct subdirectories of the {\tt
+src} directory that contain a file named \verb-Makefile.inc-.  This
+dependency information will then be used in the next build to
+determine whether source files are up-to-date with respect to their
+included header files.
+
+We emphasize that this process works only on direct subdirectories of
+the {\tt src} directory. Files named \verb-Makefile.inc- in more
+deeply nested subdirectories will not, without extra effort, be
+recognized. We deliberately restricted the search to direct
+subdirectories of the source directory in order to make the build
+process more predictable.
+
+User-defined \verb-Makefile.inc- and \verb-MakefileTargets.inc- need
+be no more complicated than the example files given above. Some of the
+instances of these files that are included in the OOQP distribution
+contain more variables and targets than those shown above because they
+need to accomplish additional tasks. Moreover, they may contain
+conditional statements to disable certain targets, if these targets
+depend on external packages that are not present on the computer at
+the time of the build. These advanced issues may be ignored by all but
+developers of OOQP.
+
+Finally, we mention that some external packages, such as PETSc,
+require specializations to the global makefile. When building
+executables that use these packages, one cannot use the default global
+makefile {\tt GNUmakefile}. To build the executable
+\verb|qpbound-petsc-mehrotra.exe|, for instance, one must type the
+following line.
+\begin{verbatim}
+   gmake -f PetscMakefile qpbound-petsc-mehrotra.exe
+\end{verbatim}
+We may include other such specialized makefiles in the OOQP
+distribution in the future. While inclusion of these files is a minor
+inconvenience, we consider it important to isolate changes to the
+global makefile in this manner, so that misconfiguration of a certain
+package is less likely to cause problems in an unrelated build.
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "ooqp-userguide"
+%%% End: 

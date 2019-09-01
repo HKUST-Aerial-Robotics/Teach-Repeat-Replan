@@ -1,0 +1,618 @@
+
+\section{Creating a New QP Formulation}
+
+\label{sec.new-qp-formulation}
+
+Users who wish to construct a solver for a class of QPs with a
+particular structure not supported in the OOQP distribution may
+consider using the framework to build a new solver that represents and
+manipulates the problem data and variables in an economical, natural,
+and efficient way. In this section, we describe the major classes that
+must be implemented in order to develop a solver for a new problem
+formulation.
+
+Most of the effort in developing a customized solver for a new class
+of structured QPs is in reimplementing the classes in the problem
+formulation layer.  As described in
+Section~\ref{ooqp-develop-overview}, this layer consists of five main
+classes---{\tt Data}, {\tt Variables}, {\tt Residuals}, {\tt
+LinearSystem}, and {\tt ProblemFormulation}---that contain data
+structures to store the problem data, variables, and residuals, and
+methods to perform the operations that are required by the
+interior-point algorithms. 
+
+As discussed in Section~\ref{sec.pdip.algorithms}, the core algebraic
+operation in an interior-point solver is the solution of a Newton-like
+system of linear equations. For formulation~\eqnok{qp}, the general
+form of this system is as follows
+\beq \label{lin.general}
+\bmat{cccc} Q & -A^T & -C^T & 0 \\
+A & 0 & 0 & 0  \\
+C & 0 & 0 & -I \\
+0 & 0 & S & Z \emat \bmat{c} \Dx \\ \Dy \\ \Dz \\ \Ds \emat = -
+\bmat{c} r_Q \\ r_A \\ r_C \\ r_{z,s} \emat,
+\eeq 
+%
+where $r_Q$, $r_A$, and $r_C$ are defined in
+equations~\eqnok{lin.defs.rQ}, \eqnok{lin.defs.rA},
+and~\eqnok{lin.defs.rC}, and $r_{z,s}$ is chosen in a variety of ways, as
+described in Section~\ref{sec.qp-solver}.  Most of the objects that
+populate a problem formulation layer can be found in this system. The
+\texttt{Variables} in formulation \eqnok{qp} break down naturally into
+four components $x$, $y$, $z$, and $s$. Likewise, there are naturally
+four components to the \texttt{Residuals} of this formulation. For
+other problem formulations, such as SVM \eqnok{svm-formulation}, this
+partitioning of the variables is not natural, and a scheme more suited
+to the particular formulation is used instead. 
+However, to focus our discussion of the implementation of the problem
+formulation layer in this section, we will continue to refer to the
+particular formulation \eqnok{qp} and the system \eqnok{lin.general}.
+The implementations of \eqnok{qp} discussed in this section may be
+found in the OOQP distribution in directory \texttt{src/QpExample}.
+
+In reimplementing the problem formulation layer for a new QP
+structure, it may be helpful to make use of the classes from the {\em
+linear algebra layer}. As mentioned in
+Section~\ref{ooqp-develop-overview}, this layer contains classes for
+storing and operating on dense matrices, sparse matrices, and
+vectors. These classes can be used as building blocks for implementing
+the more complex storage schemes and arithmetic operations needed in
+the problem formulation layer.
+
+We first elaborate on the use of the linear algebra layer and then
+describe in some detail the process of implementing the five classes
+in the problem formulation layer.
+
+\subsection{Linear Algebra Operations}
+
+Most implementations of the problem formulation layer that appear in
+the OOQP distribution (the {\tt QpGen}, {\tt QpExample}, {\tt
+QpBound}, and {\tt Huber}, and {\tt Svm} implementations) all are
+built using the objects in OOQP's linear algebra layer. The classes in
+this layer represent objects such as matrices and vectors, and they
+provide methods that are especially useful for developing interior
+point QP solvers.  By basing our problem formulation layer on the
+abstract operations of the linear algebra layer we gain another
+significant advantage: we can use the same problem formulation code
+for several quite varied representations of vectors and matrices.  For
+instance, the implementation of the problem formulation layer for QPs
+with simple bounds is independent of whether the Hessian matrix is
+represented as a dense array on a single processor or as a sparse
+array distributed across several processors.
+
+Use of OOQP's linear algebra layer in implementing the problem
+formulation layer is not mandatory.  Users are free to define their
+own matrix and vector data structures and implement their own linear
+algebra operations (inner products, saxpys, factorizations, and so on)
+without referring to OOQP's linear algebra objects at all.  The
+authors of OOQP recognize that there is a learning curve associated
+with the use of the abstract operations in OOQP's linear algebra
+objects and that the implementation might proceed more quickly if
+users define their own linear algebra in terms of concrete operations
+on concrete data.
+
+For maximum effectiveness, we recommend a compromise approach. While
+the base classes for our linear algebra layer are defined only in
+terms of abstract operations, several of the classes (such as {\tt
+SimpleVector}) may also be used concretely.  Users can start by
+defining their problem formulation in terms of these simple classes
+but define their own concrete operations on the data. Later, they can
+replace their concrete operations by the abstract methods supplied
+with these classes. Finally, having gained proficiency in the use of
+these classes, they may then replace the entire class with a more
+appropriate one.  Section~\ref{sec.using-linear-algebra} is a short
+tutorial on the linear algebra layer that can be consulted by those
+who wish to use the layer in this way.
+
+\subsection{Specializing the Problem Formulation Layer}
+
+We now detail how to implement the various classes in the problem
+formulation layer.
+
+\subsubsection{Specializing {\tt Data}}
+\label{sec:dataclass}
+
+The purpose of the {\tt Data} class is to store the data defining the
+problem, in some appropriate format, to provide methods for performing
+operations with the data matrices (for example, matrix
+multiplications or insertion of problem matrices into the larger
+matrices of the form \eqnok{lin.affine} or \eqnok{lin.final}), for
+calculating some norm of the data, for filling the data structures
+with problem data (read from a file, for instance, or passed from a
+modeling language or MATLAB), for printing the data, and for
+generating random problem instances for testing and benchmarking
+purposes.
+
+Since both the data structures and the methods implemented in {\tt
+  Data} depend so strongly on the structure of the problem, the parent
+class is almost empty.  It includes only two pure virtual functions,
+{\tt datanorm} (of type {\tt double}) and {\tt print}, whose
+implementation {\em must} appear in any derived classes.
+
+A derived class of {\tt Data} for the formulation \eqnok{qp} in which
+the problem data is dense would include storage for the vectors $c$,
+$b$, and $d$ as arrays of doubles; storage for $A$ and $C$ as
+two-dimensional arrays of doubles; and storage for the lower triangle
+of the symmetric matrix $Q$. In our implementation of the derived
+class \texttt{QpExampleData}, we have provided methods for multiplying
+by the matrices $Q$, $A$, and $C$ and for copying the data into a
+larger structures such as the matrix in~\eqnok{lin.general}. We find
+it convenient to provide methods like this for manipulating the data
+in our \texttt{QpExampleData} class, rather than having code from
+other problem formulation classes manipulate the data structures
+directly; the extra generality that the added layer of encapsulation
+affords has sometimes proven useful.
+% We discuss in Section~\ref{sec:linsysclass} the possible techniques
+% for solving \eqnok{lin.equiv.1}, but note for now that the derived
+% {\tt Data} class for this case would contain methods for placing $Q$,
+% $A$, and $C$ into the data structure for this system (which is stored
+% in the {\tt LinearSystem} class). Obviously these methods must take
+% account of the format used to store the large matrix; for example,
+% whether it is stored without regard to symmetry in Harwell-Boeing
+% format, or whether it is stored in some more compact symmetric format.
+
+
+Consider now the two pure virtual functions {\tt datanorm} and {\tt
+print}. One reasonable implementation of {\tt datanorm} for the
+formulation \eqnok{qp} would simply return the magnitude of of the
+largest element in the matrices $Q$, $A$, and $C$, and the vectors
+$c$, $b$, and $d$ that define \eqnok{qp}.  The implementation of {\tt
+print} might print the data objects $Q$, $A$, $C$, $c$, $b$, and $d$
+to standard output in some useful format. Although not compulsory, we
+might also define a routine {\tt datarandom} to generate an instance
+of \eqnok{qp}, given user-defined dimensions $n$, $m_A$, and $m_C$,
+and possibly a desired level of sparsity for the matrices.  Naturally,
+this method should take care that $Q$ is positive semidefinite.
+
+The derived {\tt Data} class might also contain one or more
+implementations of a {\tt datainput} method that allow the user to
+define the problem data. We could, for instance, have one implementation
+of {\tt datainput} that reads the data in some simple format from
+ascii files and another implementation that reads a file in MPS
+format, appropriately extended for quadratic programming (Maros and
+M\'esz\'aros~\cite{MarM99}). Since the MPS format allows for bounds
+and for constraints of the form $l_c \le C x \le u_c$, the latter
+implementation generally would need to perform transformations to pose
+the problem in the form \eqnok{qp}. (The data from a MPS file is more
+naturally represented by our ``general'' QP formulation~\eqnok{qpgen}.)
+
+% Numerous other methods can be added to the derived class, over and
+% above those defined in the parent {\tt Data} class. As we discuss in
+% later sections, our implementation of the solver for \eqnok{qp}
+% include auxiliary methods that construct the linear system to be
+% solved at each iteration; that perform multiplications of given
+% vectors by $A$, $A$, $C$, $A^T$, and $C^T$; that ``get'' certain data
+% elements (for example, {\tt getM1} returns the number of rows in $A$).
+% These methods are specific to the problem structure \eqnok{qp}, so are
+% not defined in the parent class {\tt Data}.
+
+\subsubsection{Specializing {\tt Variables}}
+\label{sec:variablesclass}
+
+Instances of {\tt Variables} class store the problem variables
+($(x,y,z,s)$ in the case of \eqnok{qp}) in whatever format is
+appropriate to the problem structure. The class includes a variety of
+methods essential in the implementation of Algorithm MPC. Most of them
+defined as pure virtual functions, because they strongly depend on the
+structure of the problem.
+
+We now sketch the main methods for the {\tt Variables} class,
+illustrating each one by specifying its implementation for the
+formulation \eqnok{qp}.
+
+\begin{description}
+\item[] {\tt mu}: Calculate the complementarity gap: $\mu = z^Ts/m_C$.
+  
+\item[] {\tt mustep}: Calculate the complementarity gap that would be
+obtained from a step of length $\alpha$ along a specified direction
+from the current point. For \eqnok{qp}, given the search direction
+$(\Dx, \Dy, \Dz, \Ds)$ (supplied in an argument of type {\tt
+Variables}) and a positive scalar $\alpha$, this method would
+calculate
+\[
+(z+\alpha \Dz)^T (s+\alpha \Ds) / m_C.
+\]
+
+\item[] {\tt negate}: Multiply the current set of variables by $-1$. For
+\eqnok{qp}, we would replace $(x,y,z,s)$ by $-(x,y,z,s)$.
+  
+\item[] {\tt saxpy}: Given another set of variables and a scalar,
+perform a saxpy operation with the current set of variables. For
+\eqnok{qp}, we would pass a second instance of a {\tt Variables} class
+containing $(x',y',z',s')$, together with the scalar $\alpha$ as
+arguments, and perform the replacement
+\[
+(x,y,z,s) \leftarrow  (x,y,z,s) + \alpha (x',y',z',s').
+\]
+
+\item[] {\tt stepbound}: Calculate the longest step in the range
+$[0,1]$ that can be taken from the current point in a specified
+direction without violating nonnegativity of the complementary
+variables. For \eqnok{qp}, the argument would be the direction
+$(x',y',z',s')$ (stored in another instance of the{\tt Variables}
+class), and this function would return the largest value of $\alpha$
+in $[0,1]$ such that the condition $(z + \alpha z', s + \alpha s') \ge
+0$ is satisfied.
+  
+\item[] {\tt findBlocking}: Similar to {\tt stepbound} but returns
+additional information. Besides returning the maximum step $\alpha$ in
+the range $(0,1]$ that can be taken without violating the appropriate
+nonnegativity constraint, the method indicates whether a primal or
+dual variable was the ``blocking'' variable (the one that will violate
+nonnegativity if the step $\alpha$ is any longer) by setting its last
+argument to $1$ for a primal blocking variable, to $2$ for a dual
+blocking variable, and to $0$ if a full steplength $\alpha = 1$ can be
+taken without violating nonnegativity. In its second argument, the
+method returns the component of the primal variable vector that
+corresponds to the blocking index, while in its third argument, the
+method returns the same component of the primal {\em step} vector. In
+its fourth and fifth arguments, it returns the corresponding
+components of the dual variable vector and the dual step vector,
+respectively. To illustrate this functionality, suppose in the case of
+\eqnok{qp} that the step bound is $\alpha$ and the blocking variable
+is the $i$th primal variable; that is, $s_i + \alpha s'_i = 0$, while
+$(z+ \alpha z', s+\alpha s') \ge 0$. Then the final argument of {\tt
+findBlocking} returns $1$, while the second through fifth arguments
+return the real numbers $s_i$, $s'_i$, $z_i$, and $z'_i$,
+respectively. The return value of the method itself would be $\alpha$.
+
+When both a primal and a dual index are ``blocking,'' the method
+reports the dual variable, by setting the final argument to $2$ and
+reporting the components corresponding to the dual index. Subject to
+the latter condition, when there is a tie between different indices,
+the smaller index is reported.
+  
+\item[] {\tt interiorPoint}: Set all components of the complementary
+  variables to specified positive constants $\alpha$ and $\beta$. In
+  the case of \eqnok{qp}, we would set $s \leftarrow \alpha e$ and
+  $z \leftarrow \beta e$, where $e$ is the vector whose elements are
+  all $1$.
+  
+\item[] {\tt shiftBoundVariables}: Add specified positive constants
+  $\alpha$ and $\beta$ to the complementary variables. For \eqnok{qp},
+  this method would perform the replacements $s \leftarrow s + \alpha
+  e$ and $z \leftarrow z + \beta e$.
+  
+\item[]{\tt print}: Print the variables in some intelligible
+  problem-dependent format.
+  
+\item[] {\tt copy}: Copy the data from one instance of the {\tt
+    Variables} class into another.
+  
+\item[] {\tt onenorm, infnorm}: Compute the $\ell_1$ and
+  $\ell_{\infty}$ norms of the variables. For \eqnok{qp}, these
+  quantities would be $\| (x,y,z,s) \|_1$ and $\|
+  (x,y,z,s) \|_{\infty}$, respectively.
+
+\end{description}
+
+
+The usefulness of some of these methods in implementing Algorithm MPC
+is obvious. For instance, {\tt saxpy} is used to take a step along the
+eventual search direction; {\tt stepbound} is used to compute
+$\alpha_{\rm aff}$ and $\alpha_{\rm max}$; {\tt mustep} is used
+to compute $\mu_{\rm aff}$. The methods {\tt interiorPoint} and {\tt
+  shiftBoundVariables} can be used in the heuristic to determine the
+starting point, while {\tt findBlocking} plays an important role in
+Mehrotra's heuristic for determining the step length.
+
+
+\subsubsection{Specializing {\tt Residuals}}
+\label{sec:residualsclass}
+
+The {\tt Residuals} class calculates and stores the quantities that
+appear on the right-hand side of the linear systems that are solved at
+each iteration of the primal-dual method. These residuals can be
+partitioned into two fundamental categories: the components arising
+from the linear equations in the KKT conditions, and the components
+arising from the complementarity conditions. For the formulation
+\eqnok{qp}, the components $r_Q$, $r_A$, and $r_C$ (which arise from
+KKT linear equations \eqnok{lin.defs.rQ}, \eqnok{lin.defs.rA}, and
+\eqnok{lin.defs.rC}) belong to the former class, while $r_{z,s}$
+belongs to the latter.  As above, we describe the roles of the main
+methods in the {\tt Residuals} class with reference to the formulation
+\eqnok{qp}.
+
+\begin{description}
+\item[] {\tt calcresids}: Given a {\tt Data} object and a {\tt
+    Variables} object, calculate the residual components arising from
+  the KKT linear equations. For \eqnok{qp}, this method calculates
+  $r_Q$, $r_A$, and $r_C$ using the formulae \eqnok{lin.defs.rQ},
+  \eqnok{lin.defs.rA}, and \eqnok{lin.defs.rC}, respectively.
+  
+\item[] {\tt dualityGap}: Calculate the duality gap, which we define
+for the formulation \eqnok{qp} as follows:
+\beq \label{gapk}
+\mbox{gap}_k \defeq  (x^k)^T  Q x^k - b^T y^k + c^T x^k - d^T z^k.
+\eeq
+See the discussion below for guidance in formulating an expression for
+this parameter.
+  
+\item[] {\tt residualNorm}: Calculate the norm of the components
+  arising from the KKT linear equations. For \eqnok{qp}, this method
+  returns $\| (r_Q, r_A, r_C) \|$ for some norm $\| \cdot \|$.
+  
+\item[] {\tt clear\_r1r2}: Zero the components arising from the KKT
+  linear equations. (Gondzio's method requires the solution of linear
+  equations in which these residual components are replaced by zeros.)
+  
+\item[] {\tt clear\_r3}: Set the complementarity components to zero.
+  In the case of \eqnok{qp}, for which the general form of the linear
+  system is \eqnok{lin.general}, this operation sets $r_{z,s}
+  \leftarrow 0$. (This operation is needed only in Gondzio's
+  algorithm.)
+ 
+\item[] {\tt add\_r3\_xz\_alpha}: Given a scalar $\alpha$ and a {\tt
+    Variables} class, add a complementarity term and a constant to
+  each of the complementarity components of the residual vector. For
+  \eqnok{qp}, given variables $(x,y,z,s)$, we would set
+\[
+r_{z,s} \leftarrow r_{z,s} + Z S e + \alpha e,
+\]
+where $Z$ and $S$ are the diagonal matrices constructed from the
+$z$ and $s$ variables.
+
+\item[] {\tt set\_r3\_xz\_alpha}: As for {\tt add\_r3\_xz\_alpha}, but
+  overwrite the existing value of $r_{z,s}$; that is, set $r_{z,s}
+  \leftarrow Z S e + \alpha$.
+  
+\item[] {\tt project\_r3}: Perform the projection operation used in
+Gondzio's method on the $r_{z,s}$ component of the residual, using the
+scalars $\rho_{\rm min}$ and $\rho_{\rm max}$.
+
+\end{description}
+
+As discussed in Section~\ref{sec.status}, the {\tt residualNorm} and
+{\tt dualityGap} functions are used in termination and infeasibility
+tests.  Users familiar with optimization theory will recognize the
+concept of the duality gap and will also recognize that the formula
+$x^TQx - b^Ty + c^Tx - d^Tz$ used in \eqnok{gapk} is one of a number
+of expressions that are equivalent when the residuals $r_Q$, $r_A$,
+and $r_C$ are all equal to zero. One such equivalent expression is the
+formula $s^T z$, used in the definition of $\mu$ in the {\tt
+Variables} class. We find it useful, however, to use a definition of
+the duality gap from which the slack variables have been eliminated
+and all the linear equalities in the KKT conditions have been taken
+into account. Such a definition can be obtained by starting with the
+definition of $\mu$ and successively substituting from each of the KKT
+conditions. For the case of \eqnok{qp}, we start with $s^Tz$,
+substitute for $s$ from the equation $Cx-s-d=0$ (see \eqnok{resids.3})
+to obtain $z^T(Cx-d)$, then substitute for $C^Tz$ from $c + Q x - A^T
+y - C^T z = 0$ (see \eqnok{resids.1}) to obtain $c^Tx + x^TQx - x^TAy
+- d^Tz$, and finally substitute for $Ax$ from $Ax-b=0$ (see
+\eqnok{resids.2}) to obtain the final expression.
+
+% While any of these equivalent expressions will be
+% effective for the termination test, the most useful expression for
+% detecting infeasibility will depend on the problem formulation. Users
+% defining their own problem formulation may obtain a useful expression
+% for the duality gap by starting with an expression such as $s\T z$ and
+% applying the following general process.
+% 
+% First, identify which variables in the expression $s\T z$ are slack
+% variables, and substitute an equivalent expression for these variables
+% based on the residual equations. A slack variable appears in the
+% residual equations with the identity as its coefficient.  In this
+% example $s$ is the slack variable in the equation $r_C = C x - d - s =
+% 0$.  The expression for the gap in our sample formulation after
+% substituting for $s$ is
+% \[
+%  x\T C\T z - d\T z. 
+% \]
+% Next, substitute expressions derived from any remaining residual equations
+% into the expression for the gap, using each residual equation exactly
+% once. For instance, continuing the derivation of the gap for the
+% example formulation, we may substitute $C\T z = c + Q x - A\T y$ 
+% to obtain
+% \[
+% c\T x + x\T Q x - x\T A\T y - d\T z
+% \]
+% and then substitute $A x = b$ to obtain the final expression for the gap
+% \[
+% \mbox{gap} \defeq  x^T  Q x - b^T y + c^T x - d^T z.
+% \]
+% One should strive to use as many non-slack variables and constant
+% vectors as possible in the duality gap.
+
+In Algorithm MPC, the method
+{\tt set\_r3\_xz\_alpha} is called with the current {\tt Variables}
+and $\alpha=0$ to calculate the right-hand side for the affine-scaling
+system \eqnok{lin.affine}. Once $\sigma$ has been determined and the
+affine-scaling step is known, {\tt add\_r3\_xz\_alpha} is called with
+$\alpha = -\sigma \mu$ and the {\tt Variables} instance that contains
+the affine-scaling step, to add the necessary terms to the $r_{z,s}$
+component to obtain the system \eqnok{lin.final}. 
+
+% The purpose of the other methods in the algorithm is fairly obvious.
+ 
+\subsubsection{Specializing {\tt LinearSystem}}
+\label{sec:linsysclass}
+
+As mentioned above, major algebraic operations at each interior-point
+iteration are solutions of linear systems to obtain the predictor and
+corrector steps. For the formulation \eqnok{qp}, these systems have
+the form \eqnok{lin.general}.  Such systems need to be solved two to
+six times per iteration, for different choices of the right-hand side
+components but the same coefficient matrix.  Accordingly, it makes
+sense to logically separate the \texttt{factor} method that
+operates only on the matrix and the {\tt
+  solve} method that operates on a specific right-hand side.
+
+We use the term ``factor'' in a general sense, to indicate the part of
+the solution process that is {\em independent of the right-hand side}.
+The {\tt factor} method could involve certain block-elimination
+operations on the coefficient matrix, together with an $LU$, $LDL^T$,
+or Cholesky factorization of a reduced system. Alternatively, when we
+use an iterative solver, the {\tt factor} operation could involve
+computation of a preconditioner.  The {\tt factor} class may need to
+include storage---for a permutation matrix, for triangular factors of
+a reduced system, or for a preconditioner---for use in subsequent {\tt
+solve} operations.  We use the term ``solve'' to indicate that part of
+the solution process depends on the specific right-hand side. Usually,
+the results of applying methods from the {\tt factor} class are used
+to facilitate or speed the process. Depending on the algorithm we
+employ, the {\tt solve} method could involve triangular
+back-and-forward substitutions, matrix-vector multiplications,
+applications of a preconditioner, and/or permutation of vector
+components.
+
+Both {\tt factor} and {\tt solve} are pure virtual functions; their
+implementation is left to the derived class because they depend entirely
+on the problem structure.  For problems with special structure, the
+{\tt factor} method is the one in OOQP that gives the most scope for
+exploitation of the structure and for computational savings over naive
+strategies. The SVM formulation is one case in which an appropriate
+implementation of the {\tt factor} class yields significant savings
+over an implementation that is not aware of the structure. Another
+instances in which an appropriate implementation of {\tt factor} can
+produce large computational savings include the case in which $Q$,
+$A$, and $C$ have a block-diagonal structure, as in optimal control
+problems, allowing \eqnok{lin.equiv.1} to be reordered and solved with
+either a banded matrix factorization routine or a discrete Riccati
+substitution (Rao, Wright, and Rawlings~\cite{RaoWR97}).
+
+We now describe possible implementations of {\tt factor} for the
+formulation \eqnok{qp}.  Direct factorization of the matrix in
+\eqnok{lin.general} is not efficient in general as it ignores the
+significant structure in this system---the fact that $S$ and $Z$ are
+diagonal and the presence of a number of zero blocks. Since the
+diagonal elements of $Z$ and $S$ are strictly positive, we can do a
+step of block elimination to obtain the following equivalent system:
+\begin{subequations} \label{lin.equiv}
+\beqa 
+\label{lin.equiv.1}
+\bmat{ccc} Q & A^T & C^T \\ 
+A & 0 & 0 \\
+C & 0 & -Z^{-1} S 
+\emat \bmat{c} \Dx \\ -\Dy \\ -\Dz \emat & = &
+\bmat{c} -r_Q \\ -r_A \\ -r_C - Z^{-1} r_{z,s} \emat, \\
+\label{lin.equiv.2}
+\Ds & = & Z^{-1} (-r_{z,s} - S \Dy ).
+\eeqa
+\end{subequations}
+Application of a direct factorization code for symmetric indefinite
+matrices to this equivalent form is an effective strategy. The {\tt
+factor} routine would perform symmetric ordering, pivoting, and
+computation of the factors, while {\tt solve} would use these factors
+to solve \eqnok{lin.equiv.1} and then substitute into
+\eqnok{lin.equiv.2} to recover $\Ds$.
+
+Another possible approach is to perform another step of block
+elimination and obtain a further reduction to the form
+\beq \label{lin.equiv.compact}
+\bmat{cc} Q + C^T Z S^{-1} C & A^T \\ A & 0 \emat
+\bmat{c} \Dx \\ -\Dy \emat =
+\bmat{c} -r_Q - C^T S^{-1} (Z r_C + r_{z,s}) \\ -r_A \emat.
+\eeq
+%
+The main operation in {\tt factor} would then be to apply a symmetric
+indefinite factorization procedure to the coefficient matrix in this
+system, while {\tt solve} would perform triangular substitutions to
+solve \eqnok{lin.equiv.compact} and then substitute to recover $\Dz$
+and $\Ds$ in succession. This variant is less appealing than the
+approach based on \eqnok{lin.equiv.1}, however, since the latter
+approach allows the factorization routine to compute its own pivot
+sequence, while in \eqnok{lin.equiv.compact} we have partially imposed
+a pivot ordering on the system by performing the additional step of
+block elimination. However, if the problem \eqnok{qp} contained no
+equality constraints (that is, $A$ and $b$ null), the approach
+\eqnok{lin.equiv.compact} might be useful, as it would allow a symmetric
+{\em positive definite} factorization routine to be applied to the
+matrix $Q + C^T Z S^{-1} C$.
+
+Alternative implementations of the {\tt factor} and {\tt solve}
+classes for \eqnok{qp} could apply iterative methods such as
+QMR~\cite{Fre93,FreN91} or GMRES~\cite{Wal89} (see also
+Kelley~\cite{ctk:roots}) to the system \eqnok{lin.equiv.1}. Under this
+scenario, the role of the {\tt factor} routine is limited to choosing
+a preconditioner. Since some elements of the diagonal matrix $Z^{-1}
+S$ approach zero while others approach $\infty$, a diagonal scaling
+that avoids the resulting ill conditioning should form part of the
+preconditioning strategy.
+
+\subsubsection{Specializing \texttt{ProblemFormulation}}
+\label{specializing-problem-formulation}
+
+Once a user has created new subclasses of \texttt{Data},
+\texttt{Variables}, \texttt{Residuals}, and \texttt{LinearSystem}
+appropriate to the new QP formulation, he or she must create a
+subclass of \texttt{ProblemFormulation} to assemble a compatible set
+objects to be used by a QP solver.  Assembly might seem to be a simple
+task not requiring the use of an additional assembly class, but in
+practice the process of creating a compatible set of objects can
+become quite involved, as we now discuss.
+
+Consider our example QP formulation~\eqnok{qp}. Even in this simple
+case, one must create all vectors and matrices so that they have
+compatible sizes and so that they are able to copy or wrap the given
+problem data. The more abstract and flexible a problem formulation is,
+the more options tend to be present when the objects are created. If
+we wish to create a subclass of \texttt{Variables} for our new QP
+formulation in which the code is independent of whether the solver is
+executed on a uniprocessor platform or on a multiprocessor platform
+with distributed data, we must make some other arrangements to ensure
+that when the instance of \texttt{Variables} is created, the storage
+for the variables is allocated and distributed in the appropriate way.
+A traditional approach for managing this kind of complexity is to
+isolate the code for creating a compatible set of components in a
+separate subroutine. In OOQP, we use the same principle, isolating the
+code for managing the complexity in the methods of a subclass of
+\texttt{ProblemFormulation}.
+
+The abstract \texttt{ProblemFormulation} class has the following
+prototype.
+\begin{verbatim}
+class ProblemFormulation {
+public:
+  // makeData will often take parameters.
+  //  virtual Data          * makeData()      = 0;
+  virtual Residuals     * makeResiduals( Data * prob_in ) = 0;
+  virtual LinearSystem  * makeLinsys( Data * prob_in )    = 0;
+  virtual Variables     * makeVariables( Data * prob_in ) = 0;
+  virtual ~ProblemFormulation() {};
+};
+\end{verbatim}
+The \texttt{makeVariables} method is responsible for creating an
+instance of a subclass of \texttt{Variables} that is appropriate for
+this problem structure and for the computational platform. The other
+methods have similar purposes for instances of the other subclasses in
+the problem formulation layer.  An advantage to encapsulating the
+creation code in a {\tt ProblemFormulation} class is that it is not
+necessary to specify how many copies of each object need be created.
+This additional flexibility is useful because different QP algorithms
+need different numbers of instances of variable and residual classes.
+
+Normally, an instance of \texttt{ProblemFormulation} will be given any
+parameters that it needs to build a compatible set of objects when it
+is created. Take, for example, the class \texttt{QpExampleDense},
+which is a subclass of \texttt{ProblemFormulation} used to create
+objects for solving QPs of the form \eqnok{qp} using dense linear
+algebra. A partial prototype for the \texttt{QpExampleDense} class is
+as follows.
+\begin{verbatim}
+class QpExampleDense : public ProblemFormulation {
+ protected:
+  int mNx, mMy, mMz;
+ public: 
+  QpExampleDense( int nx, int my, int mz );
+};
+\end{verbatim}
+When a \texttt{QpExampleDense} is created by code of the form
+\begin{verbatim}
+QpExampleDense * qp = new QpExampleDense( nx, my, mz );
+\end{verbatim}
+it records the problem dimensions $n$, $m_A$, and $m_C$, allowing it
+subsequently to create objects of the right size.
+
+Note that the \texttt{ProblemFormulation} class does not contain
+the declaration of an abstract \texttt{makeData} method. One normally
+needs additional information to create \texttt{Data} objects, namely,
+the problem data itself. A \texttt{makeData} method with no parameters
+is normally useless; on the other hand,  no one set of
+parameters would be useful for all formulations. Therefore,
+there is no appropriate abstract definition of \texttt{makeData}.
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "ooqp-userguide"
+%%% End: 

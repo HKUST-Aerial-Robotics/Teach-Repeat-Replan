@@ -1,0 +1,15 @@
+AMPLHOOKDIR = $(srcdir)/Ampl
+AMPL_ENABLED = @AMPL_ENABLED@
+
+AMPL_SOLVERS  := @AMPL_SOLVERS@
+
+ifeq ($(AMPL_ENABLED),ampl_enabled)
+# Be very careful not to add a -I to the includes line
+INCLUDES +=   $(patsubst %, -I%, $(AMPL_SOLVERS))
+endif
+
+
+OOQPAMPLOBJ = $(AMPLHOOKDIR)/qpgen-sparse-gondzio-ampl.o \
+	      $(CQPGENSPARSEOBJ) \
+	      $(libooqpgondzio_STATIC) $(libooqpgensparse_STATIC) \
+	      $(libooqpsparse_STATIC) $(libooqpbase_STATIC)

@@ -1,0 +1,486 @@
+\section{Specializing Linear Algebra Objects}
+\label{sec.specializing-linalg}
+
+The solver supplied in the OOQP distribution for the formulation
+\eqnok{qpgen} with sparse data uses the MA27~\cite{duff82ma27} sparse
+indefinite linear equation solver from the Harwell Subroutine Library
+to solve the systems of linear equations that arise at each
+interior-point iteration. Some users may wish to replace MA27 with a
+different sparse solver. (Indeed, we implemented a number of
+different solvers during the development of OOQP.) Users also may want
+to make other modifications to the linear algebra layer supplied with
+the distribution. For example, it may be desirable to alter the
+representations of matrix and vectors that are implemented in OOQP's
+linear algebra layer, by creating new subclasses of
+\texttt{OoqpVector}, \texttt{SymMatrix}, \texttt{GenMatrix}, and
+\texttt{DoubleStorage}. One motivation for doing so might
+be to embed OOQP in an applications code that defines its own
+specialized matrix and vector storage schemes.
+
+In Section~\ref{sec:new.linear.solver}, we describe the process of
+replacing MA27 by a new linear solver.
+Section~\ref{sec:special.matvec} discusses the subclassing of objects
+in OOQP's linear algebra layer that may be carried out by users who
+wish to specialize the representations of matrices and vectors.
+
+\subsection{Using a Different Linear Equation Solver}
+\label{sec:new.linear.solver}
+
+The MA27 solver for symmetric indefinite systems of linear equations
+is an efficient, freely available solver from the Harwell Subroutine
+Library that is widely used to solve the linear systems that arise in
+the interior-point algorithm applied to sparse QPs of the form
+\eqnok{qpgen}. By the nature of OOQP's design, however, an advanced
+user can substitute another solver without much trouble. This section
+outlines the steps that must be taken to do so.  We focus on replacing
+a sparse linear solver because this operation is of greater practical
+import than replacing a dense solver and because there are a
+greater variety of sparse factorization codes than of dense codes.
+
+\subsubsection{Creating a Subclass of {\tt DoubleLinearSolver}}
+\label{sec.subclass.DoubleLinearSolver}
+
+The first step is to create a subclass of the
+\texttt{DoubleLinearSolver} class. A typical subclass will have the
+following prototype.
+\begin{verbatim}
+#include "DoubleLinearSolver.h"
+#include "SparseSymMatrix.h"
+#include "OoqpVector.h"
+
+class MyLinearSolver : public DoubleLinearSolver {
+  SparseSymMatrix * mStorage;
+public:
+  MyLinearSolver( SparseSymMatrix * storage );
+  virtual void diagonalChanged( int idiag, int extent );
+  virtual void matrixChanged();
+  virtual void solve ( OoqpVector& vec );
+  virtual ~MyLinearSolver();
+};
+\end{verbatim}
+Each \texttt{DoubleLinearSolver} object is associated with a matrix.
+Therefore, a typical constructor for a subclass
+\texttt{MyLinearSolver} of \texttt{DoubleLinearSolver} would be as
+follows.
+\begin{verbatim}
+MyLinearSolver::MyLinearSolver( SparseSymMatrix * ssm )
+{
+    IotrAddRef( &ssm );
+    mMat = ssm; // Here mMat is a data member of MyLinearSolver.
+}
+\end{verbatim}
+The call to \texttt{IotrAddRef} establishes an owning reference to the
+matrix (see Section~\ref{sec.ref.counting}). It must be balanced by a
+call to \texttt{IotrRelease} in the destructor, as follows.
+\begin{verbatim}
+MyLinearSolver::~MyLinearSolver()
+{
+    IotrRelease( &mMat );
+}
+\end{verbatim}
+
+When the linear solver is first created, the matrix with which it is
+associated will not typically contain any data of interest to the
+linear solver. Once the contents of the matrix have been loaded, the
+interior-point algorithm may call the \texttt{matrixChanged} method,
+which triggers a factorization of the matrix.  Subsequently, the
+algorithm performs one or more calls to the \texttt{solve} method,
+each of which uses the matrix factors produced in
+\texttt{matrixChanged} to solve the linear system for a single
+right-hand side.
+
+Calls to \texttt{matrixChanged} typically occur once at each
+interior-point iteration. It is assumed that the sparsity structure of
+the matrix does not change between calls to \texttt{matrixChanged};
+only the data values will be altered. This assumption, which holds for
+all popular interior-point algorithms, allows subclasses of
+\texttt{DoubleLinearSolver} to cache information about the sparsity
+structure of the matrix and its factors and to reuse this information
+throughout the interior-point algorithm.
+
+The \texttt{diagonalChanged} method supports those rare solvers that
+take a different action if only the diagonal elements of the matrix
+are changed (while off-diagonals are left untouched). Most solvers
+cannot do anything interesting in this case; a typical implementation
+of \texttt{diagonalChanged} simply calls \texttt{matrixChanged}, as
+follows.
+\begin{verbatim}
+void MyLinearSolver::diagonalChanged( int idiag, int extent )
+{
+   this->matrixChanged();
+}
+\end{verbatim}
+
+The implementation of \texttt{matrixChanged} and \texttt{solve}
+depends strongly on the sparse linear system solver in use, as well as
+on the data format used to store the sparse matrices.
+Section~\ref{sec.using-sparse} describes the data format used by our
+sparse matrix classes. The convention in OOQP is that sparse linear
+solvers must not act destructively on the matrix data.  In some
+instances, this restriction requires a copy of part of the matrix data
+to be made before factorization begins. Typically, however, this
+restriction is not too onerous because the fill-in that occurs during
+a typical factorization would make it necessary to allocate additional
+storage in any case.
+
+The opposite convention is in place for subclasses of
+\texttt{DoubleLinearSolver} that operate on dense matrices. These
+invariably perform the factorization in place, overwriting the matrix
+data. While having two different conventions is far from ideal, we
+felt it unwise to enforce unnecessary copying of matrices in the dense
+case for the sake of conformity.
+
+\subsubsection{Creating a Subclass of {\tt ProblemFormulation}}
+\label{sec.subclass.ProblemFormulation}
+
+Having defined and implemented a new subclass of {\tt
+  DoubleLinearSolver}, the user must now arrange so that the new
+solver, rather than the default linear solver, is created and used by
+the quadratic programming algorithm. 
+
+
+In Section~\ref{sec:linsysclass} we described how subclasses of
+\texttt{LinearSystem} are used to solve the linear systems arising in
+interior point algorithms. We give specific examples of how an
+instance of \texttt{LinearSystem} designed to handle our example QP
+formulation~\eqnok{qp} assembles a matrix and right-hand side of a
+system to be passed to a general-purpose linear solver, which would
+normally be an instance of a subclass of
+\texttt{DoubleLinearSolver}. In this manner, we have separated the
+problem-specific reductions and transformations, which are the
+responsibility of instances of \texttt{LinearSystems}, from the
+solution of matrix equations, which are the responsibility of
+instances of \texttt{DoubleLinearSolver}.
+
+On the other hand, the nature and properties of the
+\texttt{DoubleLinearSolver} will affect the efficiency and feasibility
+of problem-specific reductions and transformations.  Moreover, when
+the \texttt{LinearSystem} assembles the matrix equations to be solved,
+it must assemble the matrix in a format acceptable to the linear
+solver. To ensure that a compatible set of objects is created, the
+\texttt{DoubleLinearSolver}, the matrix it operates on, and
+\texttt{LinearSystem} are created in the same routine.
+
+As we discussed in Section~\ref{specializing-problem-formulation}, OOQP
+contains classes---specifically, subclasses of
+\texttt{ProblemFormulation}---that exist for the express purpose of
+creating a compatible set of objects for implementing solvers for QPs
+with a given formulation. The \texttt{makeLinsys} methods of these
+classes is, naturally, the place in which appropriate instances of
+subclasses of \texttt{LinearSystem} are created. As we discussed in
+the earlier section, code for creating a compatible collection of
+objects can become quite involved, so it is natural to collect this
+code in one place. OOQP's approach is to place this code in the
+methods of subclasses of \texttt{ProblemFormulation}.
+
+To use a new \texttt{DoubleLinearSolver} with an existing problem
+formulation, one must create a new subclass of
+\texttt{ProblemFormulation}. Since the code needed to implement a
+subclass of \texttt{ProblemFormulation} depends strongly on the
+specific data structures of the problem formulation, it is difficult
+to give general instructions on how to write such code. However, we
+describe below the appropriate procedure for users who wish to work
+with a sparse variant of the {\tt QpGen} formulation \eqnok{qpgen},
+changing only the {\tt DoubleLinearSolver} object and retaining the
+data structures and other aspects of the formulation that are used in
+the default (MA27-based) solver supplied with the OOQP
+distribution. To accommodate such users, we have created a subclass of
+\texttt{ProblemFormulation} called \texttt{QpGenSparseSeq}, which
+holds the code common to all formulations of \texttt{QpGen} that uses
+sparse sequential linear algebra.  Users can create a subclass of
+\texttt{QpGenSparseSeq} in the following way.
+\begin{verbatim}
+class QpGenSparseMySolver : public QpGenSparseSeq {
+public:
+  QpGenSparseMySolver( int nx, int my, int mz,
+               int nnzQ, int nnzA, int nnzC );
+  LinearSystem * makeLinsys( Data * prob_in );
+};
+\end{verbatim}
+The constructor may be implemented by simply passing its arguments
+through to the parent constructor.
+\begin{verbatim}
+QpGenSparseMySolver::QpGenSparseMySolver( int nx, int my, int mz,
+                      int nnzQ, int nnzA, int nnzC ) :
+  QpGenSparseSeq( nx, my, mz, nnzQ, nnzA, nnzC )
+{
+}
+\end{verbatim}
+The implementation of the \texttt{makeLinsys} method is too
+solver-specific to be handled by generic code, but the following code
+fragment, which is based on the file {\tt
+src/QpGen/QpGenSparseMa27.C}, may give a useful guide.
+\begin{verbatim}
+LinearSystem * QpGenSparseMySolver::makeLinsys( Data * prob_in )
+{
+  QpGenData * prob = (QpGenData *) prob_in;
+  int n = nx + my + mz;
+
+  // Include diagonal elements in the matrix, even if they are
+  // zero. Enforce by inserting a diagonal of zeros.
+  SparseSymMatrix *  Mat = 
+     new SparseSymMatrix( n, n + nnzQ + nnzA + nnzC );
+
+  SimpleVector * v = new SimpleVector(n);  
+  v->setToZero();
+  Mat->setToDiagonal(*v);                  
+  IotrRelease( &v );
+
+  prob->putQIntoAt( *Mat, 0, 0 );
+  prob->putAIntoAt( *Mat, nx, 0);
+  prob->putCIntoAt( *Mat, nx + my, 0 );
+  // The lower triangle is now [ Q   * ]
+  //                           [ A   C ]
+  
+  MyLinearSolver  * solver = new MyLinearSolver( Mat );
+  QpGenSparseLinsys  * sys 
+      = new QpGenSparseLinsys( this, prob, 
+                               la, Mat, solver );
+
+  IotrRelease( &Mat );
+
+  return sys;
+}
+\end{verbatim}
+We emphasize that users who wish to alter the MA27-based
+implementation of the solver for the sparse variant of \eqnok{qpgen}
+only by substituting another solver with similar capabilities to MA27
+will be able to use these examples directly, by inserting the names
+they have chosen for their solver into these code fragments.
+
+% One must then arrange so that the new solver, rather than the default
+% linear solver, is created and used by the quadratic programming
+% algorithm. The linear solver is used by a class in the problem
+% formulation layer, a subclass of \texttt{LinearSystem}, to solve the
+% systems needed by the QP algorithm.  Subclasses of
+% \texttt{LinearSystem} assemble the matrix data of the linear system to
+% be solved, and use a \texttt{DoubleLinearSolver} to solve equations
+% using this data. The operations needed to assemble the matrix are
+% specific to the problem formulation, which is why
+% \texttt{LinearSystem} is part of the problem formulation layer (see
+% Section~\ref{sec:linsysclass}.) In OOQP, instances of subclasses of
+% \texttt{ProblemFormulation} are responsible for creating a compatible
+% set of objects to define a problem formulation.  Thus, the proper and
+% well-defined way to create a \texttt{LinearSystem} that uses the new
+% linear equation solver is to create a new subclass of
+% \texttt{ProblemFormulation}.
+% 
+% The specific method of \texttt{ProblemFormulation} that must be
+% overridden is \texttt{makeLinsys}.  However, as a rule, most of the
+% code needed to implement a subclass of \texttt{ProblemFormulation} is
+% closely tied to the specific data structures of the problem
+% formulation. This makes it difficult to give general instructions on
+% how to override \texttt{makeLinsys}. Therefore, in this section, we
+% will focus specifically on the \texttt{QpGen} formulation.
+
+\subsection{Specializing the Representation of Vectors and Matrices}
+\label{sec:special.matvec}
+
+Although the OOQP linear algebra layer provides a comprehensive set of
+linear algebra classes, as described in
+Section~\ref{sec.using-linear-algebra}, some users may wish to
+use a different set of data structures to represent vectors and
+matrices. This could happen, for instance, when the user needs to
+embed OOQP in a larger program with its own data structures already
+defined.  The design of OOQP is flexible enough to accommodate
+user-defined linear algebra classes. In this section, we outline how
+such classes can be written and incorporated into the code.
+
+The vector and matrix classes need to provide methods that, for the
+most part, represent simple linear algebra operations, such as inner
+products and saxpy operations.  The names are often
+self-explanatory; those that are specific to the needs of the
+interior-point algorithm are described in the class documentation
+accompanying the OOQP distribution. We note, however, that efficient
+implementation of these operations can require a significant degree of
+expertise, especially when the data structures are complex. We
+recommend that users search for an existing implementation that is
+compatible with their data storage needs before attempting to
+implement the methods themselves. As a rule, it is easier to create
+OOQP vectors and matrix classes that wrap existing libraries than to
+write efficient code from scratch.
+
+To specialize the representation of vectors and matrices, one must
+create subclasses of the following abstract classes:
+\begin{description}
+  \item[OoqpVector:] Represents mathematical vectors.
+  \item[GenMatrix:] Represents nonsymmetric and possibly
+    nonsquare matrices as mathematical operators.
+  \item[SymMatrix:] Represents symmetric matrices as mathematical operators.
+  \item[DoubleStorage:] Contains the concrete code for managing the
+    data structures that hold the matrix data.
+  \item[DoubleLinearSolver:] Solves linear systems with a specific type
+    of matrix as its coefficient.
+  \item[LinearAlgebraPackage:] Creates instances of vectors and matrices.
+\end{description}
+We have outlined how to create a new subclass of
+\texttt{DoubleLinearSolver} in the preceding section. The remainder
+of this section will focus on the other new subclasses. We will not
+describe the methods of these classes in detail, because the majority
+of them are familiar mathematical operations. We refer the reader to
+the class documentation accompanying the OOQP distribution for a
+description of these methods.
+
+The code in the  problem formulation layer is implemented b using the
+abstract linear algebra classes described above. Objects in the
+problem formulation layer can be created by using instances of
+user-defined subclasses to represent linear algebra objects. We have
+discussed in the preceding section and in
+Section~\ref{specializing-problem-formulation} the use of the
+\texttt{ProblemFormulation} class in creating a compatible set of
+objects in the problem formulation layer. Users who wish
+to specialize the representation of vectors and matrices will also
+need to create at least one new subclass of
+\texttt{ProblemFormulation}.
+
+The header file \texttt{src/Vector/OoqpVector.h} defines the abstract
+vector class. The header files defining the other abstract classes may
+be found in the subdirectory \texttt{src/Abstract}. As a rule, the
+files needed to define a particular implementation of the linear
+algebra layer are given their own subdirectory. Some existing
+implementations are located in the following directories.
+\begin{verbatim}
+    src/DenseLinearAlgebra/
+    src/SparseLinearAlgebra/
+    src/PetscLinearAlgebra/
+\end{verbatim}
+Users may wish to refer to these implementations as sample code.
+Because \texttt{DenseLinearAlgebra} and \texttt{SparseLinearAlgebra}
+share the same vector implementation, \texttt{SimpleVector}, this code
+is located in its own directory, named \texttt{src/Vector}.
+Several linear solvers have also been given their own subdirectories
+below the directory \texttt{src/LinearSolvers}.
+
+OOQP does not attempt to force matrices and vectors that are
+represented in significantly different ways to work together properly.
+For instance, the distribution contains no method that multiplies a
+matrix stored across several processors by a vector whose data is
+stored on a tape drive attached to a single processor. Nor do we
+perform any compile-time checks that only compatible linear algebra
+objects are used together in a particular implementation.  Such checks
+would require heavy use of the C++ template facility, and we were wary
+of using templates because of the portability issues and other costs
+that might arise. Rather, we endeavored to design our problem
+formulation classes in a way that makes it difficult to mix
+representations of linear algebra objects accidentally.  (We suggest
+that users who are modifying the matrix and vector representations
+follow this design.)  Commonly, we downcast at the start of a method.
+For example, the following code fragment downcasts from the abstract
+{\tt OoqpVector} class to the {\tt MyVector} class, which the {\tt
+  mult} method in {\tt MySymMatrix} is intended to use.
+\begin{verbatim}
+void MySymMatrix::mult ( double beta,  OoqpVector& y_in,
+                double alpha, OoqpVector& x_in )
+{
+  MyVector & y = (MyVector &) y_in;
+  MyVector & x = (MyVector &) x_in;
+}
+\end{verbatim}
+
+Subclasses of \texttt{DoubleStorage} are responsible for the physical
+storage of matrix data on a computer. The physical data structure
+might be as simple as a dense two-dimensional array. In a
+distributed-computing setting, it could be much more complex. 
+% Because
+% the methods that must be implemented by matrix and vector subclasses
+% are strongly representation-dependent, i
+Instances of \texttt{DoubleStorage} are rarely used in an abstract
+setting. The code will know precisely what type of
+\texttt{DoubleStorage} is being used and what concrete data structures
+are being used to implement it. Thus, many of the methods of a
+subclass of \texttt{DoubleStorage} will be data-structure specific.
+
+By contrast, each subclass of \texttt{DoubleStorage} will be
+associated with subclasses of \texttt{GenMatrix} and
+\texttt{SymMatrix} that are used primarily in an abstract,
+data-structure-independent fashion. Subclasses of \texttt{GenMatrix}
+and \texttt{SymMatrix} generally implement their methods by calling
+the structure-specific methods of a subclass of
+\texttt{DoubleStorage}. By using this design in OOQP, we were able to
+separate abstract mathematical manipulations of matrices and vectors
+from details of their representation. Accordingly, in creating their
+subclasses, users should feel free to implement any
+structure-dependent methods they need in their implementation of the
+\texttt{DoubleStorage} subclass, whereas their implementations of the
+\texttt{GenMatrix} and \texttt{SymMatrix} subclasses should adhere
+more closely to the abstract interface.
+
+We emphasize the following points for users who wish to create
+subclasses from the matrix classes: Matrices in OOQP are represented
+in row-major form, and row and column indices start at zero. Adherence
+to these conventions will make it easier to refer to existing
+implementations in designing new versions of the linear algebra layer.
+Symmetric matrices in OOQP store their elements in the lower triangle
+of whatever data structure is being used. For some linear algebra
+implementations, it might be desirable to symmetrize the structure,
+explicitly storing all elements of the matrix, despite the redundancy
+this entails. If this approach is chosen, one should be careful to
+treat the matrix as if only the lower triangle were significant, as
+subtle bugs may arise otherwise.
+
+Subclasses of \texttt{OoqpVector} represent mathematical vectors and
+should adhere closely to the abstract vector interface. The methods of
+\texttt{OoqpVector} typically operate on the entire vector. Access
+to individual elements of the vector should be avoided.
+
+Users who implement their own representation of vectors and matrices
+will also need to specialize the \texttt{LinearAlgebraPackage}
+class. This class has the following interface (see {\tt
+src/Abstract/LinearAlgebraPackage.h}).
+\begin{verbatim}
+class LinearAlgebraPackage {
+protected:
+  LinearAlgebraPackage() {};
+  virtual ~LinearAlgebraPackage() {};
+public:
+  virtual SymMatrix * newSymMatrix( int size, int nnz ) = 0;
+  virtual GenMatrix * newGenMatrix( int m, int n, int nnz ) = 0;
+  virtual OoqpVector * newVector( int n ) = 0;
+  // Access the type name for debugging purposes.
+  virtual void whatami( char type[32] ) = 0;
+};
+\end{verbatim}
+Instances of \texttt{LinearAlgebraPackage} do nothing more than create
+vectors and matrices on request. 
+% It might appear strange to have a 
+% class with no other responsibilities than this. 
+Our reason for including this class in the OOQP design is to provide a
+mechanism by which abstract code can create new vectors and matrices
+that are compatible with existing objects. The code cannot call the
+operator \texttt{new} on a type name and still remain abstract. Use of
+\texttt{LinearAlgebraPackage}, on the other hand, allows users to
+create new vectors and matrices, without referring to specific vector
+and matrix types, by invoking the \texttt{newVector},
+\texttt{newSymMatrix}, and \texttt{newGenMatrix} methods of an
+instance of \texttt{LinearAlgebraPackage}.
+
+Instances of \texttt{LinearAlgebraPackage} are never deleted. Because
+these instances are small, the memory overhead is normally
+insignificant. However, it is customary to arrange so that each
+subclass of \texttt{LinearAlgebraPackage} has at most one instance, as
+in the following code fragment.
+\begin{verbatim}
+class MyLinearAlgebraPackage : public LinearAlgebraPackage {
+protected:
+  DenseLinearAlgebraPackage() {};
+  virtual ~DenseLinearAlgebraPackage() {};
+public:
+  static MyLinearAlgebraPackage * soleInstance();
+  // ...
+}
+
+MyLinearAlgebraPackage * MyLinearAlgebraPackage::soleInstance()
+{
+  static 
+  MyLinearAlgebraPackage * la = new MyLinearAlgebraPackage;
+
+  return la;
+}
+\end{verbatim}
+The use of such a scheme is optional. 
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "ooqp-userguide"
+%%% End: 

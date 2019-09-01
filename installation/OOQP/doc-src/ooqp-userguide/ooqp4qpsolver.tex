@@ -1,0 +1,434 @@
+\section{Working with the QP Solver}
+\label{sec.qp-solver}
+
+In this section, we focus on the top layer of OOQP, the QP solver.
+
+\subsection{Primal-Dual Interior-Point Algorithms}
+\label{sec.pdip.algorithms}
+
+We start by giving some details of the primal-dual interior-point
+algorithms that are implemented in the {\tt Solver} class in the OOQP
+distribution. By design, the code that implements these algorithms is
+short, and one can see the correspondence between the code and the
+algorithm description below. Therefore, users who want to modify the
+basic algorithm will be able to do so after reading this section.
+
+A primal-dual algorithm seeks variables $(x,y,z,s)$ that satisfy the
+optimality conditions for the convex quadratic program
+\eqnok{qpintro}, introduced in Section~\ref{sec.ooqp-develop-layers} but
+repeated here for convenience.
+\begin{subequations} \label{rresids}
+\beqa
+\label{rresids.1}
+c + Q x -  A^T y - C^T z & = & 0, \\
+\label{rresids.2}
+A x - b & = & 0, \\
+\label{rresids.3}
+C x - s - d & = & 0, \\
+\label{rresids.4}
+S Z e & = & 0, \\
+\label{rresids.5}
+s, z & \ge & 0.
+\eeqa
+\end{subequations}
+The complementarity measure $\mu$ defined by
+%
+\beq 
+\label{mu.def} \mu = z^Ts / m_c
+\eeq
+%
+(where $m_c$ is the number of rows in $C$) is important in measuring
+the progress of the algorithm, since it measures violation of the
+complementarity condition $z^Ts =0$, which is implied by
+\eqnok{rresids.4}.  Infeasibility of the iterates with respect to the
+equality constraints \eqnok{rresids.1}, \eqnok{rresids.2}, and
+\eqnok{rresids.3} also makes up part of the indicator of nonoptimality.
+
+The OOQP distribution contains implementations of two quadratic
+programming algorithms: Mehrotra's predictor-corrector method
+\cite{Meh92a} and Gondzio's modification of this method that uses
+higher-order corrector steps \cite{Gon94d}. (See also
+\cite[Chapter~10]{IPPD96} for a discussion of both methods.) These
+algorithms have proved to be the most effective methods for linear
+programming problems and in our experience are just as effective for
+convex quadratic programming. Mehrotra's algorithm can be specified as
+follows.
+
+\btab
+\> {\bf Algorithm MPC (Mehrotra Predictor-Corrector)} \\
+\> Given starting point $(x,y,z,s)$ with $(z,s)>0$, and
+parameter $\tau \in [2,4]$; \\
+\> {\bf repeat} \\
+\>\> Set $\mu = z^Ts / m_c$. \\
+\>\> Solve for $(\Dxaff, \Dyaff, \Dzaff, \Dsaff)$: 
+\etab
+\beq \label{lin.affine}
+\bmat{cccc} Q & -A^T & -C^T & 0 \\ 
+A & 0 & 0 & 0  \\
+C & 0 & 0 & -I \\
+0 & 0 & S & Z
+\emat \bmat{c} \Dxaff \\ \Dyaff \\ \Dzaff \\ \Dsaff \emat = 
+- \bmat{c} r_Q \\ r_A \\ r_C \\ Z S e \emat,
+\eeq
+\btab
+\>\>\> where 
+\etab
+\begin{subequations} \label{lin.defs}
+\beqa
+\label{lin.defs.S}
+S & =& {\rm diag}(s_1,s_2, \dots,s_{m_c}), \\
+\label{lin.defs.Pi}
+Z & = & {\rm diag}(z_1,z_2,\dots,z_{m_c}), \\
+\label{lin.defs.rQ}
+r_Q &=& Qx+c-A^T y-C^T z, \\
+\label{lin.defs.rA}
+r_A &=& Ax-b, \\
+\label{lin.defs.rC}
+r_C &=& Cx-s-d.
+\eeqa
+\end{subequations}
+\btab
+\>\> Compute $\alpha_{\rm aff}$ to be the largest value in $(0,1]$ such that
+\etab
+\[
+(z,s) + \alpha (\Dzaff,\Dsaff) \ge 0.
+\]
+\btab
+\>\> Set $\mu_{\rm aff} = (z+\alpha_{\rm aff} \Dzaff)^T 
+(s+\alpha_{\rm aff} \Dsaff)/m_C$. \\
+\>\> Set $\sigma = (\mu_{\rm aff} / \mu)^{\tau}$. \\
+\>\> Solve for $(\Dx, \Dy, \Dz, \Ds)$:
+\etab
+\beq \label{lin.final}
+\bmat{cccc} Q & -A^T & -C^T & 0 \\ 
+A & 0 & 0 & 0  \\
+C & 0 & 0 & -I \\
+0 & 0 & S & Z
+\emat \bmat{c} \Dx \\ \Dy \\ \Dz \\ \Ds \emat =
+- \bmat{c} r_Q \\ r_A \\ r_C \\ Z S e  - \sigma \mu e + 
+\D Z^{\rm aff} \D S^{\rm aff} e \emat,
+\eeq
+\btab
+\>\>\> where $\D Z^{\rm aff}$ and $\D S^{\rm aff}$ are defined in an obvious way. \\
+\>\> Compute $\alpha_{\rm max}$ to be the largest value in $(0,1]$ such that
+\etab
+\[
+(z,s) + \alpha (\Dz,\Ds) \ge 0.
+\]
+\btab
+\>\> Choose $\alpha \in (0,\alpha_{\rm max})$ according to 
+Mehrotra's step length heuristic. \\
+\>\> Set
+\etab
+\[
+(x,y,z,s) \leftarrow (x,y,z,s) + \alpha (\Dx, \Dy, \Dz, \Ds).
+\]
+\btab
+\> {\bf until }  the convergence or infeasibility test is satisfied.
+\etab
+
+The direction obtained from \eqnok{lin.final} can be viewed as an
+approximate second-order step toward a point $(x^+,y^+,z^+,s^+)$ at
+which the conditions \eqnok{rresids.1}, \eqnok{rresids.2}, and
+\eqnok{rresids.3} are satisfied and, in addition, the pairwise products
+$z_i^+ s_i^+$ are all equal to $\sigma \mu$. The heuristic for
+$\sigma$ yields a value in the range $(0,1)$, so the step usually
+produces a reduction in the average value of the pairwise products
+from their current average of $\mu$.
+
+Gondzio's approach~\cite{Gon94d} follows the Mehrotra algorithm in its
+computation of directions from \eqnok{lin.affine} and
+\eqnok{lin.final}. It may then go on to enhance the search direction
+further by solving additional systems similar to \eqnok{lin.final},
+with variations in the last $m_C$ components of the right-hand side.
+Successive corrections attempt to increase the steplength $\alpha$
+that can be taken along the final direction, and to bring the pairwise
+products $s_i z_i$ whose values are either much larger than or much
+smaller than the average into closer correspondence with the
+average. The maximum number of corrected steps we calculate is
+dictated by the ratio of the time taken to factor the coefficient
+matrix in \eqnok{lin.final} to the time taken to use these factors to
+produce a solution for a given right-hand side. When the marginal cost
+of solving for an additional right-hand side is small relative to the
+cost of a fresh factorization, and when the corrections appear to be
+improving the quality of the step significantly, we allow more
+correctors to be calculated, up to a limit of $5$.
+
+The algorithms implemented in OOQP use the step length heuristic
+described in Mehrotra~\cite[Section~6]{Meh92a}, modified slightly to
+ensure that the same step lengths are used for both primal and dual
+variables.
+
+\subsection{Monitoring the Algorithm: The {\tt Monitor} Class}
+\label{sec.monitor}
+
+OOQP can be used both for solving a variety of stand-alone QPs and for
+solving QP subproblems as part of a larger algorithm.  Different
+termination criteria may be appropriate to each context. For a simple
+example, the criteria used to declare success in the solution of a
+single QP would typically be more stringent than the criteria for a QP
+subproblem in a nonlinear programming algorithm, in which we can
+afford some inexactness in the solution.  Accordingly, we have
+designed OOQP to be flexible as to the definition and application of
+termination criteria, and as to the way in which the algorithm's
+progress is monitored and communicated to the user. In some instances,
+a short report on each interior-point iteration is desirable, while in
+others, silence is more appropriate.  In OOQP, an abstract
+\texttt{Monitor} class monitors the algorithm's progress, while an
+abstract \texttt{Status} class tests the termination conditions. We
+describe the \texttt{Monitor} class in this section, and the
+\texttt{Status} class in Section~\ref{sec.status} below.
+
+Our design assumes that each algorithm in the QP solver layer of the
+code has its own natural way of monitoring the algorithm and testing
+termination. Accordingly, the two derived {\tt Solver} classes in the
+OOQP distribution each contain a {\tt defaultMonitor} method to print
+out a single line of information to the standard output stream at each
+iteration, along with a suitable message at termination of the
+algorithm. The prototype of this method is as follows.
+\begin{verbatim}
+void Solver::defaultMonitor( Data * data, Variables * vars,
+                                    Residuals * resids,
+                                    int i, double mu, 
+                                    int status_code, int stage )
+\end{verbatim}
+The {\tt data} argument contains the problem data, while {\tt vars}
+and {\tt resids} contain the values of the variables and residuals at
+the current iterate, which together depict the status of the
+algorithm. (See Sections~\ref{sec.ooqp-develop-layers} and
+\ref{sec.new-qp-formulation} for further information about these
+objects.)  The variable \texttt{i} is the current iteration number and
+\texttt{mu} is the complementarity measure \eqnok{mu.def}. The integer
+{\tt status\_code} indicates the status of the algorithm at
+termination, if termination has occurred; see Section~\ref{sec.status}
+below. The {\tt stage} argument indicates to {\tt defaultMonitor} what
+type of information it should print.  In our implementations, the
+values {\tt stage=0} and {\tt stage=1} cause the routine to print out
+a single line containing iteration number, the value of $\mu$, and the
+residual norm. The value {\tt stage=1} is used after termination has
+occurred, and additionally causes a message about the termination
+status to be printed.
+
+One mechanism available to the user who wishes to alter
+the monitoring procedure is to create a new subclass of {\tt Solver}
+that contains an implementation of {\tt defaultMonitor} that overrides
+the existing implementation. This is the simplest way to proceed and
+will suffice in many circumstances.  However, it has a disadvantage for
+users who work with several different implementations of {\tt
+Solver}---versions that implement different primal-dual algorithms,
+for instance, or are customized to different applications---in that
+the new monitoring routine cannot be shared among the different QP
+solvers. A subclass of each QP solver that contains the overriding
+implementation of {\tt defaultMonitor} would need to be created,
+resulting in a number of new leaves on the class tree. A second
+disadvantage is that some applications may require several monitor
+processes to operate at once, for example, one process like the {\tt
+defaultMonitor} described above that writes minimal output to standard
+output, and another process that writes more detailed information to a
+log file. It is undesirable to create a new {\tt Solver} subclass for
+each different set of monitor requirements.
+
+In OOQP, we choose delegation, rather than subclassing, as our
+mechanism for customizing the monitor process. Delegation is a
+technique in which the responsibility for taking some action normally
+associated with an instance of a given class is delegated to some
+other object. In our case, although the {\tt Solver} class would
+normally be responsible for displaying monitor information, we
+delegate responsibility to an associated instance of the
+\texttt{Monitor} class. The {\tt Solver} class contains methods for
+establishing its {\tt defaultMonitor} method as one of the monitor
+procedures called by the code and for adding monitor
+procedures supplied by the user.
+
+
+% when the {\tt Solver} object is associated with the {\tt Monitor}
+% object.
+
+The abstract definition of the {\tt Monitor} class can be found in the
+OOQP distribution at {\tt src/Abstract/OOQPMonitor.h}, along with
+the definitions of several subclasses. 
+% Instances of \texttt{Monitor} are little more than glorified subroutines. 
+The only method of interest in the \texttt{Monitor} class is the
+\texttt{doIt} method, which causes the object to perform the operation
+that is its sole reason for being. Making these objects instances of a
+class rather than subroutines tends to be more natural in the C++
+language and makes it far simpler to handle any state information that
+instances of \texttt{Monitor} may wish to keep between calls to
+\texttt{doIt}.
+
+The \texttt{doIt} method has the following prototype, which is
+identical to the {\tt defaultMonitor} method described above.
+\begin{verbatim}
+void OoqpMonitor::doIt( Solver * solver, Data * data, 
+                        Variables * vars, Residuals * resids,
+                        int i, double mu, 
+                        int status_code, int stage );
+\end{verbatim}
+Users who wish to implement their own monitor procedure should create
+a subclass of {\tt OOQPMonitor}, for example by making the following
+definition:
+\begin{verbatim}
+class myMonitor : public OOQPMonitor {
+public:
+  virtual void doIt( Solver * solver,  Data * data,
+                     Variables * vars, Residuals * resids,
+                     int i, double mu,
+                     int status_code, int level );
+};
+\end{verbatim}
+and then implementing their own version of the {\tt doIt}
+method. Their code that creates the instance of the {\tt Solver} class
+and uses it to solve the QP should contain the following code
+fragments:
+\begin{verbatim}
+OoqpMonitor * usermon = new myMonitor;
+...
+qpsolver->monitorSelf();
+qpsolver->addMonitor( usermon );
+\end{verbatim}
+The first statement creates an instance of the subclass {\tt
+  myMonitor}. The second and third statements should appear after the
+instance {\tt qpsolver} of the {\tt Solver} class has been created but
+before the method {\tt qpsolver->solve()} has been invoked. The call
+to \texttt{monitorSelf} statement ensures that the {\tt
+  defaultMonitor} method is invoked at each interior-point iteration,
+while the call to \texttt{addMonitor} ensures that the user-defined
+monitor is also invoked. Users who wish to invoke only their own
+monitor procedure and not the {\tt defaultMonitor} method can omit the
+second statement. The solver is responsible for deleting any monitors
+  give to it via the \texttt{addMonitor} method.
+
+The default behavior for an instance of \texttt{Solver} is to
+display no monitor information.
+
+
+
+\subsection{Checking Termination Conditions: The {\tt Status} Class}
+\label{sec.status}
+
+In OOQP, the \texttt{defaultStatus} method of the {\tt Solver} class
+normally handles termination tests. However, OOQP allows delegation of
+these tests to an instance of the {\tt Status} class, in much the same
+way as the monitor procedures can be delegated as described above.
+Before describing how to replace the OOQP termination tests, let us
+describe the termination tests that OOQP uses by default.
+
+The \texttt{defaultStatus} method of the {\tt Solver} class uses
+termination criteria similar to those of PCx~\cite{PCx99}. To discuss
+these criteria, we again refer to the problem formulation
+\eqnok{qpintro} (discussed in Section~\ref{sec.pdip.algorithms}) and
+use $(x^k,y^k,z^k,s^k)$ to denote the primal-dual variables at
+iteration $k$, and $\mu_k \defeq (z^k)^T s^k/m_C$ to denote the
+corresponding value of $\mu$.  Let $r_Q^k$, $r_A^k$, and $r_C^k$ be
+the values of the residuals at iteration $k$, and let $\mbox{gap}_k$
+be the duality gap at iteration $k$, which may be defined for
+formulation \eqnok{qp} by the formula \eqnok{gapk} below. We define
+the quantity $\phi_k$ as follows,
+\[
+\phi_k \defeq \frac{\| (r_Q^k,r_A^k,r_C^k) \|_{\infty} + \mbox{gap}_k}{\| (Q,A,C,c,b,d)\|_{\infty}},
+\]
+where the denominator is simply the element of largest magnitude in
+all the data quantities that define the problem \eqnok{qp}. Note that
+$\phi_k=0$ if and only if $(x^k,y^k,z^k,s^k)$ is optimal.
+
+Given parameters ${\tt tol}_{\mu}$ and ${\tt tol}_r$ (both of which
+have default value $10^{-8}$), we declare the termination status to be
+{\tt SUCCESSFUL\_TERMINATION} when
+\beq \label{terminate:success}
+\mu_k \le {\tt tol}_{\mu}, \gap
+\| (r_Q^k, r_A^k, r_C^k) \|_{\infty} \le 
+{\tt tol}_r \| (Q,A,C,c,b,d)\|_{\infty}.
+\eeq
+We declare the status to be {\tt INFEASIBLE} if
+\beq \label{terminate:infeas}
+\phi_k > 10^{-8} \;\; \mbox{and} \;\; 
+\phi_k \ge 10^4 \min_{0 \le i \le k} \phi_i.
+\eeq
+(In fact, since this is not a foolproof test of infeasibility, the
+true meaning of this status is ``probably infeasible.'')  Status {\tt
+UNKNOWN} is declared if the algorithm appears to be making
+unacceptably slow progress, that is,
+\beq \label{terminate:unknown1}
+k \ge 30 \;\; \mbox{and} \;\; \min_{0 \le i \le k} \phi_i \ge
+\frac12 \min_{1 \le i \le k-30} \phi_i,
+\eeq
+or if the ratio of infeasibility to the value of $\mu$ appears to be 
+blowing up, that is,
+\begin{subequations} \label{terminate:unknown2}
+\beqa
+& \| (r_Q^k, r_A^k, r_C^k) \|_{\infty} >
+{\tt tol}_r \| (Q,A,C,c,b,d)\|_{\infty} \\
+& \mbox{and} \;\; {\| (r_Q^k,r_A^k,r_C^k)\|_{\infty}} / {\mu_k} \ge 10^8
+{\| (r_Q^0,r_A^0,r_C^0)\|_{\infty}} / {\mu_0}.
+\eeqa
+\end{subequations}
+We declare status {\tt MAX\_ITS\_EXCEEDED} when the number of
+iterations exceeds a specified maximum; the default is 100.  If none
+of these conditions is satisfied, we declare the status to be {\tt
+NOT\_FINISHED}.
+
+Users who wish to alter the termination test may
+simply create a subclass of {\tt Solver} with their own implementation
+of {\tt defaultStatus}. Alternatively, they may create a subclass of
+the {\tt Status} class, whose abstract definition can be found in the
+file {\tt src/Abstract/Status.h}. The sole method in the {\tt Status}
+class is \texttt{doIt}, which has the following prototype.
+\begin{verbatim}
+int Status::doIt(  Solver * solver, Data * data, 
+                   Variables * vars, Residuals * resids,
+                   int i, double mu, int stage );
+\end{verbatim}
+The parameters to the \texttt{doIt} method have the same meaning as
+the correspondingly named parameters of the \texttt{OOQPMonitor::doIt}
+method. The return value of the \texttt{Status::doIt} method
+determines whether the algorithm continues or terminates. The possible
+values that may be returned are as follows.
+\begin{verbatim}
+enum TerminationCode 
+{
+  SUCCESSFUL_TERMINATION = 0,
+  NOT_FINISHED,
+  MAX_ITS_EXCEEDED,
+  INFEASIBLE,
+  UNKNOWN
+};
+\end{verbatim}
+The meanings of these return codes in the {\tt defaultStatus} method
+are described above. Users are advised to assign similar meanings in
+their specialized implementation. 
+
+Unlike the case of monitor procedures, it does not make sense to have
+multiple status checks in operation during execution of the
+interior-point algorithm; exactly one such check is required.  Users
+who wish to use the {\tt defaultStatus} method supplied with the OOQP
+distributions need do nothing; the default behavior of an instance of
+the {\tt Solver} class is to call this method. Users who wish to
+supply their own method can create their own subclass of the {\tt
+  Status} class as follows.
+\begin{verbatim}
+class myStatus : public Status {
+public:
+        virtual void doIt(  Solver * solver, Data * data, 
+                            Variables * vars, Residuals * resids,
+                            int i, double mu, int stage );
+};
+\end{verbatim}
+Then, they can invoke the {\tt useStatus} method after creating their
+instance of the {\tt Solver} class, to indicate to the solver object
+that it should use the user-defined status-checking method. The
+appropriate lines in the driver code would be similar to the
+following.
+\begin{verbatim}
+MyStatus * userstat = new myStatus;
+...
+qpsolver->useStatus( userstat );
+\end{verbatim}
+The solver is responsible for deleting any \texttt{Status} objects
+given to it via the \texttt{useStatus} method.
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "ooqp-userguide"
+%%% End: 

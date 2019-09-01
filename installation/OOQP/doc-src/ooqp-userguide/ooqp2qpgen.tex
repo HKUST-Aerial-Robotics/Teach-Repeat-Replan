@@ -1,0 +1,763 @@
+\newenvironment{parameters}[2]%
+        {%
+         \begin{list}%
+          {$\bullet$}%
+          {\itemsep 2pt plus 1pt minus 1pt
+                \topsep 2pt plus 1pt minus 1pt 
+                \settowidth{\labelwidth}{#1}
+                \settowidth{\leftmargin}{#1}
+%               \addtolength{\leftmargin}{\labelsep}
+                \addtolength{\leftmargin}{\labelsep}}
+           #2}%
+        {\end{list}}
+\def\parm#1{\item[\tt#1\hfill]}
+
+\section{Using the Default QP Formulation}
+\label{using-qpgen}
+
+The ``general'' quadratic programming formulation recognized by OOQP
+is as follows:
+% \begin{equation}
+% \label{qpgen}
+% \begin{array}{crcrclc}
+%   \minim   & \multicolumn{3}{r}{\half x\T Q x + c\T x} \\
+%   \subject &&             & A x  & = & b \\
+%            & d & \leq & C x  & \leq & f \\
+%            & l & \leq & x    & \leq & u
+% \end{array}
+% \end{equation}
+\beqa \label{qpgen}
+& \min \, \half x^TQx + c^Tx \;\; \mbox{subject to} \\
+\nonumber & Ax=b, \;\;\; d \le Cx \le f, \;\;\; l \le x \le u, \eeqa
+where $Q$ is an $n \times n$ positive semidefinite matrix, $A$ is an
+$m_a \times n$ matrix, $C$ is an $m_c \times n$ matrix, and all other
+quantities are vectors of appropriate size. Some of the elements of
+$l$, $u$, $d$, and $f$ may be infinite in magnitude; that is, some
+components of $Cx$ and $x$ may not have upper and lower bounds.
+
+The subdirectory {\tt src/QpGen} in the OOQP distribution, together
+with the linear algebra subdirectories, contains code for solving
+problems formulated as \eqnok{qpgen}, where $Q$, $A$, and $C$ are
+general sparse matrices.  In this section, we describe the different
+methods that can be used to define the problem data and, accordingly,
+different ways in which the solver can be invoked. We start with a
+command-line interface that can be used when the problem is defined
+via a text file (Section~\ref{command-line}). We then describe several
+other interfaces: calling OOQP as a function from a C program
+(Section~\ref{embedding-c}); calling it from a C++ program
+(Section~\ref{embedding-cplusplus}); invoking OOQP as a solver from an
+AMPL process (Section~\ref{sec.use-in-ampl}); and invoking OOQP as a
+subroutine from a MATLAB program (Section~\ref{sec.use-in-matlab}).
+
+\subsection{Command-Line Interface} 
+\label{command-line}
+
+When the problem is defined in quadratic MPS (``QPS'') format in an
+ascii file, the method of choice for solving the problem is to use an
+executable file that applies Mehrotra's predictor-corrector algorithm
+\cite{Meh92a} with Gondzio's multiple corrections~\cite{Gon94d}. (The
+Installation Guide that is supplied with the OOQP distribution
+describes how to create this executable file, which is named {\tt
+  qpgen-sparse-gondzio.exe}.)  We also provide
+\texttt{qpgen-sparse-mehrotra.exe}, an implementation of Mehrotra's
+algorithm that does not use Gondzio's corrections.  These executables
+take their inputs from a text file in QPS format that describes the
+problem.
+
+% This program accepts a single command-line argument; a typical
+% invocation has the form
+% \begin{verbatim}
+% qpgen-sparse-gondzio.exe problem.qps
+% \end{verbatim}
+% where \texttt{problem.qps} is the name of a file that contains the
+% specification of \eqnok{qpgen} in QPS format.
+
+The QPS format proposed by Maros and M\'esz\'aros~\cite{MarM99} is a
+modification of the standard and widely used MPS format for linear
+programming.  The format is somewhat awkward and limited in the
+precision to which it can specify numerical data. We support it,
+however, because it is used by a number of QP solvers and is well
+known to users of optimization software.
+
+A description of the MPS format, extracted from Murtagh~\cite{Mur81},
+can be found at the NEOS Guide at
+\begin{verbatim}
+www.mcs.anl.gov/otc/Guide/
+\end{verbatim}
+(search for ``MPS'').  The QPS format extends MPS by introducing a new
+section of the input file named \texttt{QUADOBJ} (alternatively named
+\texttt{QMATRIX}), which defines the matrix $Q$ of the quadratic
+objective specified in the formulation~(\ref{qpgen}). This section, if
+present, must appear after all other sections in the input file. The
+format of this section is the same as the format of the
+\texttt{COLUMNS} section except that only the lower triangle of $Q$ is
+stored. As in the \texttt{COLUMNS} section, the nonzeros are specified
+in column major order.
+
+We have relaxed the MPS definition so that strict limitations on field
+widths on each line are replaced by tokenization, in which fields are
+assumed to be separated by spaces.  (Note that this parsing may
+introduce incompatibilities with files that are valid under the strict
+MPS definition, in which spaces may occur within a single numerical
+field between a minus sign and the digits it operates on.) Name
+records may now be up to 16 characters in length, and there is no
+restriction on the size of numerical fields, except those imposed by
+the maximum length of a line. The maximum line length is 150
+characters.
+
+A second deviation from MPS standard format is that an objective sense
+indicator may be introduced at the start of the file, to indicate
+either that the specified objetcive is to be minimized or maximized.
+This field has the form
+\begin{verbatim}
+OBJSENSE
+MIN
+\end{verbatim}
+when the intent is to minimize the objective, and
+\begin{verbatim}
+OBJSENSE
+MAX
+\end{verbatim}
+for maximization. The default is minimization. If this field is
+included, it must appear immediately after the \texttt{NAME} line.
+
+% In an MPS file, line breaks are significant, as is the location of
+% data within a line. Throughout this section, we will refer to the
+% first character on a line as character one. A data line in an MPS file
+% is divided into two or more fields.Each field occurs at a fixed
+% location withina data line. These locations are given in
+% Table~\ref{fields}.
+% \begin{table}
+%   \label{fields}
+%    \caption{Field locations in an MPS data line}
+% \begin{tabular}{|l|cccccc|}
+%   \hline
+%            & Field 1 & Field 2 & Field 3 & Field 4 & Field 5 & Field 6
+%            \\
+% \hline
+% Characters &  2--3   &  5--12  & 15--22  & 25--36  & 40--47  & 50--61 \\
+% \hline
+% \end{tabular}
+% \end{table}
+
+\begin{figure}[hbt]
+\begin{verbatim}
+NAME          Example
+ROWS
+ N  obj
+ G  r1
+ L  r2
+COLUMNS
+    x1        r1                 2.0   r2                -1.0
+    x1        obj                1.5
+    x2        r1                 1.0   r2                 2.0
+    x2        obj               -2.0
+RHS
+    rhs1      obj               -4.0
+    rhs1      r1                 2.0   r2                 6.0
+BOUNDS
+ UP bnd1      x1                20.0
+QUADOBJ
+    x1        x1                 8.0
+    x1        x2                 2.0
+    x2        x2                10.0
+ENDATA
+\end{verbatim}
+\caption{A sample QPS file\label{qps-example}} 
+\end{figure}
+Figure~\ref{qps-example} shows a sample QPS file, taken from Maros and
+M\'esz\'aros~\cite{MarM99}.
+This file describes the following problem:
+\begin{equation}
+  \label{qp-example}
+  \begin{array}{lrcccl}
+    \mathrm{mimimize} & 
+    \multicolumn{5}{l}{4 + 1.5 x_1 -2 x_2 + \frac12(8x_1^2 + 
+      4x_1 x_2 + 10 x_2^2)} \\
+    \mbox{subject to} & 2 & \leq & 2 x_1 +   x_2 & \leq & \infty \\
+                      & -\infty  & \leq   & - x_1 + 2 x_2 & \leq & 6 \\
+                      & 0 & \leq & x_1         & \leq & 20 \\
+                      & 0 & \leq & x_2         & \leq & \infty. \\
+  \end{array}
+\end{equation}
+If the file \eqnok{qps-example} is named \texttt{Example.qps} and is
+stored in the subdirectory {\tt data}, and if the executable {\tt
+qpgen-sparse-gondzio.exe} appears in the {\tt OOQP} directory, then
+typing
+\begin{verbatim}
+qpgen-sparse-gondzio.exe ./data/Example.qps
+\end{verbatim}
+will solve the problem
+and create the output file
+\texttt{OOQP/data/Example.out}. 
+
+\begin{figure}[hbt]
+\begin{verbatim}
+Solution for 'Example '
+
+Rows: 3,  Columns: 2
+
+PRIMAL VARIABLES
+
+  Name  Value           Lower Bound  Upper Bound  Multiplier
+
+0 x1    7.62500000e-01  0.00000e+00  2.00000e+01  6.37776644e-15
+1 x2    4.75000000e-01  0.00000e+00               2.83645544e-12
+
+
+CONSTRAINTS
+
+Inequality Constraints: 2
+
+  Name  Value           Lower Bound  Upper Bound  Multiplier
+
+0 r1    2.00000000e+00  2.00000e+00               4.27500000e+00
+1 r2    1.87500000e-01               6.00000e+00  -8.81876986e-16
+
+Objective value: 8.37188
+\end{verbatim}
+\caption{Sample output from \texttt{qpgen-sparse-gondzio.exe}\label{sample-output}}
+\end{figure}
+Figure~\ref{sample-output} shows the contents of \texttt{Example.out}.
+The {\tt PRIMAL VARIABLES} are the components of the vector $x$ in the
+formulation \eqnok{qpgen}. The output shows that the optimal values
+are $x_1 = 0.7625$ and $x_2=0.475$.  The bounds on each component of
+$x$, if any were specified, are also displayed. If neither bound is
+active, the reported value of the Lagrange multiplier in the final
+column should be close to zero. Otherwise, it may take a positive
+value when the lower bound is active or a negative value when the
+upper bound is active.
+
+The \texttt{CONSTRAINTS} section shows the values of the vectors $Ax$
+and $Cx$ at the computed solution $x$, compares these values with
+their upper and lower bounds in the case of $Cx$, and displays
+Lagrange multiplier information in the final column, in a similar way
+to the {\tt PRIMAL VARIABLES} section.
+
+Note that the problem described in \eqnok{qps-example} contains no
+equality constraints (that is, $A$ is null), so there is no
+\texttt{Equality Constraints} subsection in the \texttt{CONSTRAINTS}
+section of this particular output file.
+
+A number of command-line options are available in calling
+\texttt{qpgen-sparse-gondzio.exe}. The current list of options can be
+seen by typing 
+\begin{verbatim}
+qpgen-sparse-gondzio.exe --help
+\end{verbatim}
+Current options are as follows:
+\begin{description}
+\item[{\tt --print-level num}:] (\texttt{num} is a positive
+  integer)  Larger values of \texttt{num} produce more output to the
+  screen.
+
+\item[{\tt --version}:]  shows the current version number and release date.
+
+\item[{\tt --quiet}:] suppresses output  to the screen.
+
+\item[{\tt --verbose}:] produces maximal output to the screen.
+  
+\item[{\tt --scale}:] scales the variables so that the diagonals of the
+  Hessian matrix remain in a reasonable range.
+\end{description}
+
+The same options are available for \texttt{qpgen-sparse-mehrotra.exe}.
+
+\subsection{Calling from a C Program}
+\label{embedding-c}
+
+OOQP supplies an interface to the default solver for \eqnok{qpgen} that
+may be called from a C program.  This operation is performed by the
+function \texttt{qpsolvesp}, which has the following prototype.
+\begin{verbatim}
+void 
+qpsolvesp(          double    c[],   int      nx,
+    int   irowQ[],  int    nnzQ,     int  jcolQ[],  double dQ[],
+    double xlow[],  char  ixlow[], 
+    double xupp[],  char  ixupp[],
+    int   irowA[],  int     nnzA,    int  jcolA[],  double dA[],
+    double   bA[],  int       my,
+    int   irowC[],  int     nnzC,    int  jcolC[],  double dC[],
+    double clow[],  int       mz,    char iclow[],
+    double cupp[],  char   icupp[],
+    double    x[],  double gamma[],  double phi[],
+    double    y[],
+    double    z[],  double lambda[],  double pi[],
+    double   *objectiveValue,
+    int print_level, int * ierr );
+\end{verbatim}
+This function uses an old-fashioned calling convention in which each
+argument is a native type (for example, an {\tt int} or an array of
+{\tt double}). While calling such a function can be tedious because of
+the sheer number of arguments, it is straightforward in that the
+relationship of each argument to the formulation \eqnok{qpgen} is
+fairly easy to understand.
+
+Sparse matrices are represented by three data structures---two integer
+vectors and one vector of doubles, all of the same length. For the
+(general) matrix $A$, these data structures are \texttt{irowA},
+\texttt{jcolA} and \texttt{dA}. The total number of nonzeros in the
+sparse matrix \texttt{A} is \texttt{nnzA}. The $k$ nonzero
+element of \texttt{A} occurs at row \texttt{irowA[k]} and column
+\texttt{jcolA[k]} and has value \texttt{dA[k]}. Rows and columns are
+numbered starting at zero.
+
+For the symmetric matrix $Q$, only the elements of the lower triangle
+of the matrix are specified in \texttt{irowQ}, \texttt{jcolQ}, and
+\texttt{dQ}.
+
+The elements of each matrix must be sorted into row-major order before
+\texttt{qpsolvesp} is called.  While this requirement places an
+additional burden on the user, it reduces the memory requirements of
+the \texttt{qpsolvesp} procedure significantly. OOQP provides a
+routine \texttt{doubleLexSort} that the user may call to sort the
+matrix elements in the correct order. To sort the elements of the
+matrix $A$, this routine can be invoked as follows:
+\begin{verbatim}
+doubleLexSort( irowA, nnzA, jcolA, dA )
+\end{verbatim}
+
+We now show the correspondence between the input variables to
+\texttt{qpsolvesp} (which are not changed by the routine) and the
+formulation \eqnok{qpgen}.
+\begin{parameters}{\texttt{lambda}}
+  \parm{c} is the linear term in the objective function, a vector of
+length \texttt{nx}.
+  
+  \parm{nx} is the number of primal variables, that is, the length of
+the vector $x$ in \eqnok{qpgen}. It is the length of the input vectors
+\texttt{c}, \texttt{xlow}, \texttt{ixlow}, \texttt{xupp},
+\texttt{ixupp}, \texttt{x}, \texttt{gamma}, and \texttt{phi}.
+
+  \parm{irowQ, jcolQ, dQ} hold the \texttt{nnzQ} lower triangular
+elements of the quadratic term of the objective function.
+
+  \parm{xlow, ixlow} are the lower bounds on \texttt{x}. These contain
+the information in the lower bounding vector $l$ in \eqnok{qpgen}. If
+there is a bound on element $k$ of $x$ (that is, $l_k > -\infty$),
+then \texttt{xlow[k]} should be set to the value of $l_k$ and
+\texttt{ixlow[k]} should be set to one. Otherwise, element $k$ of both
+arrays should be set to zero.
+
+  \parm{xupp, ixupp} are the upper bounds on \texttt{x}, that is, the
+information in the vector $u$ in \eqnok{qpgen}. These should be
+defined in a similar fashion to \texttt{xlow} and \texttt{ixlow}.
+
+  \parm{irowA, jcolA, dA} are the \texttt{nnzA} nonzero elements of
+the matrix $A$ of linear equality constraints.
+  
+  \parm{irowC, jcolC, dC} are the \texttt{nnzC} nonzero elements of
+the matrix $C$ of linear inequality constraints.
+
+  \parm{bA} contains the right-hand-side vector $b$ for the equality
+constraints in \eqnok{qpgen}. 
+
+  \parm{my} defines the length of the vector $bA$.
+
+%  \parm{y} defines the vector of Lagrange multipliers for the equality
+%  constraints $Ax=b$ in \eqnok{qpgen}. It has length \texttt{my}.
+
+  \parm{clow, iclow} are the lower bounds of the inequality
+  constraints.
+  
+  \parm{cupp, icupp} are the upper bounds of the inequality
+  constraints.
+
+  \parm{print\_level} controls the amount of output the solver prints
+  to the terminal. Larger values of \texttt{print\_level} cause more
+  information to be printed. The following values of
+  \texttt{print\_level} are recognized:
+  \begin{description}
+    \item{$0$} operate silently.
+    \item{$\geq 10$} print information about each interior point
+      iteration.
+    \item{$\geq 100$} print information from the linear solvers.
+    \end{description}
+\end{parameters}
+
+The remaining parameters are output parameters that hold the solution
+to the QP. The variables \texttt{objectiveValue} and \texttt{x} hold
+the values of interest to most users, which are the minimal value and
+solution vector $x$ in \eqnok{qpgen}. The parameter \texttt{ierr}
+indicates whether the solver was successful. The solver will return a
+nonzero value in \texttt{ierr} if it was unable to solve the problem.
+Negative values indicate that some error, such as an out of memory
+error, was encountered. For a description of the termination criteria
+of OOQP, and the positive values that might be returned in
+\texttt{ierr}, see Section~\ref{sec.status}.
+
+
+The remaining output variables are vectors of Lagrange
+multipliers; the array \texttt{y} contains the Lagrange multipliers
+for the equality constraints $Ax=b$, while \texttt{lambda} and
+\texttt{pi} contain multipliers for the inequality constraints $Cx \ge
+d$ and $Cx \le f$, respectively. The output variable \texttt{z} should
+satisfy
+$$
+z = \lambda - \pi.
+$$
+The multipliers for the lower and upper bounds $x \ge l$ and $x \le
+u$, are contained in \texttt{gamma} and \texttt{phi}, respectively.
+Among other requirements (see our discussion of optimality conditions
+in the next section), these vectors should satisfy the following
+relationship on output:
+\[
+c + Q x - A\T y - C\T z - \gamma + \phi = 0.
+\]
+
+Because it is somewhat cumbersome to allocate storage for all the
+parameters of \texttt{qpsolvesp} individually, OOQP provides the
+following routine to perform all necessary allocations:
+\begin{verbatim}
+void 
+newQpGenSparse( double ** c,      int nx,
+    int    ** irowQ,  int nnzQ,  int  ** jcolQ,  double ** dQ,
+    double ** xlow,              char ** ixlow,
+    double ** xupp,              char ** ixupp,
+    int    ** irowA,  int nnzA,  int  ** jcolA,  double ** dA,
+    double ** b,      int my,
+    int    ** irowC,  int nnzC,  int  ** jcolC,  double ** dC,
+    double ** clow,   int mz,    char ** iclow,
+    double ** cupp,              char ** icupp,
+    int    *  ierr );
+\end{verbatim}
+
+The following routine frees all this allocated storage:
+\begin{verbatim}
+void 
+freeQpGenSparse( double ** c,      
+    int    ** irowQ,  int  ** jcolQ,  double ** dQ,
+    double ** xlow,   char ** ixlow,
+    double ** xupp,   char ** ixupp,
+    int    ** irowA,  int  ** jcolA,  double ** dA,
+    double ** b,
+    int    ** irowC,  int  ** jcolC,  double ** dC,
+    double ** clow,   char ** iclow,
+    double ** cupp,   char ** icupp );
+\end{verbatim}
+If \texttt{newQpGenSparse} succeeds, it returns \texttt{ierr} with a
+value of zero. Otherwise, it sets \texttt{ierr} to a nonzero value
+and frees any memory that it may have allocated to that point. We
+emphasize that users are not required to use these two routines; users
+can allocate arrays as they choose.
+
+The distribution also contains a variant of \texttt{qpsolvesp} that
+accepts sparse matrices stored in the slightly more compact
+Harwell-Boeing sparse format (see Duff, Erisman, and
+Reid~\cite{DufER86}), rather than the default sparse format described
+above. In the Harwell-Boeing format, the nonzeros are stored in
+row-major form, with \texttt{jcolA[l]} and \texttt{dA[l]} containing
+the column index and value of the $l$ nonzero element, respectively.
+The integer vector \texttt{krowA[k]} indicates the index in
+\texttt{jcolA} and \texttt{dA} at which the first nonzero element for
+row \texttt{k} is stored; its final element \texttt{krowA[my+1]}
+points to the index in \texttt{jcolA} and \texttt{dA} immediately
+after the last nonzero entry. See \cite{DufER86} and
+Section~\ref{sec.using-sparse} below for further details.  The
+Harwell-Boeing version of \texttt{qpsolvesp} has the following
+prototype.
+\begin{verbatim}
+void 
+qpsolvehb( double    c[],  int  nx,
+    int   krowQ[],  int  jcolQ[],  double dQ[],
+    double xlow[],  char ixlow[], 
+    double xupp[],  char ixupp[],
+    int   krowA[],  int  my,       int  jcolA[],  double dA[],
+    double   bA[],
+    int   krowC[],  int  mz,       int  jcolC[],  double dC[],
+    double clow[],  char iclow[],
+    double cupp[],  char icupp[],
+    double    x[],  double gamma[],     double phi[],
+    double    y[],
+    double    z[],  double lambda[],  double pi[],
+    double   *objectiveValue,
+    int print_level, int * ierr );
+\end{verbatim}
+The meaning of the parameters other than those that store the sparse
+matrices is identical to the case of \texttt{qpsolvesp}.
+
+
+
+The prototypes of the preceding routines are located in the header
+file \texttt{cQpGenSparse.h}.  Most users will need to include the
+line
+\begin{verbatim}
+#include "cQpGenSparse.h"
+\end{verbatim}
+in their program. This header file is safe to include not only in a C
+program but also in a C++ program. Users who need more control over
+the solver than these functions provide should develop a C++ interface
+to the solver.
+
+We refer users to the Installation Guide in the distribution for
+further information on building the executable using the OOQP header
+files and libraries.
+
+
+\subsection{Calling from a C++ Program}
+\label{embedding-cplusplus}
+
+When calling OOQP from a C++ code, the user must create several objects
+and call several methods in sequence.  The process is more complicated
+than simply calling a C function, but also more flexible. By varying
+the classes of the objects created, one can generate customized
+solvers for QPs of various types. In this section, we focus on
+the default solver for the formulation \eqnok{qpgen}. The full
+sequence of calls for this case is shown in Figure~\ref{calling}. In
+the remainder of this section, we explain each call in this sequence
+in turn.
+
+\begin{figure}[htb]
+\begin{verbatim}
+QpGenSparseMa27 * qp 
+    = new QpGenSparseMa27( nx, my, mz, nnzQ, nnzA, nnzC );
+
+QpGenData      * prob 
+    = (QpGenData * ) qp->makeData( /* parameters here */);
+QpGenVars      * vars 
+    = (QpGenVars *) qp->makeVariables( prob );
+QpGenResiduals * resid 
+    = (QpGenResiduals *) qp->makeResiduals( prob );
+
+GondzioSolver  * s     = new GondzioSolver( qp, prob );
+
+s->monitorSelf();
+int status = s->solve(prob,vars, resid);
+\end{verbatim}
+\caption{The basic sequence for calling OOQP \label{calling}}
+\end{figure}
+
+The first method call in this sequence 
+% is as follows.
+% \begin{verbatim}
+% QpGenSparseMa27 * qp 
+%     = new QpGenSparseMa27( nx, my, mz, nnzQ, nnzA, nnzC );
+% \end{verbatim}
+% This call 
+initializes a new problem formulation \texttt{qp} of class
+\texttt{QpGenSparseMa27}, which is a subclass of
+\texttt{ProblemFormulation}.  The definition of this class determines
+how the problem data will be stored, how the problem variables will be
+stored and manipulated, and how linear systems will be solved. Our
+subclass \texttt{QpGenSparseMa27} implements the problem formulation
+\eqnok{qpgen}, where the sparse matrices defining the problem are
+stored in sparse (not dense) matrices and that large linear systems
+that define steps of the interior-point method will be solved by using
+the \texttt{MA27} package from the Harwell Subroutine Library.
+
+% The next method call is
+% \begin{verbatim}
+% QpGenData * prob 
+%     = (QpGenData * ) qp->makeData( /* parameters here */);
+% \end{verbatim}
+% Here, 
+In the next method call in Figure~\ref{calling},
+the \texttt{makeData} method in the object \texttt{qp} created
+in the first call creates the vectors and matrices that contain the
+problem data. In fact, \texttt{qp} contains different versions of the
+\texttt{makeData} method, which may be distinguished by their
+different parameter lists. Users whose matrix data is in row-major
+Harwell-Boeing sparse format may use the following form of this call.
+
+\pagebreak
+\begin{verbatim}
+QpGenData * prob 
+    = (QpGenData * ) qp->makeData( c,     krowQ,  jcolQ,  dQ,
+                                   xlow,  ixlow,  xupp,   ixupp,
+                                   krowA, jcolA,  dA,     bA,
+                                   krowC, jcolC,  dC,
+                                   clow,  iclow,  cupp, icupp);
+\end{verbatim}
+(The meaning of the parameters is explained in
+Section~\ref{embedding-c} above.)  In this method, data structure
+references in \texttt{prob} are set to the actual arrays given in the
+parameter list.  This choice avoids copying of the data, but it
+requires that these arrays not be deleted until after deletion of the
+object \texttt{prob}.
+
+For users whose data is in sparse triple format, a special version of
+\texttt{makeData} named \texttt{copyDataFromSparseTriple} may be
+called as follows.
+\begin{verbatim}
+QpGenData * prob 
+    = (QpGenData * ) qp->copyDataFromSparseTriple(
+        c,      irowQ,  nnzQ,   jcolQ,  dQ,
+        xlow,   ixlow,  xupp,   ixupp,
+        irowA,  nnzA,   jcolA,  dA,     bA,
+        irowC,  nnzC,   jcolC, 
+        clow,   iclow,  cupp,   icupp );
+\end{verbatim}
+(The meaning of the parameters is explained in
+Section~\ref{embedding-c}.) In this method, since the data
+objects in the argument list are actually copied into \texttt{prob},
+they may be deleted immediately after the method returns.
+
+There distribution includes several other version of \texttt{makeData}
+that will not be described here. In general, the preference is to fix
+references in \texttt{prob} to point to existing arrays of data,
+rather than copying the data into \texttt{prob}.
+
+The calls to \texttt{makeVariables} and \texttt{makeResiduals} in
+Figure~\ref{calling} create the objects that store the problem
+variables and the residuals that measure the infeasibility of a given
+point with respect to the various optimality conditions.
+The object \texttt{vars} contains both primal variables for
+\eqnok{qpgen} (including $x$) and dual variables (Lagrange
+multipliers). These variables are named \texttt{vars->x},
+\texttt{vars->y}, and so on, following the naming conventions
+described in Section~\ref{embedding-c}. The data and methods in
+the residuals class \texttt{resids} are typically of interest only to
+optimization experts. When an approximate solution to the problem
+\eqnok{qpgen} is found, all data elements in this object will have
+small values, indicating that the point in question approximately
+satisfies all optimality conditions.
+
+The next step is to create the solver object for actually solving the
+QP. This is performed by means of the following call.
+\begin{verbatim}
+GondzioSolver  * s     = new GondzioSolver( qp, prob );
+\end{verbatim}
+In our example, we then invoke the method \texttt{s->monitorSelf()}
+to tell the solver that it should print summary information to the
+screen as the solver is operating.  (If this line is omitted, the
+solver will operate quietly.)  
+
+Finally, we invoke the algorithm to solve
+the problem by means of the call  {\tt s->solve(prob,vars, resid)}.
+% \begin{verbatim}
+% s->solve(prob,vars, resid);
+% \end{verbatim}
+The return value from this routine will be zero if the solver was able
+to compute an approximate solution, which will be found in the object
+\texttt{vars}. The solver will return a nonzero value if it was unable
+to solve the problem. Negative values indicate that some error, such
+as an out of memory error, was encountered. For a description of the
+termination criteria of OOQP, and the positive values that might be
+returned in \texttt{ierr}, see Section~\ref{sec.status}.
+
+One must include certain header files to obtain the proper definitions
+of the classes used. In general, a class definition is in a header
+file with the same name as the class, appended with a ``.h''. For the
+example in Figure~\ref{calling}, the following lines serve to include
+all relevant header files.
+\begin{verbatim}
+#include "QpGenData.h"
+#include "QpGenVars.h"
+#include "QpGenResiduals.h"
+#include "GondzioSolver.h"
+#include "QpGenSparseMa27.h"
+\end{verbatim}
+The OOQP Installation Guide explains how to build an executable using
+the OOQP header files and libraries.
+
+\subsection{Use in AMPL}
+\label{sec.use-in-ampl}
+
+OOQP may be invoked within AMPL, a modeling language for specifying
+optimization problems.  From within AMPL, one must first define the
+model and input the data. If the model happens to be a QP, then an
+{\tt option solver} command within the AMPL code can be used to ensure
+the use of OOQP as the solver.
+
+An AMPL model file that may be used to describe a problem of the form
+(\ref{qpgen}) without equalities $Ax=b$ is as follows.
+\begin{verbatim}
+set I;  set J;
+set QJJ within {J,J}; set CIJ within {I,J};
+
+param objadd;  param g{J};   param Q{QJJ};
+param clow{I}; param C{CIJ}; param cupp{I};
+param xlow{J}; param xupp{J};
+
+var x{j in J} >= xlow[j] <= xupp[j];
+
+minimize total_cost: objadd + sum{j in J} g[j] * x[j] 
+         + 0.5 * sum{(j,k) in QJJ} Q[j,k] * x[j] * x[k];
+
+subject to ineq{i in I} :
+        clow[i] <= sum{(i,j) in CIJ } C[i,j] * x[j] <= cupp[i] ;
+\end{verbatim}
+The data for the QP is normally given in a separate AMPL data file,
+which for the problem (\ref{qp-example}) is as follows.
+\begin{verbatim}
+param  objadd   := 4 ;
+
+param: J : g    :=  col1    1.5         col2   -2 ;
+
+param: QJJ : Q := 
+       col1    col1    8    col1    col2    2
+       col2    col1    2    col2    col2    10 ;
+
+param xlow      :=  col1    0           col2    0 ;
+param xupp      :=  col1    20          col2    Infinity ;
+
+param: I : clow :=  row1    2           row2   -Infinity ;  
+param      cupp :=  row1    Infinity    row2    6 ;      
+      
+param: CIJ : C := 
+       row1    col1    2    row1    col2    1
+       row2    col1   -1    row2    col2    2 ;
+\end{verbatim}
+Suppose the model file was named \texttt{example.mod} and the data
+file was named \texttt{example.dat}. From within the AMPL environment,
+one would type the following lines to solve the problem and view the
+solution.
+\begin{verbatim}
+model example.mod;
+data  example.dat;
+option solver ooqp-ampl;
+solve;
+display x;                                                                
+\end{verbatim}
+The following lines containing the optimal value of $x$ would then be
+displayed.
+\begin{verbatim}
+x [*] :=
+col1  0.7625
+col2  0.475
+;
+\end{verbatim}
+                                                     
+\subsection{Use in MATLAB}
+\label{sec.use-in-matlab}
+
+OOQP may be invoked from within the MATLAB environment. Instructions
+on how to obtain the necessary software may be found in the
+\texttt{README-Matlab} in the {\tt OOQP} directory.
+
+The prototype for the MATLAB function is as follows.
+\begin{verbatim}
+[x, gamma, phi, y, z, lambda, pi] = ...
+    ooqp( c, Q, xlow, xupp, A, dA, C, clow, cupp, doPrint )
+\end{verbatim}
+This function will solve the general QP formulation (\ref{qpgen}),
+re-expressed here in MATLAB notation.
+\begin{verbatim}
+minimize:     c' * x + 0.5 * x' * Q * x
+subject to:   A * x = dA
+              clow <= C * x <= cupp
+              xlow <=     x <= xupp
+\end{verbatim}
+This is the exactly the default QP formulation~\eqnok{qpgen}. The
+vectors and matrix objects in the argument list should be MATLAB
+matrices of appropriate size.  Upper or lower bounds that are absent
+should be set to \texttt{inf} or \texttt{-inf}, respectively. (It is
+important to use these infinite values rather than large but finite
+values.)
+
+The final parameter in the argument list, \texttt{doPrint}, is
+optional. If present, it should be set to one of the strings ``yes,''
+``on,'' ``no,'' or ``off.'' If the value is ``yes'' or ``on,'' then
+progress information will be printed while the algorithm solves the
+problem. If \texttt{doPrint} is absent, the default value ``off'' will
+be assumed.
+
+Help is also available within MATLAB. After you have followed the
+instruction in \texttt{README-Matlab} and installed the MATLAB
+interface in the local directory or on the MATLAB path, help can by
+obtained by typing \texttt{help ooqp} at the MATLAB prompt.
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "ooqp-userguide"
+%%% End: 

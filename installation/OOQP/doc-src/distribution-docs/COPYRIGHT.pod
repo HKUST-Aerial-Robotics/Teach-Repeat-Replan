@@ -1,0 +1,52 @@
+=head1 COPYRIGHT NOTIFICATION
+
+The following is a notice of limited availability of this software and
+disclaimer which must be included as a preface to the software, in all
+source listings of the code, and in any supporting documentation.
+
+COPYRIGHT 2001 UNIVERSITY OF CHICAGO
+
+The copyright holder hereby grants you royalty-free rights to use,
+reproduce, prepare derivative works, and to redistribute this software
+to others, provided that any changes are clearly documented.  This
+software was authored by:
+
+    E. MICHAEL GERTZ      gertz@mcs.anl.gov
+    Mathematics and Computer Science Division
+    Argonne National Laboratory
+    9700 S. Cass Avenue
+    Argonne, IL 60439-4844
+
+    STEPHEN J. WRIGHT     swright@cs.wisc.edu
+    Computer Sciences Department
+    University of Wisconsin
+    1210 West Dayton Street
+    Madison, WI 53706   FAX: (608)262-9777
+
+Any questions or comments may be directed to one of the authors.
+
+ARGONNE NATIONAL LABORATORY (ANL), WITH FACILITIES IN THE STATES OF
+ILLINOIS AND IDAHO, IS OWNED BY THE UNITED STATES GOVERNMENT, AND
+OPERATED BY THE UNIVERSITY OF CHICAGO UNDER PROVISION OF A CONTRACT
+WITH THE DEPARTMENT OF ENERGY.
+
+
+=head1 GOVERNMENT LICENSE
+
+Portions of this material resulted from work developed under a
+U.S. Goverment contract and are subject to the following license: the
+Government is granted for itself and others acting in its behalf a
+paid-up, nonexclusive, irrevocable worldwide license in this computer
+software to reproduce, prepare derivative works, distribute copies to
+the public, and perform publicly and display publicly.
+
+=head1 DISCLAIMER
+
+NEITHER THE UNITED STATES GOVERNMENT NOR ANY AGENCY THEREOF, NOR THE
+UNIVERSITY OF CHICAGO, NOR ANY OF THEIR EMPLOYEES, MAKES ANY WARRANTY,
+EXPRESS OR IMPLIED, OR ASSUMES ANY LEGAL LIABILITY OR RESPONSIBILITY
+FOR THE ACCURACY, COMPLETENESS, OR USEFULNESS OF ANY INFORMATION,
+APPARATUS, PRODUCT, OR PROCESS DISCLOSED, OR REPRESENTS THAT ITS USE
+WOULD NOT INFRINGE PRIVATELY OWNED RIGHTS.
+
+=cut

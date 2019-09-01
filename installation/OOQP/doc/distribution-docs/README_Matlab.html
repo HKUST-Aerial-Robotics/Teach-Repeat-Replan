@@ -1,0 +1,139 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#INSTALLATION">INSTALLATION</a></li>
+  <li><a href="#BEFORE-YOU-BUILD-THE-OOQP-MATLAB-INTERFACE">BEFORE YOU BUILD THE OOQP-MATLAB INTERFACE</a></li>
+  <li><a href="#BUILDING-THE-OOQP-MATLAB-INTERFACE">BUILDING THE OOQP-MATLAB INTERFACE</a></li>
+  <li><a href="#TROUBLESHOOTING">TROUBLESHOOTING</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>README_Matlab - Installation instructions for OOQP Matlab support</p>
+
+
+
+
+This page is part of the <A HREF=../index.html> OOQP documentation </A>.
+
+<h1 id="INSTALLATION">INSTALLATION</h1>
+
+<p>OOQP may be invoked from within the Matlab environment. Instructions for installing this feature are given here. (This feature is not installed by the standard installation process described in the <a href="../distribution-docs/INSTALL.html">INSTALL</a> file of the OOQP distribution.)</p>
+
+<h1 id="BEFORE-YOU-BUILD-THE-OOQP-MATLAB-INTERFACE">BEFORE YOU BUILD THE OOQP-MATLAB INTERFACE</h1>
+
+<p>Before you attempt to build this interface yourself, we recommend that you search the OOQP web site for a pre-compiled distribution of the required files.</p>
+
+<p>On some machines, it may not be possible to build the OOQP-Matlab interface. The compiler suite and/or libraries available on some systems are simply not compatible with the Matlab executable, and little can be done to fix this other than upgrading some of your software. On other systems, the mex files may be built, but it may require a specific combination of compiler flags and options. See the <a href="#TROUBLESHOOTING">&quot;TROUBLESHOOTING&quot;</a> section below for more info.</p>
+
+<h1 id="BUILDING-THE-OOQP-MATLAB-INTERFACE">BUILDING THE OOQP-MATLAB INTERFACE</h1>
+
+<p>The Matlab interface requires two types of files: compiled (&quot;Mex&quot;) files and Matlab function (&quot;.m&quot;) files. To compile the required files, first configure and install the OOQP package. Detailed instructions for this procedure are given in the <a href="../distribution-docs/INSTALL.html">INSTALL</a> file of the OOQP distribution. Briefly, one must invoke the configure script like so.</p>
+
+<pre><code>    ./configure --with-matlab</code></pre>
+
+<p>The option <code>--with-matlab</code> is necessary for configuring Matlab support. If the configure script is unable to configure the Matlab interface, it will print appropriate error messages an create the file src/Mex/DISABLED. If this file is created, you will need to take some further action to configure this module. See the TROUBLESHOOTING section below for details.</p>
+
+<p>Now type</p>
+
+<pre><code>    make all_matlab</code></pre>
+
+<p>to compile all files necessary for the Matlab interface.</p>
+
+<p>The files related to Matlab will be placed in the top-level OOQP directory and will have suffices of the form .mexZZZ where ZZZ are several additional characters that represent the machine type and operating system. For instance, under Linux on an Intel processor, the solver will be named ooqp_mex.mexglx. Several Matlab functions with the suffix .m will also be copied into the top level directory.</p>
+
+<p>Invoke Matlab from within the OOQP directory and type</p>
+
+<pre><code>   help OOQP</code></pre>
+
+<p>at the Matlab prompt to get a listing of available functions. If your OOQP directory isn&#39;t named &#39;OOQP&#39;, substitute the appropriate directory name. Help is available for each supplied functions. For instance, help for the default QP solver may be obtained by typing</p>
+
+<pre><code>   help ooqp</code></pre>
+
+<p>To install the Matlab interface in another directory, simply copy all &quot;.mexZZZ&quot; and &quot;.m&quot; files to the desired directory, and run Matlab from that location.</p>
+
+<h1 id="TROUBLESHOOTING">TROUBLESHOOTING</h1>
+
+<p>On all systems, if you are having trouble you should type</p>
+
+<pre><code>   mex -v</code></pre>
+
+<p>to learn which compilers and compiler flags the <code>mex</code> script is using to build mex files. It is often worthwhile to set appropriate environment variables before running <code>configure</code> so that all source files are compiled in the same way. For instance the <code>CXX</code> environment variable can be set to the name of an alternate C++ compiler. The names of these variables loosely follow the naming conventions used by GNU make. See the &quot;Variables Used by Implicit Rules&quot; section of the online manual for GNU make that may be found at <a href="http://www.gnu.org/manual/">http://www.gnu.org/manual/</a>.</p>
+
+<p>If you have already run <code>configure</code> delete the <i>config.cache</i> file. It is never harmful to remove this file, but is only necessary when you are making major changes to the configuration such as changing the C++ compiler.</p>
+
+<ul>
+
+<li><p>If the configure file reports problems compiling or running mex files, and you are running under linux, you may be running into a known problem with the mex file compiler being incompatible with your version of linux. Contact Mathworks for more information.</p>
+
+</li>
+<li><p>Building under Solaris:</p>
+
+<ul>
+
+<li><p>If you are running under Solaris and are getting the message</p>
+
+<pre><code>    mex:  -xlic_lib=sunperf not a valid option.</code></pre>
+
+<p>then you will need to compile a copy of the BLAS and use the compiled version rather than sunperf. See the <a href="../distribution-docs/INSTALL.html">INSTALL</a> file for information on how to do so.</p>
+
+</li>
+<li><p>On some versions of Solaris, C++ files are compiled using the <code>-compat</code> option. Type <code>mex -v</code> to see the actually compile options used. If <code>-compat</code> is being used, it must be used to compile all C++ files. Set the environment variable <code>CXX</code> to</p>
+
+<pre><code>       CC -compat</code></pre>
+
+<p>before running <code>configure</code>.</p>
+
+</li>
+<li><p>If you are running on Solaris, and it looks suspiciously like you aren&#39;t getting linked against the C++ runtime libraries, add</p>
+
+<pre><code>   -lCstd -lCrun</code></pre>
+
+<p>to the link lines in <i>src/Mex/MakefileTargets.inc</i>.</p>
+
+</li>
+</ul>
+
+</li>
+<li><p>Building on an SGI: On a SGI, you need to consider the ABI, i.e. the format of the compiled files. Matlab 5 and 6 use different formats and the mex files generated by one version of matlab won&#39;t be compatible with the other version.</p>
+
+<p>The format of the compiled files is controlled by the <code>SGI_ABI</code> environment variable. Be sure to set the <code>SGI_ABI</code> before running <code>configure</code>. Otherwise, some aspects of the package may be configured for a different ABI.</p>
+
+<ul>
+
+<li><p>For Matlab 5, all files must be compiled with <code>SGI_ABI</code> set to <code>-64</code>. If your machine or OS doesn&#39;t support the <code>-64</code> option, you are out-of-luck. The alternative <code>-o32</code> C++ compiler doesn&#39;t support modern C++ constructs used in OOQP.</p>
+
+</li>
+<li><p>For Matlab 6, all files must be compiled using the <code>n32</code> option. This is probably the default, but to be on the safe side, set <code>SGI_ABI</code> to <code>n32</code></p>
+
+</li>
+</ul>
+
+</li>
+</ul>
+
+<p>To configure this package, you may need to set the MEX and/or MATLABEXE environment variables before running configure.</p>
+
+
+
+
+Back to the <A HREF=../index.html> Documentation Roadmap </A>.
+
+
+</body>
+
+</html>
+
+

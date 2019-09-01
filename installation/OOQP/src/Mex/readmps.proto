@@ -1,0 +1,9 @@
+function [ c, Q, xlow, ixlow, xupp, ixupp, A, dA, C, clow, iclow, cupp, icupp ] = mexFunction( filename )
+double precision c(nx)
+double precision Q{nx, nx}
+double precision xlow(nx), ixlow(nx), xupp(nx), ixupp(nx)
+double precision A{nx, my}
+double precision dA(my)
+double precision C{nx, mz}
+double precision clow(mz), iclow(mz), cupp(mz), icupp(mz)
+character*256 filename

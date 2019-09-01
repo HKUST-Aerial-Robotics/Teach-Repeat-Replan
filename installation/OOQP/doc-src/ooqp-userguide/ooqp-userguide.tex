@@ -1,0 +1,175 @@
+\documentclass[twoside]{article}
+\def\thefootnote{\fnsymbol{footnote}}
+%\newcommand{\supp}{\bar{b}}
+\newcommand{\supp}{B}
+\newcommand{\suppset}{\bar{\mathcal{B}}}
+%\newcommand{\slow}{\bar{\ell}}
+\newcommand{\slow}{L}
+\newcommand{\slowset}{\bar{\mathcal{L}}}
+\newcommand{\xupp}{b}
+\newcommand{\xuppset}{\mathcal{B}}
+\newcommand{\xlow}{\ell}
+\newcommand{\xlowset}{\mathcal{L}}
+\newcommand{\dualt}{\lambda}
+\newcommand{\Dualt}{\Lambda}
+\newcommand{\dualu}{\pi}
+\newcommand{\Dualu}{\Pi}
+\newcommand{\dualv}{\gamma}
+\newcommand{\Dualv}{\Gamma}
+\newcommand{\dualw}{\phi}
+\newcommand{\Dualw}{\Phi}
+
+\newcommand{\rdualt}{r_{\dualt}}
+\newcommand{\rdualu}{r_{\dualu}}
+\newcommand{\rdualv}{r_{\dualv}}
+\newcommand{\rdualw}{r_{\dualw}}
+
+\newcommand{\Qhat}{\widehat{Q}}
+\newcommand{\rhat}{\hat{r}}
+
+\def\half  {{\textstyle{1\over 2}}}
+\def\T{^T\!}
+\def\minim{\mathop{\hbox{\rm minimize}}}
+\def\subject{\hbox{\rm subject to}}
+\def\inv{^{-1}}
+\def\minim{\mathop{\hbox{\rm minimize}}}
+\def\subject{\hbox{\rm subject to}}
+\def\norm#1{\|#1\|}
+%\input{macros}
+
+\usepackage{subeqn}
+%\usepackage{psfig}
+\usepackage{extra}
+
+\def\OOQP{OOQP}
+\markboth{OOQP User Guide}{OOQP User Guide}
+\author{ E. Michael GERTZ and Stephen J. WRIGHT}
+
+\begin{document}
+\pagenumbering{roman}
+\setcounter{page}{1}
+\thispagestyle{empty}
+\begin{center}
+\vspace*{-1in}
+Argonne National Laboratory \\
+9700 South Cass Avenue\\
+Argonne, IL 60439
+
+\vspace{.2in}
+\rule{1.5in}{.01in}\\ [1ex]
+ANL/MCS-TM-252 \\
+\rule{1.5in}{.01in}
+
+
+\vspace{1in}
+{\large\bf OOQP User Guide\footnote{This 
+work was supported by the Mathematical,
+Information, and Computational Sciences Division subprogram of the
+Office of Advanced Scientific Computing Research, U.S. Department of
+Energy, under Contract W-31-109-Eng-38; and by National Science
+Foundation Grants CDA-9726385 and ACI-0082065.}
+}
+
+\vspace{.2in}
+by \\ [3ex]
+
+{\large\it E. Michael Gertz\footnote{Also
+Electrical and Computer Engineering Department, Northwestern University, Evanston, IL 60208; {\tt gertz@ece.nwu.edu}}
+and Stephen Wright\footnote{Computer Sciences Department,
+University of Wisconsin-Madison, 1210 W. Dayton Street,
+Madison, WI 53706; {\tt swright@cs.wisc.edu}}}\\
+
+\vspace{.2in}
+
+%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{1in}
+Mathematics and Computer Science Division
+
+\bigskip
+
+Technical Memorandum No.\ 252
+
+\vspace{.5in}
+October 2001 \\
+Updated  May 2004
+\end{center}
+
+\vfill
+\noindent
+%%%%%%%%%%%%%%%%%%%%%
+
+
+\newpage
+\noindent
+Argonne National Laboratory, with facilities in the states of Illinois
+and Idaho, is owned by the United States Government and operated by The
+University of Chicago under the provisions of a contract with the
+Department of Energy.
+
+\vspace{2in}
+
+\begin{center}
+{\bf DISCLAIMER}
+\end{center}
+
+\noindent
+This
+report was prepared as an account of work sponsored by an agency of the United States Government.  Neither the United States
+Government nor any agency thereof, nor The University of Chicago, nor any of
+their employees or officers, makes any warranty, express or implied, or assumes any legal liability or
+responsibility for the accuracy, completeness, or usefulness of any
+information, apparatus, product, or process disclosed, or represents that its use
+would not infringe privately-owned rights.
+Reference herein to any specific commercial product, process, or service by trade name,
+trademark, manufacturer, or otherwise, does not necessarily constitute
+or imply its endorsement, recommendation, or favoring by the United
+States Government or any agency thereof.  The views and opinions of document
+authors expressed herein do not necessarily state or reflect those of the
+United States Government or any agency thereof, Argonne National
+Laboratory, or The University of Chicago.
+\newpage
+  %\markboth{Users Guide for {\textsf SnadiOpt}}{}
+  %\pagestyle{plain}
+  \tableofcontents
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\begin{center}
+{\large\bf OOQP User Guide} \\ [2ex]
+by \\ [2ex]
+E. Michael Gertz and Stephen J. Wright
+\end{center}
+\vspace{.2in}
+\addcontentsline{toc}{section}{Abstract}
+\begin{abstract}
+OOQP is an object-oriented software package for solving convex
+quad\-ratic programming problems (QP).  We describe the design of
+OOQP, and document how to use OOQP in its default configuration. We
+further describe OOQP as a development framework, and outline how to
+develop custom solvers that solve QPs with exploitable structure or use
+specialized linear algebra.
+\end{abstract}
+
+\include{ooqp1intro}
+\include{ooqp2qpgen}
+\include{ooqp3develop}
+\include{ooqp4qpsolver}
+\include{ooqp5creating}
+\include{ooqp6usinglinalg}
+\include{ooqp7newlinalg}
+
+
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{plain}
+\bibliography{refs}
+\newpage
+\appendix
+\include{ooqp8copyright}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

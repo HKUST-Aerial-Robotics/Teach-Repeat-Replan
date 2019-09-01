@@ -1,0 +1,3 @@
+function [w, beta, v, z, u, s] = ooqp_svm( X, d ? rho )
+double precision X(m,n), d(m), rho
+double precision w(n), beta, v(m), z(m), u(m), s(m)

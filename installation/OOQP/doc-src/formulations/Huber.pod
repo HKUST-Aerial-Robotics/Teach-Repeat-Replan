@@ -1,0 +1,157 @@
+=head1 HUBER
+
+Huber - A module for performing Huber regression of linear models.
+
+=for html
+This page is part of the <A HREF=../index.html> OOQP documentation </A>.
+
+=head1 USAGE
+
+To read data from a file:
+
+B<huber-gondzio.exe> [ B<--quiet> ] [ B<--print-solution> ] filename cutoff
+
+To generate a random problem for benchmarking:
+
+B<huber-gondzio.exe> [ B<--quiet> ] [ B<--print-solution> ] random m n
+
+where "C<random>" is a literal keyword and C<m> > C<n>.
+
+=head1 SYNOPSIS
+
+Given a m x n matrix A and a vector b of length m, we seek a vector
+beta that minimizes the expression
+
+	sum_1^m rho( (Ax-beta)_i ),
+
+where rho() is the Huber loss function defined by
+
+	rho(t) =  (1/2) t^2              if |t| <= tau,
+       	       =  tau |t| - (1/2) tau^2  if |t| >  tau.
+
+The Huber function compromises in a sense between the sum-of-squares
+function used in least-squares regression, and the absolute value
+function used in l-1 regression. (By setting tau = infinity and tau=0,
+we recover least-squares and l-1 regression respectively as special
+cases.)  Huber's advantage over least-squares regression is that it
+de-emphasizes the contribution of outliers to the objective function,
+thereby decreasing their influence over the optimal value of the
+parameter x. 
+
+Details of the formulation of the Huber regression problem as a
+minimization problem can be found in Section 6.1 of the paper
+"Object-Oriented Software for Quadratic Programming" that appears in
+this distribution.
+
+The Huber module of OOQP accepts as input the data objects A and b,
+and the parameter tau that defines the Huber loss function. Its output
+is the vector x of regression parameters.
+
+
+=head1 BUILDING THE EXECUTABLE
+
+An implementation of the Huber solver that uses Gondzio's algorithm
+and reads data from an ascii file is supplied with the OOQP
+distribution. To generate this executable, first follow the
+installation procedures described in the file
+L<INSTALL|distribution-docs::INSTALL>. Then, from the main OOQP directory, type
+
+    make huber-gondzio.exe
+
+=head1 CALLING THE HUBER SOLVER WITH ASCII DATA
+
+The input file for the Huber module should contain the dimensions of
+the problem followed by the the entries of the matrix A, a row at a
+time, along with the element of b corresponding to each row. The
+format is as follows:
+
+	m
+	n
+	A_11 A_12 ... A_1n b_1
+	A_21 A_22 ... A_2n b_2
+	...
+	A_l1 A_l2 ... A_ln b_m
+
+where m and n are the dimensions of the problem, A_ij is the (i,j)
+element of the matrix A, and b_i is the i-th element of the right-hand
+side b.
+
+The most common mode for invoking the executable is the following
+
+	huber-gondzio.exe filename tau
+
+where "filename" is the name of the ascii file containing the input
+and "tau" is a positive real number containing the value of the
+parameter tau.
+
+The result of the run will be saved in a file named F<filename.out>
+where the string "filename" is replaced by the actual name of the
+input file. The output format is
+
+      m
+      beta_1
+      ...
+      beta_m
+
+where C<beta_1> ... C<beta_m> are the optimal coefficients. This
+output is also written to the standard output stream.
+
+
+For benchmarking on random data, one can use the following invocation:
+
+	huber-gondzio.exe random m n
+
+where "random" is a literal keyword, and n and m are the problem
+dimensions as defined above.
+
+=head1 OPTIONS
+
+=over 4
+
+=item --quiet
+
+Do not print progress information while the problem is being solved
+and do not print the solution to the screen.
+
+=item --print-solution 
+
+Print the solution to the screen when the algorithm is
+finished. Overrides the B<--quiet> option. 
+
+The solution is printed by default if it is small (C<n> < 20) and
+the B<--quiet> option is not in effect. 
+
+=back
+
+=head1 SAMPLE INPUT FILE
+
+We have supplied a real data set with the OOQP distribution which can
+be used to test the Huber solver. This file derived from a regression
+problem of finding coefficients for predicting one property of a PC on
+a campus from 12 other properties. There are 8192 data points. To
+execute the problem with this test data, make the huber-gondzio.exe
+file as described above, and type 
+
+	huber-gondzio.exe examples/Huber/cpuSmall.data penalty
+
+where "penalty" is the chosen value of the penalty parameter. Any
+nonnegative value can be used for "penalty".
+
+=head1 MATLAB INTERFACE
+
+The Huber code may be invoked from within Matlab
+environment. Documentation for this interface may be read from within
+Matlab. See the L<README_Matlab|distribution-docs::README_Matlab> file for instruction on
+how to install the Matlab interface. One the interface is installed,
+type
+
+	help ooqp_huber
+
+at the Matlab prompt.
+
+=head1 FIN
+
+=for html
+Back to the <A HREF=../index.html> Documentation Roadmap </A>.
+
+=cut

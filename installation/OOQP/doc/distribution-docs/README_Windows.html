@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSYS">SYNOPSYS</a></li>
+  <li><a href="#CYGWIN">CYGWIN</a></li>
+  <li><a href="#Visual-C">Visual C++</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>README_Windows -- A installation guide for OOQP under Microsoft Windows</p>
+
+
+
+
+This page is part of the <A HREF=../index.html> OOQP documentation </A>.
+
+<h1 id="SYNOPSYS">SYNOPSYS</h1>
+
+<p>OOQP was developed under an UNIX-like environment, but also may be installed and will run under Microsoft Windows. The C++ code itself is platform-independent. The only issue is the system for building the libraries and executables.</p>
+
+<p>The file <a href="../distribution-docs/INSTALL.html">INSTALL</a> contains instructions for compiling OOQP in a UNIX-like environment, as well as general information about installing OOQP. The current file contains suplemental information for compiling under Windows. We are aware of two reasonable options. The first is to install and use Cygwin. The second is to compile under Microsoft Visual C++.</p>
+
+<h1 id="CYGWIN">CYGWIN</h1>
+
+<p>Cygwin is a UNIX-like environment that runs under Windows. It is freely available from <a href="http://www.cygwin.com">http://www.cygwin.com</a>, or may be purchased on machine readable media. If you choose to install Cygwin, you may simply follow the standard instructions in the <a href="../distribution-docs/INSTALL.html">INSTALL</a> guide.</p>
+
+<h1 id="Visual-C">Visual C++</h1>
+
+<p>OOQP is primarily developed under GNU Linux, and the files needed to compile OOQP under Microsoft Visual Studio are not part of the standard OOQP distribution. We are not aware of any technical impediment to compiling OOQP under Visual Studio -- please report any problem you may find.</p>
+
+<p>To compile OOQP with Visual Studio, you must accomplish the following tasks.</p>
+
+<dl>
+
+<dt id="pod1">1)</dt>
+<dd>
+
+<p>Obtain a means of compiling MA27, which is written in Fortran 77. F2C may work (see the <a>INSTALL</a> file for a discussion of F2C). There are also commercial packages that support for compiling Fortran with Visual Studio; we don&#39;t have experience with these.</p>
+
+</dd>
+<dt id="pod2">2)</dt>
+<dd>
+
+<p>Obtain BLAS and LAPACK libraries for Visual Studio. These may be compiled from source, but to do so you need a Fortran compiler (see INSTALL). Use the same Fortran compiler that you use to build MA27.</p>
+
+</dd>
+<dt id="pod3">3)</dt>
+<dd>
+
+<p>Either find a way to use the OOQP makefiles with the Visual Studio compilers (e.g. via Cygwin), or create a Visual Studio project building the necessary executables. The task of builing an appropriate project is tedious, but not technically difficult. The appropriate &quot;main&quot; routine for the sparse general solver is in src/QpGen/QpGenSparseGondzioDriver.C. It should be Ok to include all other the .C files under src/ the Visual Studio project that builds the sparse general solver, so long as these files do not provide an alternate definition of main (by convention the files that contain a main routine have &quot;Driver&quot; in the name).</p>
+
+</dd>
+<dt id="pod4">4)</dt>
+<dd>
+
+<p>Link against (build the excutables using) an appropriate Fortran system library.</p>
+
+</dd>
+</dl>
+
+<p>Additional support for compiling with Visual Studio may be available on the OOQP web site.</p>
+
+
+</body>
+
+</html>
+
+

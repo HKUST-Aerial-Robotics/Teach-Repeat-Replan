@@ -1,0 +1,78 @@
+=head1 NAME
+
+README_Windows -- A installation guide for OOQP under Microsoft
+Windows
+
+=for html
+This page is part of the <A HREF=../index.html> OOQP documentation </A>.
+
+=head1 SYNOPSYS
+
+OOQP was developed under an UNIX-like environment, but also may be
+installed and will run under Microsoft Windows. The C++ code itself is
+platform-independent.  The only issue is the system for building the
+libraries and executables.
+
+The file L<INSTALL|distribution-docs::INSTALL> contains instructions
+for compiling OOQP in a UNIX-like environment, as well as general
+information about installing OOQP. The current file contains
+suplemental information for compiling under Windows. We are aware of
+two reasonable options. The first is to install and use Cygwin. The
+second is to compile under Microsoft Visual C++.
+
+=head1 CYGWIN
+
+Cygwin is a UNIX-like environment that runs under Windows. It is
+freely available from L<http://www.cygwin.com>, or may be purchased on
+machine readable media.  If you choose to install Cygwin, you may
+simply follow the standard instructions in the
+L<INSTALL|distribution-docs::INSTALL> guide.
+
+=head1 Visual C++
+
+OOQP is primarily developed under GNU Linux, and the files needed to
+compile OOQP under Microsoft Visual Studio are not part of the
+standard OOQP distribution.  We are not aware of any technical
+impediment to compiling OOQP under Visual Studio -- please report any
+problem you may find.
+
+To compile OOQP with Visual Studio, you must accomplish the following
+tasks.
+
+=over 4
+
+=item 1)
+
+Obtain a means of compiling MA27, which is written in Fortran 77.  F2C
+may work (see the L<INSTALL|./INSTALL> file for a discussion of F2C).
+There are also commercial packages that support for compiling Fortran
+with Visual Studio; we don't have experience with these.
+
+=item 2) 
+
+Obtain BLAS and LAPACK libraries for Visual Studio.  These may be
+compiled from source, but to do so you need a Fortran compiler (see
+INSTALL).  Use the same Fortran compiler that you use to build MA27.
+
+=item 3) 
+
+Either find a way to use the OOQP makefiles with the Visual Studio
+compilers (e.g. via Cygwin), or create a Visual Studio project
+building the necessary executables.  The task of builing an
+appropriate project is tedious, but not technically difficult. The
+appropriate "main" routine for the sparse general solver is in
+src/QpGen/QpGenSparseGondzioDriver.C.  It should be Ok to include all
+other the .C files under src/ the Visual Studio project that builds
+the sparse general solver, so long as these files do not provide an
+alternate definition of main (by convention the files that contain a
+main routine have "Driver" in the name).
+
+=item 4) 
+
+Link against (build the excutables using) an appropriate Fortran
+system library.
+
+=back
+
+Additional support for compiling with Visual Studio may be available
+on the OOQP web site.

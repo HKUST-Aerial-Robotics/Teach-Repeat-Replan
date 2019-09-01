@@ -1,0 +1,152 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#HUBER">HUBER</a></li>
+  <li><a href="#USAGE">USAGE</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#BUILDING-THE-EXECUTABLE">BUILDING THE EXECUTABLE</a></li>
+  <li><a href="#CALLING-THE-HUBER-SOLVER-WITH-ASCII-DATA">CALLING THE HUBER SOLVER WITH ASCII DATA</a></li>
+  <li><a href="#OPTIONS">OPTIONS</a></li>
+  <li><a href="#SAMPLE-INPUT-FILE">SAMPLE INPUT FILE</a></li>
+  <li><a href="#MATLAB-INTERFACE">MATLAB INTERFACE</a></li>
+  <li><a href="#FIN">FIN</a></li>
+</ul>
+
+<h1 id="HUBER">HUBER</h1>
+
+<p>Huber - A module for performing Huber regression of linear models.</p>
+
+
+
+
+This page is part of the <A HREF=../index.html> OOQP documentation </A>.
+
+<h1 id="USAGE">USAGE</h1>
+
+<p>To read data from a file:</p>
+
+<p><b>huber-gondzio.exe</b> [ <b>--quiet</b> ] [ <b>--print-solution</b> ] filename cutoff</p>
+
+<p>To generate a random problem for benchmarking:</p>
+
+<p><b>huber-gondzio.exe</b> [ <b>--quiet</b> ] [ <b>--print-solution</b> ] random m n</p>
+
+<p>where &quot;<code>random</code>&quot; is a literal keyword and <code>m</code> &gt; <code>n</code>.</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<p>Given a m x n matrix A and a vector b of length m, we seek a vector beta that minimizes the expression</p>
+
+<pre><code>        sum_1^m rho( (Ax-beta)_i ),</code></pre>
+
+<p>where rho() is the Huber loss function defined by</p>
+
+<pre><code>        rho(t) =  (1/2) t^2              if |t| &lt;= tau,
+               =  tau |t| - (1/2) tau^2  if |t| &gt;  tau.</code></pre>
+
+<p>The Huber function compromises in a sense between the sum-of-squares function used in least-squares regression, and the absolute value function used in l-1 regression. (By setting tau = infinity and tau=0, we recover least-squares and l-1 regression respectively as special cases.) Huber&#39;s advantage over least-squares regression is that it de-emphasizes the contribution of outliers to the objective function, thereby decreasing their influence over the optimal value of the parameter x.</p>
+
+<p>Details of the formulation of the Huber regression problem as a minimization problem can be found in Section 6.1 of the paper &quot;Object-Oriented Software for Quadratic Programming&quot; that appears in this distribution.</p>
+
+<p>The Huber module of OOQP accepts as input the data objects A and b, and the parameter tau that defines the Huber loss function. Its output is the vector x of regression parameters.</p>
+
+<h1 id="BUILDING-THE-EXECUTABLE">BUILDING THE EXECUTABLE</h1>
+
+<p>An implementation of the Huber solver that uses Gondzio&#39;s algorithm and reads data from an ascii file is supplied with the OOQP distribution. To generate this executable, first follow the installation procedures described in the file <a href="../distribution-docs/INSTALL.html">INSTALL</a>. Then, from the main OOQP directory, type</p>
+
+<pre><code>    make huber-gondzio.exe</code></pre>
+
+<h1 id="CALLING-THE-HUBER-SOLVER-WITH-ASCII-DATA">CALLING THE HUBER SOLVER WITH ASCII DATA</h1>
+
+<p>The input file for the Huber module should contain the dimensions of the problem followed by the the entries of the matrix A, a row at a time, along with the element of b corresponding to each row. The format is as follows:</p>
+
+<pre><code>        m
+        n
+        A_11 A_12 ... A_1n b_1
+        A_21 A_22 ... A_2n b_2
+        ...
+        A_l1 A_l2 ... A_ln b_m</code></pre>
+
+<p>where m and n are the dimensions of the problem, A_ij is the (i,j) element of the matrix A, and b_i is the i-th element of the right-hand side b.</p>
+
+<p>The most common mode for invoking the executable is the following</p>
+
+<pre><code>        huber-gondzio.exe filename tau</code></pre>
+
+<p>where &quot;filename&quot; is the name of the ascii file containing the input and &quot;tau&quot; is a positive real number containing the value of the parameter tau.</p>
+
+<p>The result of the run will be saved in a file named <i>filename.out</i> where the string &quot;filename&quot; is replaced by the actual name of the input file. The output format is</p>
+
+<pre><code>      m
+      beta_1
+      ...
+      beta_m</code></pre>
+
+<p>where <code>beta_1</code> ... <code>beta_m</code> are the optimal coefficients. This output is also written to the standard output stream.</p>
+
+<p>For benchmarking on random data, one can use the following invocation:</p>
+
+<pre><code>        huber-gondzio.exe random m n</code></pre>
+
+<p>where &quot;random&quot; is a literal keyword, and n and m are the problem dimensions as defined above.</p>
+
+<h1 id="OPTIONS">OPTIONS</h1>
+
+<dl>
+
+<dt id="quiet">--quiet</dt>
+<dd>
+
+<p>Do not print progress information while the problem is being solved and do not print the solution to the screen.</p>
+
+</dd>
+<dt id="print-solution">--print-solution</dt>
+<dd>
+
+<p>Print the solution to the screen when the algorithm is finished. Overrides the <b>--quiet</b> option.</p>
+
+<p>The solution is printed by default if it is small (<code>n</code> &lt; 20) and the <b>--quiet</b> option is not in effect.</p>
+
+</dd>
+</dl>
+
+<h1 id="SAMPLE-INPUT-FILE">SAMPLE INPUT FILE</h1>
+
+<p>We have supplied a real data set with the OOQP distribution which can be used to test the Huber solver. This file derived from a regression problem of finding coefficients for predicting one property of a PC on a campus from 12 other properties. There are 8192 data points. To execute the problem with this test data, make the huber-gondzio.exe file as described above, and type</p>
+
+<pre><code>        huber-gondzio.exe examples/Huber/cpuSmall.data penalty</code></pre>
+
+<p>where &quot;penalty&quot; is the chosen value of the penalty parameter. Any nonnegative value can be used for &quot;penalty&quot;.</p>
+
+<h1 id="MATLAB-INTERFACE">MATLAB INTERFACE</h1>
+
+<p>The Huber code may be invoked from within Matlab environment. Documentation for this interface may be read from within Matlab. See the <a href="../distribution-docs/README_Matlab.html">README_Matlab</a> file for instruction on how to install the Matlab interface. One the interface is installed, type</p>
+
+<pre><code>        help ooqp_huber</code></pre>
+
+<p>at the Matlab prompt.</p>
+
+<h1 id="FIN">FIN</h1>
+
+
+
+
+Back to the <A HREF=../index.html> Documentation Roadmap </A>.
+
+
+</body>
+
+</html>
+
+

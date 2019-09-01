@@ -1,0 +1,77 @@
+NAME
+    examples/README - Documentation of the examples provided with the OOQP
+    distribution
+
+src/QpExample
+    This is the example of how OOQP can be customized to accommodate a new
+    problem formulation. This particular QP formulation is outlined in the
+    Users Guide doc/ooqp-userguide.pdf.
+
+    The QpExample formulation is created within the OOQP src/ directory
+    because this is where we suggest users create any new QP formulations.
+    To build the QpExample, type
+
+        make qpexample-dense-gondzio.exe
+
+    within the top level OOQP directory. The qpexample-dense-gondzio.exe
+    program will solve a randomly generated problem.
+
+examples/Svm
+    Sample data files for use with the svm-gondzio.exe program. See Svm for
+    more information.
+
+examples/Huber
+    Sample data files for use with the huber-gondzio.exe program. See Huber
+    for more information.
+
+examples/QpBound
+    Sample data files for the qpbound-dense-gondzio.exe and
+    qpbound-petsc-mehrotra.exe programs. See QpBound for more information.
+
+examples/QpGen
+    Sample data and programs for use with the default program formulation.
+    Several subdirectory of this directory contain source code for building
+    programs that link against the OOQP libraries. These programs are
+    intended to be sample code for the interfaces described in Section 2 of
+    the OOQP User Guide.
+
+    The makefiles accompanying the sample programs are not under the control
+    of OOQP's configure script because they are designed to be stand-alone
+    examples of how users might write simple makefiles. Therefore, it is
+    likely that users will need to edit these files before building the
+    sample programs, for instance to set the "CXX" variable to the name of
+    the appropriate C++ compiler. Users who are unsure of the appropriate
+    values for the makefile variables should look to the GNUmakefile in the
+    OOQP directory for guidance. The values set in GNUmakefile were
+    determined by configure to be appropriate for this system.
+
+  examples/QpGen/ampl
+    Contains model and data files for use with the AMPL modeling language.
+    These files are described in the OOQP User Guide.
+
+  examples/QpGen/cinterface
+    Contains code to build the programs example.exe and mps.exe that
+    demonstrate invoking the OOQP solver as a C routine.
+
+    Neither program takes any arguments. The example.exe program contains
+    all the data to define a simple QP. The mps.exe program reads the
+    problem given in examples/QpGen/sample-qps/Example.qps.
+
+  example/QpGen/cplusplus
+    Contains code to build the program cxx_example.exe that demonstrates
+    invoking the OOQP solver from C++ code. This program takes no arguments;
+    it contains all the data to define a simple QP.
+
+  examples/QpGen/random
+    Code to generate the qpgen-sparse-random.exe program, which solves
+    randomly generated sparse QPs. This program may be invoked as follows,
+
+    qpgen-sparse-random.exe n my mz
+
+    where "n" is the number of primal variables, "my" is the number of
+    equality constraints, and "mz" is the number of inequality constraints.
+
+  examples/QpGen/sample-qps
+    Contains one or more sample QPs in QPS format.
+
+FIN

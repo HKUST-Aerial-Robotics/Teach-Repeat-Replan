@@ -1,0 +1,5 @@
+function [beta, t, gamma1, gamma2, lambda1, lambda2] = mexFunction( X, y ? cutoff)
+double precision X(m,n), y(m), cutoff
+double precision beta(n), t(m), gamma1(m), gamma2(m)
+double precision lambda1(m), lambda2(m)
+

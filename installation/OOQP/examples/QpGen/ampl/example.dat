@@ -1,0 +1,19 @@
+param  objadd   := 4 ;
+
+param: J : g    :=  col1    1.5         col2   -2 ;
+
+param: QJJ : Q := 
+       col1    col1    8    col1    col2    2
+       col2    col1    2    col2    col2    10 ;
+
+param xlow      :=  col1    0           col2    0 ;
+param xupp      :=  col1    20          col2    Infinity ;
+
+param: I : clow :=  row1    2           row2   -Infinity ;  
+param      cupp :=  row1    Infinity    row2    6 ;      
+      
+param: CIJ : C := 
+       row1    col1    2    row1    col2    1
+       row2    col1   -1    row2    col2    2 ;
+
+

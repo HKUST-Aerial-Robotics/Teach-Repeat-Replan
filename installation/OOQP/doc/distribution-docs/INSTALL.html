@@ -1,0 +1,289 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#THE-BOTTOM-LINE">THE BOTTOM LINE</a></li>
+  <li><a href="#MICROSOFT-WINDOWS">MICROSOFT WINDOWS</a></li>
+  <li><a href="#ENVIRONMENT-VARIABLES-AND-configure">ENVIRONMENT VARIABLES AND configure</a></li>
+  <li><a href="#PREREQUISITES">PREREQUISITES</a>
+    <ul>
+      <li><a href="#A-C-compiler-and-a-means-of-compiling-FORTRAN-77-files">A C++ compiler and a means of compiling FORTRAN 77 files</a></li>
+      <li><a href="#A-UNIX-like-environment">A UNIX-like environment</a></li>
+      <li><a href="#GNU-make">GNU make</a></li>
+      <li><a href="#BLAS-and-LAPACK">BLAS and LAPACK</a></li>
+      <li><a href="#MA27-or-MA57">MA27 or MA57</a></li>
+    </ul>
+  </li>
+  <li><a href="#WHAT-WILL-BE-BUILT">WHAT WILL BE BUILT</a></li>
+  <li><a href="#INTERFACES-TO-EXTERNAL-PACKAGES">INTERFACES TO EXTERNAL PACKAGES</a>
+    <ul>
+      <li><a href="#Ampl">Ampl</a></li>
+      <li><a href="#Matlab">Matlab</a></li>
+      <li><a href="#PETSc">PETSc</a></li>
+    </ul>
+  </li>
+  <li><a href="#USING-F2C">USING F2C</a></li>
+  <li><a href="#PERFORMANCE-TUNING">PERFORMANCE TUNING</a></li>
+  <li><a href="#INSTALLATION-LOCATION">INSTALLATION LOCATION</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>INSTALL -- An installation guide for OOQP.</p>
+
+
+
+
+This page is part of the <A HREF=../index.html> OOQP documentation </A>.
+
+<h1 id="THE-BOTTOM-LINE">THE BOTTOM LINE</h1>
+
+<p>If you have all the prerequisite packages installed on your system (see the <a href="#PREREQUISITES">&quot;PREREQUISITES&quot;</a> section below), then you may type</p>
+
+<pre><code>    ./configure
+    make</code></pre>
+
+<p>to build OOQP. If you wish to install the package in a more permanent location, you may then type</p>
+
+<pre><code>   make install </code></pre>
+
+<p>Support for external packages such as Ampl, Matlab and PETSc is not built automatically. See the appropriate sections below for instructions on how to build interfaces to these packages.</p>
+
+<h1 id="MICROSOFT-WINDOWS">MICROSOFT WINDOWS</h1>
+
+<p>If you intend to build and install OOQP under Microsoft Windows, read the <a href="../distribution-docs/README_Windows.html">README_Windows</a> file before you read the remainder of the current file.</p>
+
+<h1 id="ENVIRONMENT-VARIABLES-AND-configure">ENVIRONMENT VARIABLES AND configure</h1>
+
+<p>Before discussing the specifics of packages that are needed for OOQP to be built, we make some general comments about the use of environment variables and the configure script.</p>
+
+<p>The configure script attempts to determine properties of your system and compilers automatically. Occasionally, it will be unable to resolve some aspect of your environment satisfactorily; for example, the locations of certain external packages. You will need to set certain environment variables (and possibly obtain some additional software) before running configure.</p>
+
+<p>To take one important example, consider the MA27 library. which is required for a successful build. By default, configure assumes the MA27 library is in the top level OOQP directory and be accessed as libma27.a. If this is not the case, you must set the MA27LIB environment variable to the name of the library as you want it to appear on the link line. To make this example concrete, suppose that your version of MA27 at the path $HOME/sw/lib/libma27.a (the pattern $HOME expands to the full path of your home directory). For most shells, commands of the following form will suffice to set the MA27LIB environment variable:</p>
+
+<pre><code>    MA27LIB=$HOME/sw/lib/libma27.a
+    export MA27LIB</code></pre>
+
+<p>(Of course, $HOME/sw/lib/libma27.a should be replaced with the value appropriate to your system) For the csh shell, and its derivatives, the form of the command is as follows.</p>
+
+<pre><code>    setenv MA27LIB $HOME/sw/lib/libma27.a</code></pre>
+
+<p>The use of spaces is significant in these examples -- particularly the absence of spaces surrounding the = sign in the first example. If you are uncertain which shell you are using it is safe to simply try both these commands; one should work.</p>
+
+<p>Once MA27LIB and other variables of interest are set appropriately, one may run the configure script by going to the OOQP directory and typing the following:</p>
+
+<pre><code>    ./configure</code></pre>
+
+<p>This script will copy the values of the environment variables into appropriate locations, so you do not need to set these variables permanently (that is, there is no need to modify your .login or .profile). However, if you need to re-run configure (after fixing some error or after acquiring additional external packages), you will need to be sure all appropriate environment variables are set appropriately before calling the script. It may help to make a note of the appropriate values.</p>
+
+<p>An alternative approach is to modify the file GNUmakefile by hand to set environment variables appropriately. However, these files are generated automatically by the configure script, so any changes you make will be lost next time you run this script.</p>
+
+<h1 id="PREREQUISITES">PREREQUISITES</h1>
+
+<p>The following packages need to be installed on your system before OOQP may be built.</p>
+
+<h2 id="A-C-compiler-and-a-means-of-compiling-FORTRAN-77-files">A C++ compiler and a means of compiling FORTRAN 77 files</h2>
+
+<p>OOQP is written in standard C++, using only constructs that modern compilers stably support. Any sufficiently recent C++ compiler should work with OOQP.</p>
+
+<p>OOQP uses a number of routines from the BLAS and LAPACK FORTRAN 77 libraries. C++ code that calls these routines adheres to typical intra-language calling conventions that work for a number of compiler suites. We remark that the GNU C++ and FORTRAN (gfortran) compilers build OOQP correctly. The GNU compilers are available on a wide variety of platforms, and in particular any GNU Linux distribution should have installable packages for these compilers.</p>
+
+<p>Users who cannot obtain a FORTRAN 77 compiler, or are having difficulty compiling OOQP using their FORTRAN compiler may try to compile OOQP using F2C (see the <a href="#USING-F2C">&quot;USING F2C&quot;</a> section below.) We do not recommend using F2C, as it is almost always better to try to install gfortran -- it is certainly better to install gfortran on any GNU linux distribution, on Mac OS X or under Cygwin.</p>
+
+<h2 id="A-UNIX-like-environment">A UNIX-like environment</h2>
+
+<p>You may compile OOQP under any operating system you wish, but the installation instructions in the current file require the use of UNIX-style system utilities. For instructions on how to build OOQP under Microsoft Windows, see the <a href="../distribution-docs/README_Windows.html">README_Windows</a> file.</p>
+
+<h2 id="GNU-make">GNU make</h2>
+
+<p>A utility to maintain groups of programs. GNU make is freely and widely available, yields predictable performance across a wide variety of platforms, and has a number of useful features absent in many vendor-provided versions of make.You almost certainly have a version of make installed, which may or may not be GNU make. To find out, type:</p>
+
+<pre><code>    make --version</code></pre>
+
+<p>If you get anything other than a message telling you that this is a version of GNU make, try</p>
+
+<pre><code>    gmake --version</code></pre>
+
+<p>and finally</p>
+
+<pre><code>    gnumake --version</code></pre>
+
+<p>If none of these succeed, then GNU make probably is not installed on your system. You may obtain a copy at <a href="http://www.gnu.org">http://www.gnu.org</a>. Although our makefiles are not too elaborate, we do use some features of GNU make.</p>
+
+<h2 id="BLAS-and-LAPACK">BLAS and LAPACK</h2>
+
+<p>The BLAS (Basic Linear Algebra Subproblems) and LAPACK (Linear Algebra PACKage) are a collections of routines that perform common linear-algebra operations used in scientific computing. Because these operations are so fundamental, a great deal of effort has gone into ensuring that they are implemented correctly and efficiently on various architectures.</p>
+
+<p>The source for these libraries is freely available on NETLIB (www.netlib.org) and the libraries may be compiled using a standard FORTRAN 77 compiler. But...STOP DON&#39;T.</p>
+
+<p>These libraries are standard and commonly available from OS vendors. Any GNU Linux distribution should have them in their package repository. (For some distributions, you may also need to install &quot;development&quot; packages. For instance, on Fedora, you need lapack-devel.) Mac OS X supplies a preinstalled library with these routines. If you cannot obtain a vendor-supplied BLAS or LAPACK, only then visit www.netlib.org and compile the libraries from source.</p>
+
+<p>The default locations for these libraries is &#39;-lblas -llapack&#39;.za To provide an alternate location, set the BLAS environment variable. See <a href="#ENVIRONMENT-VARIABLES-AND-configure">&quot;ENVIRONMENT VARIABLES AND configure&quot;</a> for information on how to do so. For Mac OS X, the vecLib framework supplies both BLAS and LAPACK. Set the BLAS environment variable as follows:</p>
+
+<pre><code>    BLAS=&#39;-framework vecLib&#39;
+    export BLAS</code></pre>
+
+<p>Spaces are significant in these commands, as are the single quotes around &#39;-framework vecLib&#39;.</p>
+
+<h2 id="MA27-or-MA57">MA27 or MA57</h2>
+
+<p>MA27 and MA57 are codes for solving sparse symmetric indefinite linear systems. To build the default general QP solver, you must have one of those two codes installed.</p>
+
+<p>These codes are part of HSL (formerly the Harwell Subroutine Library), a collection of ISO Fortran codes for large scale scientific computation.</p>
+
+<p>MA27 is the default solver used with OOQP. MA57 supersedes MA27, but MA57 has more restrictive licensing requirements. OOQP&#39;s MA27 interface is the best supported and most robust, but MA57 perform better in some circumstances.</p>
+
+<p>To obtain MA27, go to</p>
+
+<pre><code>    L&lt;http://hsl.rl.ac.uk/archive/hslarchive.html&gt;</code></pre>
+
+<p>You will need the double precision versions of MA27. Unpack the MA27 source archive and follow the instructions therein to build the MA27 library. Move the compiled library to the OOQP directory.</p>
+
+<p>If MA27 is already installed on your system, of if you wish to install MA27 in a different location, you may need to set the MA27LIB environment variable to point to the library. See <a href="#ENVIRONMENT-VARIABLES-AND-configure">&quot;ENVIRONMENT VARIABLES AND configure&quot;</a> for information on how to do so.</p>
+
+<p>If you prefer to use MA57, obtain a copy of the MA57 source from the HSL collection. See</p>
+
+<pre><code>    L&lt;http://www.hsl.rl.ac.uk/&gt;</code></pre>
+
+<p>for details on obtaining MA57 and other HSL codes. Unpack the MA57 source archive and follow the instructions therein to build the MA57 library. Set the MA57LIB environment variable to refer to the newly-built libraries (see <a href="#ENVIRONMENT-VARIABLES-AND-configure">&quot;ENVIRONMENT VARIABLES AND configure&quot;</a>). Note that newer versions of MA57 require the MeTiS library. If you are using a newer version of MA57, list both the MA57 library and the MeTiS library in the MA57LIB environment variable. By default OOQP looks for libma57.a and libfakemetis.a in the OOQP directory.</p>
+
+<h1 id="WHAT-WILL-BE-BUILT">WHAT WILL BE BUILT</h1>
+
+<p>The command</p>
+
+<pre><code>    make</code></pre>
+
+<p>will build several executables in the current directory along with libraries containing the OOQP development framework in lib/. It will also copy the OOQP header files into include/. See the <a href="../distribution-docs/README.html">README</a> file for a description of the conventions used to name the executables. One of the executables created will be</p>
+
+<pre><code>     qpgen-sparse-gondzio.exe</code></pre>
+
+<p>This is the default solver that takes QPS files as input and uses MA27 to solve linear systems. Use of this solver is described extensively in the OOQP User Guide (doc/ooqp-userguide.pdf).</p>
+
+<p>Interfaces of the qpgen solver to external packages, such as Ampl and Matlab, and variants that use linear solvers other than MA27 (such as MA57) are not built by default. To build the MA57-based version of the qpgen solver, you first need to install MA57 and set the MA57LIB environment variable appropriately. Then type</p>
+
+<pre><code>    make all_ma57</code></pre>
+
+<p>One of the executables created will be</p>
+
+<pre><code>   qpgen-sparse-ma57-gondzio.exe</code></pre>
+
+<p>which has the same functionality as qpgen-sparse-gondzio.exe.</p>
+
+<p>The libraries that are built by the &quot;make&quot; command and moved to lib/ will be similarly incomplete. They will include libraries for those versions of OOQP which we anticipate that users will wish to embed as subroutines in their own problems. Please refer to the OOQP User Guide for further information, and contact the developers if you need a library that is not currently supplied.</p>
+
+<p>Users who wish to create a new QP solver customized to a particular problem structure, or perform similarly intense development with OOQP, may wish to work in the OOQP src/ directory rather that relying on the libraries generated by the default build. Instructions on working with the OOQP course can be found in the OOQP User Guide.</p>
+
+<h1 id="INTERFACES-TO-EXTERNAL-PACKAGES">INTERFACES TO EXTERNAL PACKAGES</h1>
+
+<p>OOQP has interfaces to several external packages.</p>
+
+<h2 id="Ampl">Ampl</h2>
+
+<p>OOQP may be invoked to solve convex QPs from within the modeling language Ampl. To use the OOQP Ampl interface, you must install the Ampl solver library and library headers. There are links to the required code on the official site <a href="http://www.ampl.com/hooking.html">http://www.ampl.com/hooking.html</a>. The code may also be found at the Netlib repository at the URL <a href="http://www.netlib.org/ampl/solvers/">http://www.netlib.org/ampl/solvers/</a>.</p>
+
+<p>The Ampl solvers source distribution contains a README that describes how to build the Ampl solvers library. These instructions have changed from time to time, so we are unable to give specific instructions here. Follow the directions in README and build the library. Find the directory containing the file amplsolvers.a. Set the environment variable AMPL_SOLVERS to the full path of the directory containing amplsolvers.a. See <a href="#ENVIRONMENT-VARIABLES-AND-configure">&quot;ENVIRONMENT VARIABLES AND configure&quot;</a> for information on how to do so.</p>
+
+<p>Once AMPL_SOLVERS has been set, and other prerequisites for OOQP have been satisfied (see <a href="#PREREQUISITES">&quot;PREREQUISITES&quot;</a>), run ./configure in the OOQP source directory and then type</p>
+
+<pre><code>     make ooqp-ampl</code></pre>
+
+<h2 id="Matlab">Matlab</h2>
+
+<p>OOQP may be invoked from within Matlab. Instructions on how to build this interface may be found in the <a href="../distribution-docs/README_Matlab.html">README_Matlab</a> file.</p>
+
+<h2 id="PETSc">PETSc</h2>
+
+<p>Some solvers in OOQP use the PETSc package from Argonne National Laboratory to perform linear algebra operations. Before the OOQP-PETSc interface can be build, you must install PETSc on your system. See the PETSc home page at <a href="http://www.mcs.anl.gov/petsc/index.html">http://www.mcs.anl.gov/petsc/index.html</a> for information.</p>
+
+<p>Once PETSc has been installed, run the OOQP configure script, as usual. Then type</p>
+
+<pre><code>     make -f PetscMakefile all_petsc</code></pre>
+
+<p>As part of the PETSc installation process you will set certain environment variables, such as PETSC_DIR and BOPT. These must remain set while building the OOQP-PETSc interface. These variables are used by the PETSc build system, and are not under the control of the OOQP build system. We have decided to conform to the PETSc build system as much as possible when building this interface.</p>
+
+<h1 id="USING-F2C">USING F2C</h1>
+
+<p>F2C is a FORTRAN to C translator that may be obtained from <a href="http://www.netlib.org/f2c">http://www.netlib.org/f2c</a>. We have had no difficulty compiling OOQP using the output from this translator.</p>
+
+<p>If you are using f2c instead of a FORTRAN compiler, be sure to set the FLIBS environment to point to the F2C library, which is typically named libf2c.a. Then run configure like this</p>
+
+<pre><code>    ./configure --without-fortran</code></pre>
+
+<p>so that configure knows not to check the properties of the FORTRAN compiler.</p>
+
+<h1 id="PERFORMANCE-TUNING">PERFORMANCE TUNING</h1>
+
+<p>Many compilers perform useful optimizations. These optimizations are specified by particular compiler flags. The configure script doesn&#39;t ask the compiler to perform any optimizations beyond the basic ones indicated by the compile flag <code>-O</code>.</p>
+
+<p>Users who are aware of a good set of compiler flags may wish to set the following environment variables before running configure:</p>
+
+<ul>
+
+<li><p>FFLAGS -- Compiler flags for the Fortran compiler.</p>
+
+</li>
+<li><p>CFLAGS -- Compiler flags for the C compiler.</p>
+
+</li>
+<li><p>CXXFLAGS -- compiler flags for the C++ compiler.</p>
+
+</li>
+</ul>
+
+<p>The libraries and executables will be built using those flags. Of particular importance are the flags used to compile <a href="#MA27-or-MA57">MA27 or MA57</a>. Also, the quality of the <a href="#BLAS-and-LAPACK">BLAS</a> library can affect performance greatly, so use an optimized version where possible.</p>
+
+<h1 id="INSTALLATION-LOCATION">INSTALLATION LOCATION</h1>
+
+<p>After building the executables and libraries, you may use them directly from within the current directory. Optionally, you may install them in a more permanent location. If you type</p>
+
+<pre><code>   make install</code></pre>
+
+<p>(after running the configure script), the make utility attempts to install the executables and libraries into the /usr/local directory tree. Of course, you will be unable to install to this location unless you have privileged access to the machine. Furthermore, even if you have privileged access, your system administrator may require you to install new packages in a different location.</p>
+
+<p>If you are unsure that the package should be installed in /usr/local, we recommend that you install in $HOME/software (the pattern $HOME will be expanded to the full path of your home directory). You can do this by typing:</p>
+
+<pre><code>        ./configure --prefix=$HOME/software
+        make install</code></pre>
+
+<p>The PREFIX variable will now be set to the value you have assigned in the configure option (in this case $HOME/software).</p>
+
+<p>The following items will be installed:</p>
+
+<ul>
+
+<li><p>The OOQP libraries will be installed in $PREFIX/lib.</p>
+
+</li>
+<li><p>The OOQP headers will be installed in $PREFIX/include/ooqp.</p>
+
+</li>
+<li><p>The OOQP executables will be installed in $PREFIX/bin.</p>
+
+</li>
+<li><p>The OOQP documentation will be installed in $PREFIX/share/doc/packages/ooqp.</p>
+
+</li>
+</ul>
+
+
+
+
+Back to the <A HREF=../index.html> Documentation Roadmap </A>.
+
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,536 @@
+\newcommand\mV{\texttt{mV}}
+\newcommand\IotrAddRef{\texttt{IotrAddRef}}
+\newcommand\IotrRelease{\texttt{IotrRelease}}
+\newcommand\SimpleVector{\texttt{SimpleVector}}
+\newcommand\SmartPointer{\texttt{SmartPointer}}
+\newcommand\DenseGenMatrix{\texttt{DenseGenMatrix}}
+\newcommand\DenseSymMatrix{\texttt{DenseSymMatrix}}
+\newcommand\SparseGenMatrix{\texttt{SparseGenMatrix}}
+\newcommand\SparseSymMatrix{\texttt{SparseSymMatrix}}
+
+\section{Using Linear Algebra Objects}
+\label{sec.using-linear-algebra}
+
+% \subsection{Intent of this Tutorial}
+
+This section takes the form of a tutorial on elements of OOQP's linear
+algebra layer. It is intended for those who wish to use these linear
+algebra objects and operations concretely to define a new problem
+formulation.  We have found these objects useful in implementing
+solvers for the problem formulations supplied with the OOQP
+distribution, and we believe they will also be useful to users who wish
+to implement solvers for their own special QP formulations. Users are
+not, however, compelled to use the OOQP linear algebra layer in
+implementing their own problem formulation layer; they may write their
+own code to store the data objects and to perform the linear algebra
+operations that are required by the interior-point algorithm.
+
+The QP formulations and interior-point algorithms supplied with the
+OOQP distribution are written in terms of linear algebra operations in
+abstract classes, such as \texttt{OoqpVector}, \texttt{GenMatrix}, and
+\texttt{SymMatrix}. When we speak of using linear algebra objects
+``concretely,'' we mean accessing the data contained in these objects
+directly, in a manner that depends explicitly on how the data is
+stored. A code development process using concrete objects and
+operations is as follows. The user starts by creating objects that are
+instances of specific concrete subclasses of the abstract linear
+algebra classes, and manipulates these objects accordingly. Then, the
+user migrates to an abstract interface by systematically replacing the
+data-structure-dependent code in the problem formulation with
+mathematical operations from the abstract base classes. Finally, the
+user changes the type declarations of the variables from the
+concrete classes to abstract base classes such as
+\texttt{OoqpVector}, causing the compiler to disallow any remaining
+data-structure-dependent code. This development process of migrating
+from a working concrete QP formulation to an abstract QP formulation
+may be simpler than trying to use the abstract interface on the first
+pass. The material in this section will be helpful for users that
+follow this path.
+
+We start in Section~\ref{sec.ref.counting} by describing the reference
+counting scheme used to manage memory in OOQP. In
+Section~\ref{sec.using-simplevector}, we describe \SimpleVector, a
+class that can be used in place of arrays of double-precision numbers.
+Section~\ref{sec.dense.matrix} describes classes for storing and
+manipulating dense matrices, while Section~\ref{sec.using-sparse}
+discusses classes for sparse matrices.
+
+\subsection{Reference Counting}
+\label{sec.ref.counting}
+
+% All objects in the linear algebra layer are reference counted.
+Reference counting is a powerful technique for managing memory that
+helps prevent objects from being deleted accidentally or more than
+once. The technique is not limited to C++ code and, despite its name,
+is unrelated to the C++ concept of reference variables.  Rather, the
+term means that we maintain a count of all ``owning references'' to an
+object and delete the object when this count becomes zero.  An owning
+reference is a typically a pointer to an object that is a data member
+of an instance of another class. Consider, for instance, the following
+class.
+\begin{verbatim}
+class MyVariables : Variables {
+    SimpleVector * mV;
+public:
+    SimpleVector&  v();
+    SimpleVector * getV();
+    void copyV( SimpleVector& w );
+    MyVariables();
+    MyVariables( SimpleVector * v );
+    ~MyVariables();
+};
+\end{verbatim}
+Instances of \texttt{MyVariables} would hold an owning reference to a
+\SimpleVector\ in the variable \mV. In the reference counting scheme,
+the destructor for this class would be as follows.
+\begin{verbatim}
+MyVariables::~MyVariables()
+{
+    IotrRelease( &mV );
+};
+\end{verbatim}
+Rather than deleting \mV, the destructor signals that it is no longer
+holding a reference to the object, so the reference count associated
+with this object is decremented. In correct code, every object has at
+least one owning reference. When the number of owning references has
+decreased to zero through calls to \IotrRelease, the reference
+counting scheme 
+% automatically
+deletes the object.
+
+Usually, objects are created in the constructors of other objects and
+are released when the creating object no longer needs them, typically
+in the destructor.  For instance, the constructor
+\begin{verbatim}
+MyVariables::MyVariables()
+{
+    mV = new SimpleVector(5);
+}
+\end{verbatim}
+creates a new \SimpleVector\ object, and the corresponding destructor
+will release the owning reference to this object when the {\tt
+MyVariables} object is finished with it.
+
+Another common scenario is that a pointer to an object may be passed
+as a parameter to a method or constructor for another object, which
+may then wish to establish its own owning reference for the parameter
+object. This scenario arises in the following constructor.
+\begin{verbatim}
+MyVariables::MyVariables(SimpleVector * v_in )
+{
+    mV = v_in;
+    IotrAddRef( &mV );
+}
+\end{verbatim}
+The call to \IotrAddRef\ informs the reference counting scheme that a
+new owning reference to the \SimpleVector\ has been established, so
+the counter associated with this object is incremented. If
+\IotrAddRef\ had not been called, the reference counting scheme would
+assume that the object had declined to establish a new owing
+reference.
+
+When objects are passed into methods as C++--style reference
+variables, rather than via pointers, owning references must not be
+established. For instance, the method
+\begin{verbatim}
+void MyVariables::copy( SimpleVector& w )
+{
+...
+}
+\end{verbatim}
+may not establish a new owing reference for its parameter
+\texttt{w}. A similar convention exists for the return values of
+functions. A return value that is a C++--style reference variable
+needs no special attention
+\begin{verbatim}
+SimpleVector& MyVariables::v()
+{
+    return *mV;
+}
+\end{verbatim}
+but if the return value is a pointer, then a new owning reference is
+{\em always} established, and so the reference count must be
+incremented via a call to \IotrAddRef:
+\begin{verbatim}
+SimpleVector * MyVariables::getV()
+{
+    IotrAddRef( &mV );
+    return mV;
+}
+\end{verbatim}
+
+A typical program makes few calls to \IotrAddRef\ and \IotrRelease.
+For the most part, one may simply call the \IotrRelease\ function
+instead of the C++ operator \verb-delete-.
+
+Finally, we mention that OOQP contains a {\tt SmartPointer} class that
+handles calls to \IotrAddRef\ and \IotrRelease\ automatically. This
+class has proven useful to the OOQP developers and is present in the
+OOQP distribution for others who wish to use it. We will not,
+however, describe it further in this document.
+
+\subsection{Using \SimpleVector} \label{sec.using-simplevector}
+
+\SimpleVector\ is a class whose instances may be used in place of
+arrays of double precision numbers. It is a subclass of OOQP's
+abstract base vector class, \texttt{OoqpVector}, and all abstract
+operations of an \texttt{OoqpVector} are implemented in \SimpleVector.
+However, there is one important additional feature: The operator
+\verb-[]- has been defined for \SimpleVector, which allows indexing to
+be used to access individual elements in the \SimpleVector\ object.
+For example, the following piece of code involving \SimpleVector\
+objects {\tt a}, {\tt b}, and {\tt c} is legal, provided that these
+vectors have compatible lengths.
+\begin{verbatim}
+void add( SimpleVector& a, SimpleVector& b, SimpleVector& c )
+{
+     for( int i = 0; i < a->length(); i++ ) {
+         c[i] = a[i] + b[i];
+     }
+}
+\end{verbatim}
+
+The elements of a \SimpleVector\ may be passed to a legacy C routine
+in the manner demonstrated in the following code fragment, which calls
+the C routine \texttt{norm} on the elements of \texttt{a}.
+\begin{verbatim}
+extern "C"
+double norm( double a[], int len );
+double mynorm( SimpleVector& a )
+{
+     return norm( a->elements(), a->length() );
+}
+\end{verbatim}
+(Indeed, in most cases, we could use the calling sequence
+\begin{verbatim}
+norm( &a[0], a->length() );
+\end{verbatim}
+but this call will fail for vectors of length zero.) 
+
+\SimpleVector\ objects may be created via calls to a constructor of the
+following form:
+\begin{verbatim}
+    // Create a vector of length 5
+    SimpleVector * a = new SimpleVector( 5 );
+\end{verbatim}
+When interfacing with non-OOQP code, however, it may be preferable to
+invoke an alternative constructor that uses an existing array of
+doubles to store the elements of the new \SimpleVector\ instance. Use
+of this constructor is demonstrated by the following code fragment.
+\begin{verbatim}
+    double * v = new double[5];
+    SimpleVector * b = new SimpleVector( v, 5 );
+\end{verbatim}
+The array \texttt{v} will be used as the storage location for the
+elements of \texttt{b} and will not be deleted when \texttt{b} is
+deleted.
+
+We recommend that users always use operator \texttt{new} to create new
+instances of \SimpleVector. Creating \SimpleVector\ on the stack is
+not supported and may cause unforeseen problems. In other words, users
+should not create variables of type \SimpleVector, but rather should
+create pointers and references to instances of \SimpleVector, as in
+the examples above.
+
+\subsection{Using \DenseGenMatrix\ and \DenseSymMatrix}
+\label{sec.dense.matrix}
+
+\DenseGenMatrix\ is a class that represents matrices stored as a dense
+array in row-major order. \DenseSymMatrix\ also stores matrix elements
+in a dense array but represents symmetric (rather than general)
+matrices. Row and columns indices for the matrices start at zero,
+following C and C++ conventions.
+
+The indexing operator \verb-[]- is defined appropriately for both
+\DenseGenMatrix\ and \DenseSymMatrix. The following code fragment, for
+example, is legal.
+\begin{verbatim}
+int myFunc( DenseGenMatrix& M )
+{
+  for( int i = 0; i < M.rows(); i++ ) {
+    for( int j = 0; j < M.columns(); j++ ) M[i][j] = i * 10 + j;
+  }
+}
+\end{verbatim}
+
+\DenseSymMatrix\ stores its elements in the lower triangle of the
+matrix; the result of accessing the upper triangle is undefined.  An
+example of code to fill a \DenseSymMatrix\ is the following.
+\begin{verbatim}
+int mySymFunc( DenseSymMatrix& M )
+{
+  for( int i = 0; i < M.size(); i++ ) {
+    for( int j = 0; j <= i; j++ ) M[i][j] = i * 10 + j;
+  }
+}
+\end{verbatim}
+
+The elements of a dense matrix may be passed to legacy C code by
+invoking the method {\tt elements}, which returns a pointer to the
+full matrix laid out in row major order. An example is as follows.
+\begin{verbatim}
+void myFactor( DenseGenMatrix& M )
+{
+    factor( M.elements(), M.rows(), M.columns() );
+}
+\end{verbatim}
+
+
+Both \DenseGenMatrix\ or \DenseSymMatrix\ provide the method
+\texttt{mult}, which performs matrix-vector multiplication. For
+instance, if \texttt{M} is an instance of either class, the function
+\begin{verbatim}
+void func(double beta,  SimpleVector& y, 
+          double alpha, SimpleVector& x)
+{
+    M.mult( beta, y, alpha, x )
+}
+\end{verbatim}
+perform the computation $y \gets \beta y + \alpha M x$.  Similarly,
+\texttt{transMult} computes $y \gets \beta y + \alpha M^{T} x$.
+
+These classes contain no member functions to factor the matrices.
+Users may either program their own factorization on the elements of
+the matrix or use one of the linear solvers from the OOQP
+distribution. For a \DenseSymMatrix\ an appropriate linear solver is
+\texttt{DeSymIndefSolver}. We demonstrate the use of this solver in
+the following sample code, which solves a linear system with a
+coefficient matrix \texttt{M} (an instance of \DenseSymMatrix) and
+right-hand side \texttt{x} (an instance of \SimpleVector). The result
+is returned in the \SimpleVector\ object \texttt{y}.
+\begin{verbatim}
+void mySolve( SimpleVector& y, DenseSymMatrix * M, 
+              SimpleVector& x )
+{
+     DeSymIndefSolver * solver = new DeSymIndefSolver( M );
+
+     solver->matrixChanged();
+     y.copyFrom( x );
+     solver->solve( y );
+
+     IotrRelease( &solver );
+}
+\end{verbatim}
+The \texttt{matrixChanged} method performs an in-place factorization
+on the values of \texttt{M}, overwriting the original values of this
+matrix with the values of its factors. The \texttt{solve} method uses
+the factors to compute the solution to the system. 
+
+If it is known that \texttt{M} is positive definite, the solver
+\texttt{DeSymPSDSolver} should be used in place of
+\texttt{DeSymIndefSolver}. OOQP does not supply linear solvers for
+instances of \DenseGenMatrix.
+
+A \DenseGenMatrix\ may be created by using the operator \texttt{new}. The
+following code will create a \DenseGenMatrix\ with five rows and three
+columns.
+\begin{verbatim}
+DenseGenMatrix * pgM = new DenseGenMatrix( 5, 3 );
+\end{verbatim}
+Instances of \DenseSymMatrix\ are necessarily square, so only one
+argument is needed for the constructor. The following code creates a
+\DenseSymMatrix\ with five rows and columns.
+\begin{verbatim}
+DenseSymMatrix * psM = new DenseSymMatrix( 5 )
+\end{verbatim}
+As in the \SimpleVector class, other constructors can be invoked
+to use an existing array of doubles as storage space for the
+new \DenseGenMatrix\ or \DenseSymMatrix\ instances, as demonstrated in
+the following code fragment.
+\begin{verbatim}
+double * gen = new double[5 * 3]
+double * sym = new double[5 * 5];
+DenseGenMatrix * pgM = new DenseGenMatrix( gen, 5, 3 );
+DenseSymMatrix * psM = new DenseSymMatrix( sym, 5 )
+\end{verbatim}
+The arrays \texttt{gen} and \texttt{sym} will not be deleted when the
+matrices \texttt{pgM} and \texttt{psM} are created or
+freed.
+
+\subsection{Using \SparseGenMatrix\ and \SparseSymMatrix}
+\label{sec.using-sparse}
+
+In many practical instances, the matrices used to formulate the QP are
+large and sparse. General sparse matrices and sparse symmetric
+matrices are represented by \SparseGenMatrix\ and \SparseSymMatrix,
+respectively. Unlike their dense counterparts, \SparseGenMatrix\ and
+\SparseSymMatrix\ cannot be used as drop-in replacements for an array
+of doubles because they do not define the indexing operator \verb-[]-.
+
+The data elements of these matrices are stored in a standard
+compressed format known as {\em Harwell-Boeing} format. In the
+\SparseGenMatrix\ class, the elements are stored in row-major order,
+and, as in the dense case, the row and column indices start at zero.
+Harwell-Boeing format encodes the matrix in three arrays---two arrays
+of integers and one array of doubles. For an {\tt m} $\times$ {\tt n}
+general matrix containing {\tt len} nonzero elements, these arrays are
+represented by three data structures within the sparse matrix classes,
+as follows.
+\begin{verbatim}
+int    krowM[m+1];
+int    jcolM[len];
+double     M[len];
+\end{verbatim}
+For each index ${\tt i}=0,1,\dots,m-1$, the nonzero elements from row
+\texttt{i} are stored in locations \texttt{krowM[i]} through
+\texttt{krowM[i+1]-1} of the vector \texttt{M}. (Recall that we index
+the rows and columns by $0,1,\dots,m-1$ and $0,1,\dots,n-1$,
+respectively.) The column index of each nonzero is stored in the
+corresponding location of \texttt{jcolM}. In other words, for any
+\texttt{k} between \texttt{krowM[i]} and \texttt{krowM[i+1]-1}
+(inclusive) the \texttt{(i,jcolM[k])} element of the matrix is stored
+in \texttt{M[k]}.
+
+For a symmetric matrix, an instance of \SparseSymMatrix\ stores only
+the nonzero elements in the lower triangle of the matrix. Otherwise
+the format is identical to that described above for general matrices.
+
+% The integer \texttt{krowM[i]} is the index in \texttt{jcolM}
+% and \texttt{M} at which the column number and value of the first
+% element of the $i^{\rm th}$ row of the matrix is stored. The integer
+% \texttt{krowM[m]} is the total number of non-zeros in the matrix.
+
+Perhaps the simplest way to understand the format is to study the
+following code sample, which prints out the elements of the matrix in
+row-major order.
+\begin{verbatim}
+for( int i = 0; i < m; i++ ) {
+   for( int k = krowM[i]; k < krowM[i+1]; k++ ) {
+       cout << "Row: "   << i    << "column: " << jcolM[k]
+            << "value: " << M[k] << endl;
+   }
+}
+\end{verbatim}
+
+As for the dense classes, the \SparseGenMatrix\ and \SparseSymMatrix\
+classes provide \texttt{mult} and \texttt{transMult} methods, which
+perform matrix-vector multiplications. 
+
+No methods within the sparse matrix classes perform factorizations of
+the matrices. Classes with this functionality are supplied elsewhere
+in the OOQP distribution, however. The default sparse direct linear
+equation solver in the OOQP distribution is the code MA27 from the
+Harwell Sparse Library, wrapped in a way that makes it callable from
+C++ code. The following code fragment solves a system of linear
+equations involving a sparse symmetric indefinite matrix. On input,
+\texttt{M} contains the coefficient matrix while \texttt{x} contains
+the right-hand side. Neither \texttt{M} nor \texttt{x} is changed in
+the call, but \texttt{y} is replaced by the solution of the linear
+system.
+\begin{verbatim}
+void mySparseSolve( SimpleVector& y, SparseSymMatrix * M,
+                    SimpleVector& x )
+{
+     Ma27Solver * solver = new Ma27Solver( M );
+
+     solver->matrixChanged();
+     y.copyFrom( x );
+     solver->solve( y );
+
+     IotrRelease( &solver );
+}
+\end{verbatim}
+
+Users are also free to supply their own sparse solvers. If the
+solver accepts Harwell-Boeing format, the three arrays that encode the
+matrix can be passed individually as arguments, as can the elements of
+the right-hand side and the solution. If \texttt{M} is a
+\SparseGenMatrix\ or \SparseSymMatrix\ object and \texttt{x} and
+\texttt{y} are \SimpleVector\ objects, then the interface to the
+user-supplied solve routine may be as follows.
+\begin{verbatim}
+mySparseSolver( M.krowM(), int m, M.jcolM(), M.M(), 
+                x.elements(), y.elements() );
+\end{verbatim}
+
+In interior-point algorithms, one frequently must solve a
+sequence of linear systems in which the matrices differ from each
+other only in the diagonal elements. Consequently, we supply the
+methods \texttt{fromGetDiagonal} and \texttt{atPutDiagonal}, whose
+function is to transfer the diagonal elements between an instance of a
+sparse matrix class and an instance of the \SimpleVector\ class.  For
+example, the following code copies diagonal elements $(4,4)$ through
+$(8,8)$ inclusive from the \SparseSymMatrix\ object \texttt{M} into
+the \SimpleVector object \texttt{d}.
+\begin{verbatim}
+SimpleVector * getMe( SparseSymMatrix& M )
+{
+    SimpleVector * d = new SimpleVector(5);
+    M.fromGetDiagonal( 4, *d );
+    return d;
+}
+\end{verbatim}
+To copy the elements from \texttt{d} into the diagonals of \texttt{M},
+one would use a call of the form
+\begin{verbatim}
+M.atPutDiagonal( 4, *d );
+\end{verbatim}
+which overwrites diagonal elements $(4,4)$ through $(3+r,3+r)$ with
+the elements of \texttt{d}, where $r$  is the number of elements
+in \texttt{d}.
+
+Instances of \SparseGenMatrix\ or \SparseSymMatrix\ can be created by
+first filling the three arrays that encode the matrix in
+Harwell-Boeing format and then calling a constructor. For general
+sparse matrices, this call has the following form:
+\begin{verbatim}
+SparseGenMatrix * sgm 
+   = new SparseGenMatrix( m, n, len, krowM, jcolM, M );
+\end{verbatim}
+where \texttt{m} and \texttt{n} are the number of rows and columns,
+respectively, \texttt{len} is the number of nonzero elements, and
+\texttt{krowM}, \texttt{jcolM}, and \texttt{M} are the three arrays
+discussed above.  For sparse matrices, the corresponding call is
+\begin{verbatim}
+SparseSymMatrix * ssm 
+    = new SparseSymMatrix( m, len, krowM, jcolM, M );
+\end{verbatim}
+We emphasize that the arrays \texttt{krowM}, \texttt{jcolM}, and
+\texttt{M} are not copied but rather are used directly. They are not
+deleted when the sparse matrix instances \texttt{sgm} or \texttt{ssm}
+are freed.
+
+Alternative constructors can be used when a description of the matrix
+is available in {\em sparse triple} format. In this simple format, the
+matrix is encoded in two integer arrays and one double array, all of
+which have length equal to the number of nonzeros in the matrix. (In
+the case of a symmetric matrix, only the lower triangle of the matrix
+is stored.) By defining \texttt{nnz} to be the number of stored
+nonzeros, and defining the three arrays as follows,
+\begin{verbatim}
+int irow[nnz];
+int jcol[nnz];
+double A[nnz];
+\end{verbatim}
+we have for any \texttt{k} in the range \texttt{0,...,nnz-1} that the
+element at row \texttt{irow[k]} and column \texttt{jcol[k]} has value
+\texttt{A[k]}. The elements in this format can be sorted into
+row-major order by calling another routine from the OOQP distribution,
+\texttt{doubleLexSort}, in the following way.
+\begin{verbatim}
+doubleLexSort( irow, nnz, jcol, A );
+\end{verbatim}
+
+Given the matrix in this form, with the arrays sorted into row-major
+form, we can build an instance of \SparseGenMatrix\ or
+\SparseSymMatrix\ by first calling a constructor with the matrix
+dimensions and the number of non-zeros as arguments, as follows.
+\begin{verbatim}
+SparseGenMatrix * sgm = new SparseGenMatrix( m, n, nnz );
+SparseSymMatrix * ssm = new SparseSymMatrix( m, nnz );
+\end{verbatim}
+We can then call the method \texttt{putSparseTriple}, available in
+both classes, to place the information in \texttt{irow},
+\texttt{jcol}, and \texttt{A} into \texttt{sgm} or \texttt{ssm}. This
+call has the following form.
+\begin{verbatim}
+sgm.putSparseTriple( irow, nnz, jcol, A, info ); 
+\end{verbatim}
+The output parameter \texttt{info} will be set to zero if \texttt{sgm}
+is large enough to hold the elements in \texttt{irow}, \texttt{jcol},
+and \texttt{A}. Otherwise it will be set to one.
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "ooqp-userguide"
+%%% End: 

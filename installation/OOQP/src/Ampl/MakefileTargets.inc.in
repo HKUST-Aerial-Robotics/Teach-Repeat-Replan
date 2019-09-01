@@ -1,0 +1,37 @@
+all: @all_ampl_if_enabled@
+
+ifeq ($(AMPL_ENABLED),ampl_enabled)
+
+ooqp-ampl : $(OOQPAMPLOBJ)
+	$(CXX) -o $@ $(CXXFLAGS) $(LDFLAGS) $(OOQPAMPLOBJ) \
+	$(AMPL_SOLVERS)/amplsolver.a $(LIBS) $(MA27LIB) $(BLAS) $(FLIBS) -ldl
+
+all_ampl: ooqp-ampl
+install: install_ampl
+install_ampl: all_ampl
+	$(INSTALL) -d $(bindir)
+	$(INSTALL) ooqp-ampl $(bindir)
+
+endif 
+
+$(AMPLHOOKDIR)/Makefile.inc: $(AMPLHOOKDIR)/Makefile.inc.in \
+				$(AMPLHOOKDIR)/config.status
+	cd $(AMPLHOOKDIR); ./config.status
+
+$(AMPLHOOKDIR)/MakefileTargets.inc: $(AMPLHOOKDIR)/MakefileTargets.inc.in \
+				$(AMPLHOOKDIR)/config.status
+	 cd $(AMPLHOOKDIR); ./config.status
+
+veryclean: ampl-veryclean
+ampl-veryclean:
+	-rm -f ooqp-ampl
+
+distclean: ampl-distclean
+ampl-distclean: 
+	-rm -f $(AMPLHOOKDIR)/Makefile.inc $(AMPLHOOKDIR)/MakefileTargets.inc
+	-rm -f $(AMPLHOOKDIR)/config.status $(AMPLHOOKDIR)/config.log
+	-rm -f $(AMPLHOOKDIR)/DISABLED
+
+maintainer-clean: ampl-maintainer-clean
+ampl-maintainer-clean:
+	-rm -f $(AMPLHOOKDIR)/configure

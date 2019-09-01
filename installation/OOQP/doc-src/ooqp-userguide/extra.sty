@@ -1,0 +1,209 @@
+\newfont{\sqi}{cmssqi8}
+
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\beqa}{\begin{eqnarray}}
+\newcommand{\eeqa}{\end{eqnarray}}
+\newcommand{\beqas}{\begin{eqnarray*}}
+\newcommand{\eeqas}{\end{eqnarray*}}
+\newcommand{\gap}{\hspace*{2em}}
+\newcommand{\sgap}{\hspace*{1.2em}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\een}{\end{enumerate}}
+
+\newcommand{\stroke}{\; | \;}
+
+\newcommand{\bsli}{\begin{slide}{}}
+\newcommand{\esli}{\end{slide}}
+
+% \newcommand{\IR}{\makebox{\sf R \hspace{-13.5 pt} R \hspace{.3 pt}} }
+% \newcommand{\IR}{{I\!\!R}}
+\newcommand{\IR}{\makebox{\sf I \hspace{-9.5 pt} R \hspace{-7.0pt} }}
+\newcommand{\R}{\IR}
+\newcommand{\real}{\IR}
+\newcommand{\IP}{\mbox{$I\!\!P$}}
+\newcommand{\IN}{\mbox{$I\!\!N$}}
+\newcommand{\IC}{\mbox{$C\!\!\!\!\raisebox{.75pt}{\mbox{\sqi I}}$}}
+\newcommand{\bmat}{\left[ \begin{array}}
+\newcommand{\emat}{\end{array} \right]}
+\newcommand{\bvec}{\left( \begin{array}{c}}
+\newcommand{\evec}{\end{array} \right)}
+\newcommand{\ul}{\underline}
+\def\half{{\textstyle{1\over 2}}}
+\def\quarter{{\textstyle{1\over 4}}}
+
+% my modification of the "itemize" environment for slitex
+% (avoids the painfully distorted default)
+\newcommand{\sitemize}{\begin{list}%
+{$\bullet$}{\setlength{\itemsep}{0 pt}\setlength{\topsep}{0 pt}
+\setlength{\partopsep}{0 pt}}}
+\newcommand{\bsitemize}{\sitemize}
+\newcommand{\esitemize}{\end{list}}
+\newcommand{\insitemize}{\begin{list}%
+{-}{\setlength{\itemsep}{0 pt}\setlength{\topsep}{0 pt}
+\setlength{\partopsep}{0 pt}}}
+\newcommand{\einsitemize}{\end{list}}
+
+\newcommand{\sitemizeii}{\begin{list}%
+{\bf --}{\setlength{\itemsep}{0 pt}\setlength{\topsep}{0 pt}
+\setlength{\partopsep}{0 pt}}}
+\newcommand{\bsitemizeii}{\sitemizeii}
+
+\newcommand{\cA}{{\cal A}}
+\newcommand{\cB}{{\cal B}}
+\newcommand{\cC}{{\cal C}}
+\newcommand{\cD}{{\cal D}}
+\newcommand{\cE}{{\cal E}}
+\newcommand{\cF}{{\cal F}}
+\newcommand{\cH}{{\cal H}}
+\newcommand{\cI}{{\cal I}}
+\newcommand{\cJ}{{\cal J}}
+\newcommand{\cK}{{\cal K}}
+\newcommand{\cL}{{\cal L}}
+\newcommand{\cM}{{\cal M}}
+\newcommand{\cN}{{\cal N}}
+\newcommand{\cP}{{\cal P}}
+\newcommand{\cQ}{{\cal Q}}
+\newcommand{\cS}{{\cal S}}
+\newcommand{\cT}{{\cal T}}
+\newcommand{\cU}{{\cal U}}
+\newcommand{\cV}{{\cal V}}
+\newcommand{\cW}{{\cal W}}
+
+\newcommand{\thetain}{\theta_{\rm in}}
+\newcommand{\thetaout}{\theta_{\rm out}}
+
+\newcommand{\D}{\Delta}
+\newcommand{\Dx}{\Delta x}
+\newcommand{\Dy}{\Delta y}
+\newcommand{\Ds}{\Delta s}
+\newcommand{\Dl}{\Delta \lambda}
+\newcommand{\Dlbar}{\Delta \bar{\lambda}}
+\newcommand{\lam}{\lambda}
+\newcommand{\lambar}{\bar{\lambda}}
+\newcommand{\lamhat}{\hat{\lambda}}
+\newcommand{\Dr}{\Delta r}
+\newcommand{\Dw}{\Delta w}
+\newcommand{\Dp}{\Delta \pi}
+\newcommand{\sigmin}{\sigma_{\rm min}}
+\newcommand{\sigmax}{\sigma_{\rm max}}
+\newcommand{\gammin}{\gamma_{\rm min}}
+\newcommand{\gammax}{\gamma_{\rm max}}
+\newcommand{\gambar}{\bar{\gamma}}
+\newcommand{\cNi}{{\cal N}_{-\infty}}
+\newcommand{\cNinf}{{\cal N}_{-\infty}}
+
+\newcommand{\xB}{x_{\cB}}
+\newcommand{\xN}{x_{\cN}}
+\newcommand{\sB}{s_{\cB}}
+\newcommand{\sN}{s_{\cN}}
+\newcommand{\DxB}{\Delta x_{\cB}}
+\newcommand{\DxN}{\Delta x_{\cN}}
+\newcommand{\DsB}{\Delta s_{\cB}}
+\newcommand{\DsN}{\Delta s_{\cN}}
+\newcommand{\Dz}{\Delta z}
+\newcommand{\Dlb}{\Delta \bar{\lambda}}
+\newcommand{\lb}{\bar{\lambda}}
+\newcommand{\Dgb}{D \bar{g}}
+\newcommand{\lB}{\lambda_{\cB}}
+\newcommand{\lN}{\lambda_{\cN}}
+\newcommand{\DlB}{\Delta \lambda_{\cB}}
+\newcommand{\DlBa}{\Delta \lambda_{\cB1}}
+\newcommand{\DlBb}{\Delta \lambda_{\cB2}}
+\newcommand{\DlN}{\Delta \lambda_{\cN}}
+\newcommand{\DgB}{D {g}_{\cB}}
+\newcommand{\DgN}{D {g}_{\cN}}
+\newcommand{\gB}{{g}_{\cB}}
+\newcommand{\gN}{{g}_{\cN}}
+
+
+\newcommand{\Dxaff}{\Delta x^{\rm aff}}
+\newcommand{\Dyaff}{\Delta y^{\rm aff}}
+\newcommand{\Dzaff}{\Delta z^{\rm aff}}
+\newcommand{\Dpaff}{\Delta \pi^{\rm aff}}
+\newcommand{\Dsaff}{\Delta s^{\rm aff}}
+\newcommand{\Draff}{\Delta r^{\rm aff}}
+\newcommand{\Dwaff}{\Delta w^{\rm aff}}
+\newcommand{\Dxcc}{\Delta x^{\rm cc}}
+\newcommand{\Dpcc}{\Delta \pi^{\rm cc}}
+\newcommand{\Dscc}{\Delta s^{\rm cc}}
+\newcommand{\Drcc}{\Delta r^{\rm cc}}
+\newcommand{\Dwcc}{\Delta w^{\rm cc}}
+\newcommand{\muaff}{\mu_{\rm aff}}
+
+\newcommand{\tx}{\tilde{x}}
+\newcommand{\tl}{\tilde{\lambda}}
+\newcommand{\ts}{\tilde{s}}
+\newcommand{\txB}{\tilde{x}_{\cB}}
+\newcommand{\txN}{\tilde{x}_{\cN}}
+\newcommand{\tsB}{\tilde{s}_{\cB}}
+\newcommand{\tsN}{\tilde{s}_{\cN}}
+
+% \newcommand{\Range}{\mbox{\rm range}\,}
+\newcommand{\Null}{\mbox{\rm null}\,}
+\newcommand{\dist}{\mbox{\rm dist}\,}
+\newcommand{\Ker}{\mbox{\rm ker}\,}
+\newcommand{\Rank}{\mbox{\rm rank}\,}
+
+\newcommand{\CB}{c_{\cB}}
+\newcommand{\CN}{c_{\cN}}
+\newcommand{\AB}{A_{\cB}}
+\newcommand{\AN}{A_{\cN}}
+\newcommand{\AJ}{A_{\cJ}}
+\newcommand{\DB}{D_{\cB}}
+\newcommand{\DN}{D_{\cN}}
+\newcommand{\csubB}{c_{\cB}}
+\newcommand{\csubN}{c_{\cN}}
+\newcommand{\uB}{\hat{u}_{\cB}}
+\newcommand{\uN}{\hat{u}_{\cN}}
+
+\newcommand{\widebar}{\overline}
+\newcommand{\lamdba}{\lambda}
+
+\newcommand{\logeps}{\log \frac{1}{\epsilon}}
+
+\newcommand{\defeq}{\stackrel{\rm def}{=}}
+\def\eqnok#1{(\ref{#1})}
+\def\remark{\par{\it Remark}. \ignorespaces}
+\def\remarks{\par{\it Remarks}. \ignorespaces}
+
+\newcommand{\btab}{\begin{tabbing}
+\ \ \= thenn \= thenn \= thenn \= thenn \= thenn \= \kill}
+\newcommand{\etab}{\end{tabbing}}
+\newcommand{\bu}{{\bf u}}
+\newcommand{\dbu}{\delta_{\bf u}}
+\newcommand{\op}{\, \makebox{\rm op} \,}
+\newcommand{\eps}{\epsilon}
+\newcommand{\emax}{\makebox{\bf emax }}
+\newcommand{\emin}{\makebox{\bf emin }}
+\newcommand{\svmax}{\makebox{\bf svmax }}
+\newcommand{\svmin}{\makebox{\bf svmin }}
+\newcommand{\SIG}{\sigma}
+
+\def\stripe{\ifvmode\else\par\vskip-\baselineskip\vskip12pt\fi
+\hbox to \hsize{\leaders\hrule height 4.5pt\hfil}\vskip-\baselineskip
+            \vskip 3.5pt
+            \hbox to \hsize{\leaders\hrule height 1.5pt\hfil}
+            \vskip -10pt}
+
+% begin slide with a heading and stripe
+\def\bs#1{\begin{slide}
+          \begin{center}
+          {\bf #1}
+          \end{center}
+          \stripe}
+
+% just begin slide
+\newcommand{\jbs}{\begin{slide}}
+
+% end slide
+\newcommand{\es}{\end{slide}}
+
+%\theoremstyle{break}
+% {\theorembodyfont{\normalfont} \newtheorem{Exa}{Example}[chapter]
+%                               \newtheorem{Alg}{Algorithm}[chapter]
+%                               \newtheorem{Fra}[Alg]{Framework}
+%                               \newtheorem{Pro}[Alg]{Procedure}
+% }

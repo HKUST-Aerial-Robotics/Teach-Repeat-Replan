@@ -1,0 +1,134 @@
+PETSC_ENABLED = @petsc_enabled@
+
+ifeq ($(PETSC_ENABLED),yes)
+
+# Are we using the same version of PETSc we used when we ran configure
+CONFIG_PETSC_DIR = @PETSC_DIR@
+
+ifeq ($(PETSC_DIR),$(CONFIG_PETSC_DIR))
+
+all_petsc: depend all_headers all_petsc_libs
+
+# For versions of Petsc < 2.1.1
+# include ${PETSC_DIR}/bmake/${PETSC_ARCH}/base_variables
+#
+# For newer versions of Petsc
+# include ${PETSC_DIR}/bmake/common/variables
+ 
+include @petsc_common_variables@
+
+CFLAGS  = -DDUMB_COMPILER
+
+SHELL = /bin/sh
+INSTALL = @INSTALL@
+CC       = @CC@
+CFLAGS   = @CFLAGS@
+CXX      = @CXX@
+CXXFLAGS = @CXXFLAGS@
+FFLAGS   = @FFLAGS@
+CPPFLAGS = @CPPFLAGS@ $(INCLUDES)
+DEFS     = @DEFS@ -DDUMB_COMPILER
+LDFLAGS  = @LDFLAGS@ -L${PETSC_DIR}/lib/lib${BOPT}/${PETSC_ARCH}
+FLIBS    = @FLIBS@
+prefix   = @prefix@
+includedir  = @includedir@
+libdir      = @libdir@
+exec_prefix = @exec_prefix@
+MAKEDEPEND = makedepend
+
+srcdir      = @ooqp_src@
+locallibdir = @srcdir@/lib
+localincludedir = @srcdir@/include
+#include all modules (subdirectories directly below this one that have
+#a makefile.inc.)
+
+MODULEMAKEFILES  := $(wildcard $(srcdir)/*/Makefile.inc)
+MODULES          := $(dir $(MODULEMAKEFILES))
+INCLUDES         += @INCLUDES@ $(patsubst %, -I%, $(MODULES))
+SOURCES   := $(foreach MODULE, $(MODULES), $(wildcard $(MODULE)*.[cC])) 
+
+include $(MODULEMAKEFILES)
+include $(wildcard $(srcdir)/*/MakefileTargets.inc)
+
+INCLUDES += -I$(PETSC_INCLUDE)
+
+
+# No user-serviceable parts below here
+distclean: veryclean
+
+veryclean: clean headers_clean libs_clean
+	-find . -name "*.exe" -exec rm \{\} \;
+
+distclean:
+	-rm -f config.status config.log config.cache PetscMakefile
+
+clean mostlyclean: 
+	-find . -name "*.o" -exec rm \{\} \;
+
+headers_clean:
+	-rm -f $(localincludedir)/*.h
+
+libs_clean:
+	-rm -f $(locallibdir)/*.a
+
+depend:
+	$(MAKEDEPEND) -f PetscMakefile $(INCLUDES) $(CPPFLAGS) \
+	$(DEFS) $(SOURCES) > /dev/null 2>&1
+	@echo " *** Done making depend"
+
+# if you are using the Petsc makefile, you probably want the Petsc headers
+# and libs.
+all_headers: all_petsc_headers
+all_libs: all_petsc_libs
+
+install: install_headers install_libs
+
+install_headers: all_headers
+	$(INSTALL) -d $(includedir)/ooqp	
+	$(INSTALL) $(localincludedir)/*.h $(includedir)/ooqp
+
+install_libs: all_libs
+	$(INSTALL) -d $(libdir)
+	$(INSTALL) $(locallibdir)/*.a $(libdir)
+
+else # we have a different PETSC_DIR
+
+petsc-dir-message:
+	@echo The PETSC_DIR environment variable is not set, or is set
+	@echo to a different value than it had when configure was last run.
+	@echo The value used when configure was run was
+	@echo $(CONFIG_PETSC_DIR)
+	@echo Please set the PETSC_DIR environment variable and/or rerun
+	@echo configure if necessary.
+endif 
+
+else # PETSc support is disabled
+
+disabled-message:
+	@echo Petsc support has been disabled. To enable Petsc, set
+	@echo the PETSC_DIR and PETSC_ARCH environment variables and
+	@echo run configure again.
+endif 
+
+PetscMakefile: PetscMakefile.in config.status
+	./config.status
+
+config.status: configure
+	./config.status --recheck
+
+.SUFFIXES:
+.SUFFIXES: .o .cc .C .c .f
+
+.c.o:
+	$(CC) -c $(CPPFLAGS) $(CXXFLAGS) $(DEFS) $< -o $@
+
+.C.o:
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $(DEFS) $< -o $@
+
+.cc.o:
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $(DEFS) $< -o $@
+
+.f.o:
+	$(FC) -c $(FFLAGS) $< -o $@
+
+

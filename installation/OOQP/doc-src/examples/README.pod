@@ -1,0 +1,104 @@
+=head1 NAME
+
+examples/README - Documentation of the examples provided with the 
+  OOQP distribution
+
+=for html
+This page is part of the <A HREF=../index.html> OOQP documentation </A>.
+
+=head1 src/QpExample
+
+This is the example of how OOQP can be customized to accommodate a new
+problem formulation. This particular QP formulation is outlined in the
+Users Guide doc/ooqp-userguide.pdf.
+
+The QpExample formulation is created within the OOQP src/ directory
+because this is where we suggest users create any new QP
+formulations. To build the QpExample, type
+   
+    make qpexample-dense-gondzio.exe 
+
+within the top level OOQP directory. The
+B<qpexample-dense-gondzio.exe> program will solve a randomly generated
+problem.
+
+=head1 examples/Svm
+
+Sample data files for use with the B<svm-gondzio.exe> program. See
+L<Svm|formulations::Svm> for more information.
+
+=head1 examples/Huber
+
+Sample data files for use with the B<huber-gondzio.exe> program. See
+L<Huber|formulations::Huber> for more information.
+
+=head1 examples/QpBound
+
+Sample data files for the B<qpbound-dense-gondzio.exe> and
+B<qpbound-petsc-mehrotra.exe> programs. See L<QpBound|formulations::QpBound> for more
+information.
+
+=head1 examples/QpGen
+
+Sample data and programs for use with the default program
+formulation. Several subdirectory of this directory contain source code for
+building programs that link against the OOQP libraries. These programs
+are intended to be sample code for the interfaces described in
+Section 2 of the OOQP User Guide.
+
+=for html
+You may read the <A HREF=../ooqp-userguide.pdf> OOQP User Guide </A> online.
+
+The makefiles accompanying the sample programs are not under the
+control of OOQP's B<configure> script because they are designed to be
+stand-alone examples of how users might write simple
+makefiles. Therefore, it is likely that users will need to edit these
+files before building the sample programs, for instance to set the
+C<CXX> variable to the name of the appropriate C++ compiler.  Users
+who are unsure of the appropriate values for the makefile variables
+should look to the F<GNUmakefile> in the OOQP directory for
+guidance. The values set in F<GNUmakefile> were determined by
+B<configure> to be appropriate for this system.
+
+=head2 examples/QpGen/ampl
+
+Contains model and data files for use with the AMPL modeling
+language.  These files are described in the OOQP User Guide.
+
+
+=head2 examples/QpGen/cinterface
+
+Contains code to build the programs B<example.exe> and B<mps.exe>
+that demonstrate invoking the OOQP solver as a C routine.
+
+Neither program takes any arguments.  The B<example.exe> program
+contains all the data to define a simple QP. The B<mps.exe> program
+reads the problem given in F<examples/QpGen/sample-qps/Example.qps>.
+
+=head2 example/QpGen/cplusplus
+
+Contains code to build the program B<cxx_example.exe> that
+demonstrates invoking the OOQP solver from C++ code. This program
+takes no arguments; it contains all the data to define a simple QP.
+
+=head2 examples/QpGen/random
+
+Code to generate the B<qpgen-sparse-random.exe> program, which solves
+randomly generated sparse QPs. This program may be invoked as follows,
+
+B<qpgen-sparse-random.exe> n my mz
+
+where C<n> is the number of primal variables, C<my> is the number of
+equality constraints, and C<mz> is the number of inequality
+constraints.
+
+=head2 examples/QpGen/sample-qps
+
+Contains one or more sample QPs in QPS format.
+
+=head1 FIN
+
+=for html
+Back to the <A HREF=../index.html> Documentation Roadmap </A>.
+
+=cut

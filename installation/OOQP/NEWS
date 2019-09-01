@@ -1,0 +1,155 @@
+Major Changes in OOQP 0.99.26 (November 1, 2014)
+
+- Perform a great deal of code maintenance.  Occasionally, this
+  maintence changed the ABI, which means that any program created
+  using a previous version of OOQP must be recompiled *from scratch*
+  to use the new version.
+
+- Use the system BLAS and LAPACK implementions, rather than providing
+  them.  BLAS and LAPACK are universilly available on Linux
+  distributions and on MacOS (as --framework vecLib).
+  
+- No longer make the 'depend' target by default.  The 'depend' target
+  requires that makedepend be installed, which it no longer is by
+  default on many Linux distributions.  The 'depend' target is still
+  available, but must be explicitly requested, e.g. 'make depend'.
+
+- Tidy up the implemention of the MPS reader.  It should work as before.
+
+Major Changes in OOQP 0.99.25 (August 30, 2014)
+
+- Throw an exception if MA27 cannot factor a matrix.  Previously,
+  OOQP would crash in this situation.
+
+- Have svm-gondzio.exe accept either --print_solution or --print-solution.
+
+Major Changes in OOQP 0.99.24 (October 15, 2012)
+
+- Initialize an array used by MA57 to zero, to prevent MA57 from using
+  uninitialized memory. (Thanks to John Grove for pointing this out.)
+
+- Update INSTALL instructions for MA57 and indicate that the MA27
+  interface is the best supported and most robust.
+
+- Initialize a formerly uninitialized field in MpsReader
+
+Major Changes in OOQP 0.99.23 (August 12, 2012)
+
+- Modernize installation scripts and documentation.
+- Update the AMPL interface.
+- Honor the "maximize" flag in the AMPL interface (previously ignored)
+- Update the C++ dialect to match modern compilers.
+
+Major Changes in OOQP 0.99.22 (March 9, 2008)
+
+Changed scaling of linear term in the formulation of the SVM problem
+by a factor of 2.
+
+Major Changes in OOQP 0.99.19 (March 2007)
+
+Fixed a bug in OOQP/src/Mex/ooqp.m.
+
+Major Changes in OOQP 0.99.16 (March 2006)
+- Fixed bugs in OOQP/src/Readers/MpsReader.C and MpsReader.h related
+  to the usage of function string_copy.
+
+- Made changes to MpsReader.C to allow the first field (label) of
+  BOUNDS and RHS rows to be optional.
+
+- Updated the PETSc interface to the PETSc 2.3 API. (Thanks to Quan
+  Nguyen for his help with this!)
+
+Major Changes in OOQP 0.99.12 (June 2005)
+- Examples in the OOQP/examples/QpGen/cinterface folder
+  (e.g. dense_example.c and example.c) have been modified to include
+  an equality constraint. The file Example.qps in the
+  OOQP/examples/QpGen/sample-qps (the input data to mps.c from the
+  OOQP/examples/QpGen/cinterface folder) has also been modified to
+  include the equality constraint.
+- An example using the Harwell Boeing format is included in
+  hb_example.c in the OOQP/examples/QpGen/cinterface folder.
+
+Major Changes in OOQP 0.99.11 (May 2005)
+- In accordance with the ANSI C++ standards, standard header files
+  have been included without the extension .h - for example iostream.h
+  is now iostream, and since all classes and functions defined in
+  standard libraries are under the std namespace, using namespace std
+  has been used in conjunction with iostream.
+- Header files that come from the C language have been prefixed with
+  the character c - for example stdio.h is now included as cstdio.  
+- User defined header files have been left unchanged.
+
+Major Changes in OOQP 0.99.10 (May 2004)
+- A new option --scale has been added to the existing command-line
+  arguments. This allows the solution of problems in which variables
+  or equations have a vast range of values. This work was motivated by
+  some practical problems arising in forestry management, in which the
+  values of some data objects ranged over 25 orders of magnitude. New
+  methods to scale the data have been added to QpGenData.c and the
+  column scale, row scale and symmetric scale methods have been added
+  to sparseSymMatrix.C, sparseGenMatrix.C, denseSymMatrix.C,
+  denseGenMatrix.C.
+
+- The input file reader (MpsReader.C) has been modified to allow a
+  more flexible format than the standard QPS definition. The changes
+  are as follows: 
+
+    - Code related to column-specific parsing (as defined by QPS
+      standards) has been removed and instead, new code that tokenizes
+      each line using space delimiters has been added. This flexible
+      input format allows for the presence of additional spaces
+      between fields.
+
+     - Name records have been expanded from 8 to 16 characters in
+       length and numbers no longer have a maximum length of 12
+       characters. The current version of OOQP allows for a maximum of
+       150 (previously 61) characters per input line to account for
+       the increase in length of names, numbers and additional spaces.
+
+     - An additional section for objective sense (MAX or MIN) has been
+       allowed at the beginning of the file. If this section is not
+       provided, it is assumed that the problem is a minimization. An
+       example of indicator and data record for this section is
+       provided. If used, the additional section should appear in
+       order as the first section after the NAME section:
+
+         NAME example.qps
+         OBJSENSE 
+         MAX
+
+       The current version of the reader allows the user to define an
+       optional QMATRIX section (each line of which corresponds to one
+       nonzero coefficient of the matrix Q) following the BOUNDS
+       section.
+
+Major Changes in OOQP 0.99.09
+- ooqp-ampl prints the objective value
+- The CInterface routines have been changed to return the objective
+  value.
+
+Major Changes in OOQP 0.99.08
+
+- Retired the storage.C and storage.h files because the functionality
+  in these files is better handled by instances of SimpleVector and
+  DenseStorage.
+- Updated the Petsc interface to work with either Petsc version 2.1.0 or 2.1.1.
+- Version information is now available to the code in
+  OoqpVersion.[Ch]. The qpgen executables now print the version.
+- Configure works properly with f2c, and instructions on using f2c
+  were added to the install files.
+-Introduction of a Windows port
+
+Major Changes in OOQP 0.99.07
+
+- Introduction of the StartStrategy classes that allow programmers to
+  set the starting point.
+- Introduction of ooqp-start to allow users to experiment with
+  starting points within matlab.
+- Introduction of the print-level option in ampl the ampl interface.
+
+Major Changes in OOQP 0.99.06
+
+- Updated the interface to MA27 to use the new MA27 interface.
+- Added a test to configure.in to make sure the old MA27 libraries are
+  not being used.
+- Added a NEWS file ;-)

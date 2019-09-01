@@ -1,0 +1,135 @@
+all:
+all-depend: depend all
+
+SHELL =    @SHELL@
+
+CXX      = @CXX@
+F77      = @F77@
+FC       = $(F77)
+CXXFLAGS = @CXXFLAGS@
+CC       = @CC@
+CFLAGS   = @CFLAGS@
+FFLAGS   = @FFLAGS@
+INSTALL  = @INSTALL@
+CPPFLAGS = @CPPFLAGS@ $(INCLUDES) $(DEFS)
+DEFS     = @DEFS@
+LDFLAGS  = @LDFLAGS@
+FLIBS    = @FLIBS@
+BLAS     = @BLAS@
+LIBS     = @LIBS@
+RANLIB   = @RANLIB@
+MAKEDEPEND = makedepend
+
+SUPERLU     = /sandbox/SuperLU
+SUPERLULIB  = $(SUPERLU)/superluLinux-i386.a
+OBLIOLIB    = /sandbox/oblio/lib/oblio.a
+MA57LIB     = @MA57LIB@
+MA27LIB     = @MA27LIB@
+
+srcdir      = @ooqp_src@
+prefix      = @prefix@
+includedir  = @includedir@
+libdir      = @libdir@
+bindir      = @bindir@
+datadir     = @datadir@
+docdir      = $(datadir)/doc/packages/OOQP
+exec_prefix = @exec_prefix@
+locallibdir = @srcdir@/lib
+localincludedir = @srcdir@/include
+
+SOURCES =
+PROGRAMS =
+INCLUDES :=
+
+#include all modules (subdirectories directly below this one that have
+#a makefile.inc.)
+
+MODULEMAKEFILES  := $(wildcard $(srcdir)/*/Makefile.inc)
+MODULES          := $(dir $(MODULEMAKEFILES))
+INCLUDES         := @INCLUDES@ $(patsubst %, -I%, $(MODULES))
+SOURCES   := $(foreach MODULE, $(MODULES), $(wildcard $(MODULE)*.[cC])) 
+
+include $(MODULEMAKEFILES)
+include $(wildcard $(srcdir)/*/MakefileTargets.inc)
+
+all: $(PROGRAMS) all_headers all_libs
+all_ma57:
+
+# No user-serviceable parts below here
+clean mostlyclean: 
+	-find . -name "*.o" -exec rm \{\} \;
+
+veryclean: clean headers_veryclean libs_veryclean
+	-find . -name "*.exe" -exec rm \{\} \;
+
+headers_veryclean:
+	-rm -f $(localincludedir)/*.h
+
+libs_veryclean:
+	-rm -f $(locallibdir)/*.a
+
+distclean: veryclean
+	-rm -f config.status config.log config.cache TAGS
+	-find . -name "*.out" -exec rm \{\} \;
+	-find . -name "*.bak" -exec rm \{\} \;
+	-find . -name "*~" -exec rm \{\} \;
+	-if [ -d doc-src ]; then cd doc-src; $(MAKE) distclean; fi
+	-rm  GNUmakefile PetscMakefile
+
+maintainer-clean: distclean
+	-if [ -d doc-src ]; then cd doc-src; $(MAKE) maintainer-clean; fi
+	-rm -f configure
+
+depend:
+	$(MAKEDEPEND) -f GNUmakefile $(INCLUDES) $(CPPFLAGS) \
+		$(DEFS) $(SOURCES) > /dev/null 2>&1
+	@echo " *** Done making depend"
+
+install: all install_headers install_libs install_docs install_exe
+install_headers: all_headers
+	$(INSTALL) -d $(includedir)/ooqp	
+	$(INSTALL) $(localincludedir)/*.h $(includedir)/ooqp
+
+install_libs: all_libs
+	$(INSTALL) -d $(libdir)
+	$(INSTALL) $(locallibdir)/*.a $(libdir)
+
+install_exe:
+	$(INSTALL) -d $(bindir)
+	$(INSTALL) *.exe $(bindir)
+
+install_docs:
+	if [ -d doc-src ]; then cd doc-src; fi; make
+	$(INSTALL) -d $(docdir)
+	$(INSTALL) doc/*.pdf doc/*.html $(docdir)
+	$(INSTALL) -d $(docdir)/reference-manual
+	$(INSTALL) doc/reference-manual/*.html \
+		doc/reference-manual/*.png \
+		doc/reference-manual/*.css \
+		$(docdir)/reference-manual
+	$(INSTALL) -d $(docdir)/formulations
+	$(INSTALL) doc/formulations/*.html $(docdir)/formulations
+	$(INSTALL) -d $(docdir)/distribution-docs
+	$(INSTALL) doc/distribution-docs/*.html $(docdir)/distribution-docs 
+
+GNUmakefile: GNUmakefile.in config.status
+	./config.status
+
+config.status: configure
+	./config.status --recheck
+
+rebuild-manifest:
+	cd doc-src; make
+	make distclean
+	find * .cvsignore \
+	\( -path "*CVS" -prune \) -o \( -path doc-src -prune \) \
+	-o -type f -print > MANIFEST
+
+rebuild-VERSION:
+	make qpgen-sparse-gondzio.exe
+	./qpgen-sparse-gondzio.exe --version > VERSION
+
+.SUFFIXES:
+.SUFFIXES: .o .c .cc .C .f
+
+

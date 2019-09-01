@@ -1,0 +1,263 @@
+\section{Introduction}
+
+OOQP is a package for solving convex quadratic programming problems
+(QPs). These are  optimization problems in which the objective function
+is a convex quadratic function and the constraints are linear
+functions of a vector of real variables. They have the following general
+form:
+\beq 
+\label{qpintro}
+\label{qp}
+\min_x \, \half x^TQx + c^Tx \;\; \makebox{\rm s.t.} \;\;  
+Ax=b, \; Cx \ge d,
+\eeq
+%
+where $Q$ is a symmetric positive semidefinite $n \times n$ matrix,; $x
+\in \R^n$ is a vector of variables; $A$ and $C$ are matrices of
+dimensions $m_a \times n$ and $m_c \times n$, respectively; and $c$,
+$b$, and $d$ are vectors of appropriate dimensions.
+
+Many QPs that arise in practice are highly structured. That is, the
+matrices that define them have properties that can be exploited in
+designing efficient solution techniques. For example, they may be
+general sparse matrices; diagonal, banded, or block-banded matrices;
+or low-rank matrices. A simple and common instance of structure occurs
+in applications in which the inequality constraints include simple
+upper or lower bounds on some components of $x$; the rows of $C$
+defining these bounds each contain a single nonzero element. A more
+extreme example of exploitable structure occurs in the QPs that arise
+in support vector machines. In one formulation of this problem, $Q$ is
+dense but is a low-rank perturbation of a positive diagonal matrix.
+
+In addition to the wide variations in problem structure, there is wide
+divergence in the ways in which the problem data and variables for a
+QP can be stored on a computer. Part of this variation may be due to
+the structure of the particular QP: it makes sense to store the
+problem data and variables in a way that is natural to the application
+context in which the QP arises, rather than shoehorning it into a form
+that is convenient for the QP software. Variations in storage schemes
+arise also because of different storage conventions for sparse
+matrices; because of the ways that matrices and vectors are
+represented on different parallel platforms; and because large data
+sets may necessitate specialized out-of-core storage schemes.
+
+Algorithms for QP, as in many other areas of optimization, depend
+critically on linear algebra operations of various types: matrix
+factorizations, updates, vector inner products and ``saxpy''
+operations.  Sophisticated software packages may be used to implement
+the required linear algebra operation in a manner that is appropriate
+both to the problem structure and to the underlying hardware platform.
+
+One might expect this wide variation in structure and representation of
+QPs to give rise to a plethora of algorithms, each appropriate to a
+specific situation.  Such is not the case.  Algorithms such as
+gradient projection, active set, and interior point all appear to
+function well in a wide variety of circumstances.  Interior-point
+methods in particular appear to be competitive in terms of efficiency
+on almost all problem types, provided they are coded in a way that
+exploits the problem structure.
+
+In OOQP, {\em object-oriented programming} techniques are used to
+implement a primal-dual interior-point algorithm in terms of abstract
+operations on abstract objects.  Then, at a lower level of the code,
+the abstract operations are specialized to particular problem
+formulations and data representations. By reusing the top-level code
+across the whole space of applications, while exploiting structure and
+hardware capabilities at the lower level to produce tuned, concrete
+implementations of the abstract operations, users can produce
+efficient, specialized QP solvers with a minimum of effort.
+
+This distribution of OOQP contains code to fully implement a solver
+for a number of standard OOQP formulations, including a version of the
+formulation \eqnok{qp} that assumes $Q$, $A$, and $C$ to be general
+sparse matrices. The code in the distribution also provides a
+framework and examples for users who wish to implement solvers that
+are tailored to specific structured QPs and specific computational
+environments.
+
+\subsection{Different Views of OOQP}
+
+In this section, we describe different ways in which OOQP may be used.
+
+\paragraph{Shrink-Wrapped Solution.} 
+
+The OOQP distribution can be used as an off-the-shelf, shrink-wrapped
+solver for QPs of certain types. Users can simply install it and
+execute it on their own problem data, without paying any attention to
+the structure of the code or the algorithms behind it. In particular,
+there is an implementation for solving general QPs (of the form
+\eqnok{qpgen} given in Section~\ref{using-qpgen}) in which the data
+matrices are sparse without any assumed structure. (The linear algebra
+calculations in the distributed version are performed with the codes
+MA27~\cite{duff82ma27}, but we have also implemented versions that use
+MA57~\cite{hsl2000}, Oblio~\cite{DobP00}, and SuperLU~\cite{DemGL99}.)
+The distribution also contains an implementation for computing a
+support vector machine to solve a classification problem; an
+implementation for solving the Huber regression problem; and an
+implementation for solving a quadratic program with simple bounds on a
+distributed platform, using PETSc~\cite{petsc-manual}. These implementations
+each may be called via a command-line executable, using ascii input
+files for defining the data in a manner appropriate to the problem.
+Some of the implementations can also be called via the optimization
+modeling language AMPL or via MATLAB.
+
+See the \verb-README- file in the distribution for further details on
+the specialized implementations included in the distribution.
+
+\paragraph{Embeddable Solver.}
+
+Some users may wish to embed OOQP code into their own applications,
+calling the QP solver as a subroutine. This mode of use is familiar to
+users of traditional optimization software packages and numerical
+software libraries such as NAG or IMSL. The OOQP distribution supplies
+C and C++ interfaces that allow the users to fill out the data arrays
+for the formulation \eqnok{qpgen} themselves, then call the OOQP
+solver as a subroutine.
+
+\paragraph{Development Framework.}
+
+Some users may wish to take advantage of the development framework
+provided by OOQP to develop QP solvers that exploit the structure of
+specific problems. OOQP is an extensible C++ framework; and by
+defining their own specialized versions of the storage schemes and the
+abstract operations used by the interior-point algorithm, users may
+customize the package to work efficiently on their own applications.
+
+Users may also modify one of the default implementations in the
+distribution by replacing the matrix and vector representations and
+the implementations of the abstract operations by their own
+variants. For example, a user may wish to replace the code for
+factoring symmetric indefinite matrices (a key operation in the
+interior-point algorithms) with some alternative sparse factorization
+code. Such replacements can be performed with relative ease by using
+the default implementation as an exemplar.
+
+\paragraph{Research Tool.}
+
+Researchers in interior point-methods for convex quadratic programming
+problems may wish to modify the algorithms and heuristics used in
+OOQP. They can do so by modifying the top-level code, which is quite
+short and easy to understand. Because of the abstraction and layering
+design features of OOQP, they will then be able to see the effect of
+their modifications on the whole gamut of QP problem structures
+supported by the code.
+
+\subsection{Obtaining OOQP}
+
+The OOQP Web page \verb-www.cs.wisc.edu/~swright/ooqp/- has
+instructions on downloading the distribution.
+OOQP is also distributed by the Optimization Technology Center
+(OTC). See the page {\tt www.ece.nwu.edu/OTC/software/} for
+information on obtaining OOQP and other OTC software.
+
+Unpacking the distribution will create a single directory called
+\texttt{OOQP-X.XX}, where \texttt{X.XX} is the revision number. For
+simplicity, we will refer to this directory simply as \texttt{OOQP}
+throughout this document. The \texttt{OOQP} directory contains
+numerous files and subdirectories, which are discussed in detail in
+this manual. Whenever we refer to a particular directory in the text,
+we mean it to be taken as a subdirectory of {\tt OOQP}. For example,
+when we discuss the directory {\tt src/QpGen}, we mean {\tt
+OOQP/src/QpGen}.
+
+% \subsection{Problem Formulations}
+% \label{sec.problem-formulations}
+% 
+% {\em Introduce a couple of examples of structured QPs? (Not sure if we
+% need this here - we've already made the point about structured
+% problems in Section~\ref{sec.whatis}.)}
+
+\subsection{How to Read This Manual}
+
+This manual gives an overview of OOQP---its structure,
+the algorithm on which it is based, the ways in which the solvers can
+be invoked, and its utility as a development framework.
+
+Section~\ref{using-qpgen} is intended for those who wish to use the
+solver for general sparse quadratic programs (formulation
+\eqnok{qpgen}) that is provided with the OOQP distribution. It shows
+how to define the problem and invoke the solver in various contexts.
+Section~\ref{ooqp-develop-overview} gives an overview of the OOQP
+development framework, explaining the basics of the layered design and
+details of the directory structure and makefile-based build process.
+Section~\ref{sec.qp-solver} provides additional details on the top
+layer of OOQP---the QP solver layer---for the benefit of those who
+wish to experiment with variations on the two primal-dual
+interior-point algorithms supplied with the OOQP distribution.
+Section~\ref{sec.new-qp-formulation} describes the operations that
+must be defined and implemented in order to create a solver for a new
+problem formulation. Section~\ref{sec.using-linear-algebra} is a
+practical tutorial on OOQP's linear algebra layer. It describes the
+classes for vectors and sparse and dense matrices for the benefit of
+users who wish to use these classes in creating solvers for their own
+problem formulations. Finally, Section~\ref{sec.specializing-linalg}
+is intended for advanced users who wish to specialize the linear
+algebra operations of OOQP by adding new linear solvers or using
+different matrix and vector representations.
+% The level of specialization relates
+% not to how the QP is formulated, but rather to how data objects are
+% stored and linear algebra operations performed.
+
+Users who simply wish to use OOQP as a shrink-wrapped solver for 
+quadratic programs formulated as general sparse problems \eqnok{qpgen} 
+need read only Section~\ref{using-qpgen}.  Those interested in 
+learning a little more about the design of OOQP should read 
+Sections~\ref{sec.ooqp-develop-layers} and~\ref{sec.pdip.algorithms}, 
+while those who wish to understand the design and motivation more 
+fully should read Sections~\ref{sec.ooqp-develop-layers}, 
+\ref{sec.qp-solver}, \ref{sec.new-qp-formulation}, and 
+\ref{sec.using-linear-algebra}, in that order.  Users who wish to 
+implement a solver for their own QP formulation should read 
+Sections~\ref{ooqp-develop-overview}, \ref{sec.pdip.algorithms}, 
+\ref{sec.new-qp-formulation}, and \ref{sec.using-linear-algebra} and 
+then review Section~\ref{sec.new-qp-formulation} with code in hand.  
+Those who wish to install new linear solvers should read 
+Sections~\ref{using-qpgen}, \ref{ooqp-develop-overview}, 
+\ref{sec.using-linear-algebra}, and then focus on 
+Section~\ref{sec.specializing-linalg}.
+
+\subsection{Other Resources}
+\label{sec.other-resources}
+
+OOQP is distributed with additional documentation. In the top-level
+OOQP directory, the file README describes the contents of the
+distribution. This file includes the location of an html page that
+serves as an index of available documentation and may be viewed
+through a browser such as Netscape. This documentation includes the
+following items.
+\begin{description}
+  
+\item[Online Reference Manual.]  We have extensively documented the
+  source code , using the tool {\tt doxygen} to create a set of html
+  pages that serve as a comprehensive reference manual to the OOQP
+  development framework. Details of the class hierarchy, the purposes
+  of the individual data structures and methods within each class, and
+  the meanings of various parameters are explained in these pages.
+  
+\item[A Descriptive Paper.] The archival paper \cite{GerW01} by the
+authors of OOQP contains further discussion of the motivation for
+OOQP, the structure of the code, and the way in which the classes are
+reimplemented for various specialized applications.
+  
+\item[Manuals for Other Problem Formulations.] Specialized QP
+  formulations such as Svm, Huber, and QpBound have their own
+  documentation. The documents describe the problems solved and how
+  the solvers may be invoked.
+
+\item[OOQP Installation Guide.] This document describes how to build
+and install OOQP.
+
+\item[Distribution Documents.] These include files such as README
+that describe the contents of various parts of the distribution.
+
+\end{description}
+
+We also supply a number of sample problems and example programs in the
+\texttt{examples/} subdirectory. A README file in this subdirectory
+explains its contents.
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "ooqp-userguide"
+%%% End: 
+

@@ -1,0 +1,18 @@
+function [status_code, x, gamma, phi, y, z, lambda, pi] = mexFunction(c, Q, xlow, ixlow, xupp, ixupp, A, dA, C, clow,iclow, cupp, icupp, xi, si, yi, zi, wi, gammai, vi, phii, ti, lambdai, ui, pii ? doPrint, mutol, rtol )
+integer status_code
+double precision x(nx), gamma(nx), phi(nx) 
+double precision y(my)
+double precision z(mz), lambda(mz), pi(mz)
+double precision c(nx)
+double precision Q{nx, nx}
+double precision xlow(nx), ixlow(nx)
+double precision xupp(nx), ixupp(nx)
+double precision A{nx, my}
+double precision dA(my)
+double precision C{nx, mz}
+double precision clow(mz), iclow(mz), cupp(mz), icupp(mz)
+double precision xi(nx), si(mz), yi(my), zi(mz)
+double precision vi(nx), phii(nx), wi(nx), gammai(nx)
+double precision ti(mz), lambdai(mz), ui(mz), pii(mz)
+double precision mutol, rtol
+character*32 doPrint
