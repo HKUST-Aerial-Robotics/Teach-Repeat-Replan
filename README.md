@@ -98,6 +98,13 @@ To install the following dependencies, you can run the auto-install script by
 ```
   ./install_tools.sh
 ```
+
+Then run
+```
+  ./config_gcc.sh
+```
+to finish the configuration.
+
 If failed, you can manually install them one by one:
 ```
   sudo apt-get install ros-kinetic-joy
