@@ -1,9 +1,10 @@
 # Known Issues: 
 If polyhedrons can't be visualized properly in Rviz, please delete the *Display Type* **PolyhedronArray** from the *display menu*, then manually add **PolyhedronArray** again and select the topic in its **Topic** drop-down list.
 
-*What's New: We have released all packages for conducting real-world experiments, please visit [experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)*
+# What's New: 
+- We have released all packages for conducting real-world experiments, please visit [experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)*
 
-*What's New: We now provide a new interface for controlling the drone directly with the keyboard. Check it in the following Human Interface section.*
+- We now provide a new interface for controlling the drone directly with the keyboard. Check it in the following Human Interface section.*
 
 # Teach-Repeat-Replan (Autonomous Drone Race)
 Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments
