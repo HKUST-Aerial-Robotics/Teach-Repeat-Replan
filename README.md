@@ -127,7 +127,15 @@ The simulator requires C++17, which needs **gcc 7** to compile. When you catkin_
  set(ENABLE_CUDA true)
  ```
  
-CUDA will be turned-on to exploit your GPU.
+CUDA will be turned-on to exploit your GPU. 
+
+Please remember to also change the 'arch' and 'code' flags in the line of 
+```
+    set(CUDA_NVCC_FLAGS 
+      -gencode arch=compute_61,code=sm_61;
+    ) 
+``` 
+in 'CMakeList', if you encounter compiling error due to different Nvidia graphics card you use. You can check the right code [here](https://github.com/tpruvot/ccminer/wiki/Compatibility).
  
 **local_sensing** is the simulated sensors. If ```ENABLE_CUDA``` **true**, it mimics the depth measured by stereo cameras and renders a depth image by GPU. If ```ENABLE_CUDA``` **false**, it will publish pointclouds with no ray-casting. Our local mapping module automatically selects whether depth images or pointclouds as its input.
 
