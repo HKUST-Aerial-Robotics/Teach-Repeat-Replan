@@ -4,7 +4,7 @@ If polyhedrons can't be visualized properly in Rviz, please delete the *Display 
 # What's New: 
 - We have released all packages for conducting real-world experiments, please visit [experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment)*
 
-- We now provide a new interface for controlling the drone directly with the keyboard. Check it in the following Human Interface section.*
+- We now provide a new interface for controlling the drone directly with the keyboard. Check it in the following Human Interface section.
 
 # Teach-Repeat-Replan (Autonomous Drone Race)
 Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments
