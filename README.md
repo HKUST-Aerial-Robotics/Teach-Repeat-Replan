@@ -103,9 +103,9 @@ Then run
 ```
   ./config_gcc.sh
 ```
-to finish the configuration.
+to finish the configuration
 
-If failed, you can manually install them one by one:
+Or, you can manually install them one by one:
 ```
   sudo apt-get install ros-kinetic-joy
   sudo apt-get install libnlopt-dev
