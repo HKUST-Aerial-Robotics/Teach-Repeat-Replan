@@ -23,8 +23,8 @@ struct Controller_Output_t
 	static constexpr double VERT_VELO = -1.0;
 	static constexpr double VERT_THRU = 1.0;
 
-	static constexpr double CTRL_YAW_RATE = -1.0;
-    static constexpr double CTRL_YAW = 1.0;
+	static constexpr double CTRL_YAW_RATE = 1.0;
+    	static constexpr double CTRL_YAW = 0.0;
 
 	double roll;
 	double pitch;
