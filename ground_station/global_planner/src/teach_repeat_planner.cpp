@@ -74,6 +74,9 @@ Bernstein      * _bezier_basis             = new Bernstein();
 gridPathFinder * _path_finder              = new gridPathFinder();
 polyhedronGenerator * _polyhedronGenerator = new polyhedronGenerator();
 
+//cost function parameters
+double _z_axis_cost_weight;
+
 void rcvPointCloudCallBack(const sensor_msgs::PointCloud2 & pointcloud_map);
 void rcvOdometryCallBack(const nav_msgs::Odometry odom);
 void rcvJoyCallBack(const sensor_msgs::Joy joy);
@@ -97,6 +100,11 @@ void rcvTriggerCallBack(const geometry_msgs::PoseStamped & start_pose)
     _start_pt(0)  = start_pose.pose.position.x;
     _start_pt(1)  = start_pose.pose.position.y;
     _start_pt(2)  = start_pose.pose.position.z;
+    _odom_time = start_pose.header.stamp;
+    _time_update_odom = ros::Time::now();
+    
+    cout<<" local time: "<<ros::Time::now()<<endl;
+    cout << "[t._r._p..cpp] _start_pt = " << _start_pt << endl;
 
     if(_manual_path.size() == 0) return;
 
@@ -177,9 +185,9 @@ void rcvOdometryCallBack(const nav_msgs::Odometry odom)
 {   
     if(!_has_map) return;
     _odom = odom;
-    _odom_time = odom.header.stamp;
-    _time_update_odom = ros::Time::now();
-
+    //_odom_time = odom.header.stamp;
+    //_time_update_odom = ros::Time::now();
+    
     _has_odom = true;
 
     Vector3d pos, pos_round;
@@ -267,23 +275,29 @@ void rcvPointCloudCallBack(const sensor_msgs::PointCloud2 & pointcloud_map)
                     double inf_y = pt.y + y * _resolution;
                     double inf_z = pt.z + z * _resolution;
 
+                    if(isnan(inf_x) || isnan(inf_y) || isnan(inf_z)) continue;
+
                     Vector3d vec_inf(inf_x, inf_y, inf_z);
                     Vector3i idx_inf = _path_finder->coord2gridIndex(vec_inf);
 
                     // set in obstacle points
-                    _path_finder->setObs(inf_x, inf_y, inf_z);
+                    bool flag_newly_occupied = _path_finder->setObs(inf_x, inf_y, inf_z);
                     _polyhedronGenerator->setObs(idx_inf);
 
                     // rounding for visualizing the grid map
-                    Vector3d coor_round = _path_finder->gridIndex2coord( idx_inf );
-                    pt_inf.x = coor_round(0);
-                    pt_inf.y = coor_round(1);
-                    pt_inf.z = coor_round(2);
-                    cloud_inf.points.push_back(pt_inf);
+                    if(flag_newly_occupied) //zxzx
+                    {
+                        Vector3d coor_round = _path_finder->gridIndex2coord( idx_inf );
+                        pt_inf.x = coor_round(0);
+                        pt_inf.y = coor_round(1);
+                        pt_inf.z = coor_round(2);
+                        cloud_inf.points.push_back(pt_inf);
+                    }
                 }
             }
         }
     }
+
     _polyhedronGenerator->finishMap();
 
     cloud_inf.width    = cloud_inf.points.size();
@@ -557,7 +571,7 @@ void trajPlanning()
     J_lst = inf;
 
     temporalTrajOptimizer * time_optimizer  = new temporalTrajOptimizer();
-    spatialTrajOptimizer  * curve_optimizer = new spatialTrajOptimizer();
+    spatialTrajOptimizer  * curve_optimizer = new spatialTrajOptimizer(_z_axis_cost_weight);
     timeAllocator         * time_profile_   = new timeAllocator();
 
     time_optimizer->setParam(_traj_order, _bezier_basis->getC(), _bezier_basis->getC_v(), _bezier_basis->getC_a());
@@ -577,7 +591,7 @@ void trajPlanning()
                 corridor, Qo_u, Qo_l, pos, vel, acc, _traj_order, _minimize_order, _MAX_Vel, _MAX_Acc);
 
         ros::Time time_after_optimization = ros::Time::now();
-        ROS_WARN("[trr_global_planner] Time consumation of spatial optimization is: %f",(time_after_optimization - time_before_optimization).toSec() );
+        //ROS_WARN("[trr_global_planner] Time consumation of spatial optimization is: %f",(time_after_optimization - time_before_optimization).toSec() );
 
         bezier_coeff = curve_optimizer->getPolyCoeff();
         bezier_time  = curve_optimizer->getPolyTime();
@@ -670,6 +684,8 @@ int main(int argc, char** argv)
 
     nh.param("your_file_path",         _your_file_path,     string("")  );
 
+    nh.param("z_cost_weight",         _z_axis_cost_weight,     1.0);
+
     _map_sub  = nh.subscribe( "map",       1, rcvPointCloudCallBack );
     _odom_sub = nh.subscribe( "odometry",  1, rcvOdometryCallBack);
     _joy_sub  = nh.subscribe( "joystick",  1, rcvJoyCallBack );
@@ -682,15 +698,17 @@ int main(int argc, char** argv)
     _vis_polytope_pub  = nh.advertise<decomp_ros_msgs::PolyhedronArray>("polyhedron_corridor_mesh", 1, true);
     _space_time_pub    = nh.advertise<quadrotor_msgs::SpatialTemporalTrajectory>("space_time_traj", 10); 
 
-    _map_lower << -_x_size/2.0, -_y_size/2.0, 0.0;
-    _map_upper << +_x_size/2.0, +_y_size/2.0, _z_size;
+    //_map_lower << - _x_size/2.0, - _y_size/2.0, 0.0;
+   // _map_upper << + _x_size/2.0, + _y_size/2.0, _z_size;
+    _map_lower << -5.0, -_y_size/2.0, 0.0;
+    _map_upper << _x_size - 5.0, +_y_size/2.0, _z_size;
 
     _poly_array_msg.header.frame_id = "/map";
     _vis_polytope_pub.publish(_poly_array_msg); 
 
-    _pt_max_x = + _x_size / 2.0; _pt_min_x = - _x_size / 2.0;
+/*     _pt_max_x = + _x_size / 2.0; _pt_min_x = - _x_size / 2.0;
     _pt_max_y = + _y_size / 2.0; _pt_min_y = - _y_size / 2.0; 
-    _pt_max_z = + _z_size;       _pt_min_z = 0.0;
+    _pt_max_z = + _z_size;       _pt_min_z = 0.0; */
     
     _resolution = max(0.1, _resolution); // In case a too fine resolution crashes the CUDA code.
     _inv_resolution = 1.0 / _resolution;

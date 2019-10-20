@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SubscribePanel</class>
+ <widget class="QWidget" name="SubscribePanel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1089</width>
+    <height>561</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>970</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1100</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>12</number>
+   </property>
+   <property name="topMargin">
+    <number>12</number>
+   </property>
+   <property name="rightMargin">
+    <number>12</number>
+   </property>
+   <property name="bottomMargin">
+    <number>12</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="btn_match">
+       <property name="text">
+        <string>Step 0: Verify Subscription Version</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="packageManagement">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Package Management</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="pkg0Frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>6</number>
+         </property>
+         <property name="topMargin">
+          <number>6</number>
+         </property>
+         <property name="rightMargin">
+          <number>6</number>
+         </property>
+         <property name="bottomMargin">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="labelPkg0">
+           <property name="text">
+            <string>Pkg 0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="freqPkg0">
+           <property name="currentText">
+            <string extracomment="Choose freq">Choose Freq</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>Choose Freq</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>0 Hz (One Shot)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>10 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>50 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>100 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>200 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>400 Hz</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="warnPkg0">
+           <property name="text">
+            <string>Choose some data fields below</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="startPkg0">
+           <property name="text">
+            <string>Start</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="stopPkg0">
+           <property name="text">
+            <string>Stop</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="pkg1Frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>6</number>
+         </property>
+         <property name="topMargin">
+          <number>6</number>
+         </property>
+         <property name="rightMargin">
+          <number>6</number>
+         </property>
+         <property name="bottomMargin">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="labelPkg1">
+           <property name="text">
+            <string>Pkg 1</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="freqPkg1">
+           <property name="currentText">
+            <string extracomment="Choose freq">Choose Freq</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>Choose Freq</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>0 Hz (One Shot)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>10 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>50 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>100 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>200 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>400 Hz</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="warnPkg1">
+           <property name="text">
+            <string>Choose some data fields below</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="startPkg1">
+           <property name="text">
+            <string>Start</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="stopPkg1">
+           <property name="text">
+            <string>Stop</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="pkg2Frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>6</number>
+         </property>
+         <property name="topMargin">
+          <number>6</number>
+         </property>
+         <property name="rightMargin">
+          <number>6</number>
+         </property>
+         <property name="bottomMargin">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="labelPkg2">
+           <property name="text">
+            <string>Pkg 2</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="freqPkg2">
+           <property name="currentText">
+            <string extracomment="Choose freq">Choose Freq</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>Choose Freq</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>0 Hz (One Shot)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>10 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>50 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>100 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>200 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>400 Hz</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="warnPkg2">
+           <property name="text">
+            <string>Choose some data fields below</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="startPkg2">
+           <property name="text">
+            <string>Start</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="stopPkg2">
+           <property name="text">
+            <string>Stop</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="pkg3Frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>6</number>
+         </property>
+         <property name="topMargin">
+          <number>6</number>
+         </property>
+         <property name="rightMargin">
+          <number>6</number>
+         </property>
+         <property name="bottomMargin">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="labelPkg3">
+           <property name="text">
+            <string>Pkg 3</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="freqPkg3">
+           <property name="currentText">
+            <string extracomment="Choose freq">Choose Freq</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>Choose Freq</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>0 Hz (One Shot)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>10 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>50 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>100 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>200 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>400 Hz</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="warnPkg3">
+           <property name="text">
+            <string>Choose some data fields below</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="startPkg3">
+           <property name="text">
+            <string>Start</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="stopPkg3">
+           <property name="text">
+            <string>Stop</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="pkg4Frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>6</number>
+         </property>
+         <property name="topMargin">
+          <number>6</number>
+         </property>
+         <property name="rightMargin">
+          <number>6</number>
+         </property>
+         <property name="bottomMargin">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="labelPkg4">
+           <property name="text">
+            <string>Pkg 4</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="freqPkg4">
+           <property name="currentText">
+            <string extracomment="Choose freq">Choose Freq</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>Choose Freq</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>0 Hz (One Shot)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>10 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>50 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>100 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>200 Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>400 Hz</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="warnPkg4">
+           <property name="text">
+            <string>Choose some data fields below</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="startPkg4">
+           <property name="text">
+            <string>Start</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="stopPkg4">
+           <property name="text">
+            <string>Stop</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tableWidget"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

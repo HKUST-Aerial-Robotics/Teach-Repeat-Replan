@@ -71,17 +71,24 @@ inline void gridPathFinder::coord2gridIndexFast(const double x, const double y, 
     id_z = static_cast<int>( (z - gl_zl) * inv_resolution);      
 }
 
-void gridPathFinder::setObs(const double coord_x, const double coord_y, const double coord_z)
+//@retVel: true = cell used to be empty; false = cell used to be occupied; //zxzxzxzx
+bool gridPathFinder::setObs(const double coord_x, const double coord_y, const double coord_z)
 {   
     if( coord_x < gl_xl  || coord_y < gl_yl  || coord_z <  gl_zl || 
         coord_x >= gl_xu || coord_y >= gl_yu || coord_z >= gl_zu )
-        return;
+        return false;
 
     tmp_id_x = static_cast<int>( (coord_x - gl_xl) * inv_resolution);
     tmp_id_y = static_cast<int>( (coord_y - gl_yl) * inv_resolution);
     tmp_id_z = static_cast<int>( (coord_z - gl_zl) * inv_resolution);      
 
-    data[tmp_id_x * GLYZ_SIZE + tmp_id_y * GLZ_SIZE + tmp_id_z] = 1;
+    if(data[tmp_id_x * GLYZ_SIZE + tmp_id_y * GLZ_SIZE + tmp_id_z] == 0){
+        data[tmp_id_x * GLYZ_SIZE + tmp_id_y * GLZ_SIZE + tmp_id_z] = 1;
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 void gridPathFinder::setObs(const Eigen::Vector3d coord)

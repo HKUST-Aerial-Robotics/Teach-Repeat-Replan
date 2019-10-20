@@ -343,6 +343,10 @@ public:
 
             global_traj_start_time = traj.start_time;
             global_traj_final_time = traj.final_time;
+
+            cout<<"start time: "<<global_traj_start_time<<endl;
+            cout<<"final time: "<<global_traj_final_time<<endl;
+
             global_traj_time       = (global_traj_final_time - global_traj_start_time).toSec();
 
             int seg_num = traj.K.size();
@@ -945,6 +949,8 @@ public:
         double t = odom.header.stamp.toSec();
         double t_= odom.header.stamp.toSec();
 
+//        cout<< "odom t: "<<odom.header.stamp<<endl;
+
         for(; replan_trajs.size() > 0 && t > (replan_trajs.front().local_traj_end_time).toSec();  replan_trajs.pop_front());
 
         if( replan_trajs.size() > 0)
@@ -1063,6 +1069,7 @@ public:
             // #3. calculate the desired states
             if( !getCtrlCommand(position, velocity, acceleration))
             {   
+                //cout << "[traj_server.cpp] getCtrlCommand error. state = " << state << endl;
                 _yaw_pub.publish(yaw);
                 _cmd_pub.publish(cmd);
                 return;
@@ -1129,6 +1136,11 @@ public:
             vis_vel.header.stamp = odom_time;
             vis_acc.header.stamp = odom_time;
             vis_yaw.header.stamp = odom_time;
+
+            vis_pos.header.frame_id = "map";
+            vis_vel.header.frame_id = "map";
+            vis_acc.header.frame_id = "map";
+            vis_yaw.header.frame_id = "map";
 
             vis_pos.points.clear();
             vis_vel.points.clear();

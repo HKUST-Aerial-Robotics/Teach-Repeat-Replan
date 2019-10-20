@@ -141,7 +141,8 @@ void rcvReplanRequestCallBack( const quadrotor_msgs::ReplanCheck & replan_reques
 	   
 	    double dis;
         dis = _sdf_map->getDistWithGradTrilinear(check_pt,  grad );
-        if( dis <= 0.05  ){	   
+        //if( dis <= 0.05  ){    
+        if( dis <= -5.0  ){	   
             ROS_WARN("[Local Replanner] Collision detected, neeed replanning, dis:= %f", dis ); 
             if( i * check_time_interval < _time_emergency){
                 ROS_ERROR("[Local Replanner] Emergency braking");
@@ -296,7 +297,7 @@ void BsplineFeasibleCheck(NonUniformBspline traj, bool & is_feas, bool & is_safe
         }
 	
         dis = _sdf_map->getDistWithGradTrilinear(pos,  grad );
-	   if( dis < 0.075 ){
+	   if( dis < 0.075 ){ //zxzx
             is_safe = false;
             if(collision_pt.norm() < 1e-5) collision_pt = pos;
         }

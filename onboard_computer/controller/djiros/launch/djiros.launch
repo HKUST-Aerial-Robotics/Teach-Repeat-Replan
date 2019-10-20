@@ -3,10 +3,12 @@
         <param name="log_level" type="string" value="info"/>
         <param name="serial_name" type="string" value="/dev/ttyUSB0"/>
         <param name="baud_rate" type="int" value="921600"/>
-        <param name="app_id" type="int" value="$(env DJIROS_APPID)"/>
-        <param name="enc_key" type="string" value="$(env DJIROS_ENCKEY)"/>  
+        <!--param name="app_id" type="int" value="1075729"/-->
+        <param name="app_id" type="int" value="1078692"/>
+        <!--param name="enc_key" type="string" value="7167bc6e3fa686ad5265c76923f9942f4cd8fa253c1515984565c6872462177b"/-->  
+        <param name="enc_key" type="string" value="8916f3a604e5345903e7671a36434981ca4e60ea7eab2de3da9da4392b134d1f"/> 
         <param name="app_version" type="int" value="1"/>
         <param name="sensor_mode" type="bool" value="false"/>
-        <param name="align_with_fmu" type="bool" value="true"/>
+        <param name="align_with_fmu" type="bool" value="false"/>
 	</node>
 </launch>

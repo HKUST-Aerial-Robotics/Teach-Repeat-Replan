@@ -91,7 +91,7 @@ class gridPathFinder
 		gridPathFinder(){};
 		~gridPathFinder(){};
 
-		void setObs(const double coord_x, const double coord_y, const double coord_z);
+		bool setObs(const double coord_x, const double coord_y, const double coord_z);
 		void setObs(const Eigen::Vector3d coord);
 		void setObs(const Eigen::Vector3i index);
 

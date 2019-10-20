@@ -159,7 +159,7 @@ void pubOdometry(const Estimator &estimator, const std_msgs::Header &header)
         pose_stamped.header.frame_id = "world";
         pose_stamped.pose = odometry.pose.pose;
         path.header = header;
-        path.header.frame_id = "world";
+        path.header.frame_id = "map";
         path.poses.push_back(pose_stamped);
 
         if ((cnt_path ++)% 5 == 0){    
@@ -264,7 +264,9 @@ void pubCameraPose(const Estimator &estimator, const std_msgs::Header &header)
             Quaterniond R = Quaterniond(estimator.Rs[i] * estimator.ric[1]);
             cameraposevisual.add_pose(P, R);
         }
+        odometry.header.frame_id = "map"; //zxzx
         cameraposevisual.publish_by(pub_camera_pose_visual, odometry.header);
+        odometry.header.frame_id = "world";
     }
 }
 

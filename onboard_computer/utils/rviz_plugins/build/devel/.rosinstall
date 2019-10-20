@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/jchen/workspace/src/rviz_plugins/build/devel/setup.sh

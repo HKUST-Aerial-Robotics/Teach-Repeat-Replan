@@ -186,10 +186,13 @@ void N3CtrlFSM::get_des_from_js(Vector3d& des_v, double& dyaw)
 
 void N3CtrlFSM::align_with_imu(Controller_Output_t& u)
 {
-	double imu_yaw = get_yaw_from_quaternion(imu_data.q);
+	double imu_yaw = get_yaw_from_quaternion(imu_data.q); //will never be used. zxzxzxzx
 	double odom_yaw = get_yaw_from_odom();
 	double des_yaw = u.yaw;
-	u.yaw = yaw_add(yaw_add(des_yaw, -odom_yaw), imu_yaw);
+	//u.yaw = yaw_add(des_yaw, -odom_yaw) * 3.0f; //zxzxzxzx
+	u.yaw = yaw_add(yaw_add(des_yaw, -odom_yaw), imu_yaw); //zxzxzxzx
+	//u.yaw = -20.0 / 180 * 3.14;
+	//ROS_WARN("imu_yaw=%f odom_yaw=%f des_yaw=%f u.yaw=%f",imu_yaw,odom_yaw,des_yaw,u.yaw); //zxzxzxzx
 	// printf("des:%.3f \todom:%.3f \timu:%.3f \trst:%.3f\n",
 	// 	des_yaw, odom_yaw, imu_yaw, u.yaw);
 	// u.yaw = yaw_add(des_yaw, -odom_yaw) * 3.0;

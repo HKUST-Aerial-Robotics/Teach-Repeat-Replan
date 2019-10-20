@@ -6,26 +6,26 @@
     <param name="cam_height" value="480" />
 
     <!--input image info-->
-    <param name="cam_fx" value="3.8445808939187248e+02" />
-    <param name="cam_fy" value="3.8398275569654390e+02" />
-    <param name="cam_cx" value="3.2247735741936430e+02" />
-    <param name="cam_cy" value="2.3707634648111778e+02" />
+    <param name="cam_fx" value="385.27850341796875" />
+    <param name="cam_fy" value="385.27850341796875" />
+    <param name="cam_cx" value="319.3750915527344" />
+    <param name="cam_cy" value="241.12330627441406" />
 
-    <param name="ric00" value=" 1.8164816281258656e-03" />
-    <param name="ric01" value=" -6.3177130219012612e-03" />
-    <param name="ric02" value=" 9.9997839321490711e-01" />
+    <param name="ric00" value="-4.9876902235101994e-03" />
+    <param name="ric01" value="6.8975396706592029e-03" />
+    <param name="ric02" value="9.9996377279015758e-01" />
 
-    <param name="ric10" value="-9.9993170493633965e-01" />
-    <param name="ric11" value="-1.1556213348783206e-02" />
-    <param name="ric12" value=" 1.7433864008152278e-03" />
+    <param name="ric10" value="-9.9994520639236018e-01" />
+    <param name="ric11" value="-9.2379465278691342e-03" />
+    <param name="ric12" value="-4.9238762056141860e-03" />
 
-    <param name="ric20" value=" 1.1544949441198271e-02" />
-    <param name="ric21" value="-9.9991326645625134e-01" />
-    <param name="ric22" value="-6.3382732025270005e-03" />
+    <param name="ric20" value="9.2036492313802842e-03" />
+    <param name="ric21" value="-9.9993353993674983e-01" />
+    <param name="ric22" value="6.9432377451592586e-03" />
 
-    <param name="tic0" value="4.5276582907576739e-02" />
-    <param name="tic1" value="1.3182794321427079e-02" />
-    <param name="tic2" value="1.3591235430469647e-03" />
+    <param name="tic0" value="0.06" />
+    <param name="tic1" value="0.0" />
+    <param name="tic2" value="0.03" />
 
     <!-- fusion parameter, all in meter -->
     <param name="fuse_far_distence"  value="3.0" />

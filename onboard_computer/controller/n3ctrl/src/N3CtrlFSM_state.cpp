@@ -37,6 +37,7 @@ void N3CtrlFSM::determine_state(const ros::Time& now_time) {
          cmd_data.trajectory_flag == quadrotor_msgs::PositionCommand::TRAJECTORY_STATUS_COMPLETED);
     bool cmd_id_renewed = cmd_data.trajectory_id > last_command_id;
     bool cmd_is_timeout = (now_time - cmd_data.rcv_stamp).toSec() < param.msg_timeout.cmd;
+    //ROS_WARN("%d %d %d",cmd_flag_valid,cmd_id_renewed, cmd_is_timeout); //zxzxzxzx
     bool cmd_is_valid = cmd_flag_valid & cmd_id_renewed & cmd_is_timeout;
 
     if (!cmd_is_valid) {

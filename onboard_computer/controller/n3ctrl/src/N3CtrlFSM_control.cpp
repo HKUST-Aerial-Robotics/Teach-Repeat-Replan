@@ -10,6 +10,10 @@ void N3CtrlFSM::process_control(const ros::Time& now_time)
 	Controller_Output_t u;
 	SO3_Controller_Output_t u_so3;
 
+	//ROS_WARN("[n3ctrl] state = %d",state); //zxzxzxzx
+	//result: state always equals 2
+	//ROS_WARN("[n3ctrl] js_ctrl_mode = %d",js_ctrl_mode); //zxzxzxzx
+
 	if (state == DIRECT_CTRL)
 	{
 		// process_raw_control(u, u_so3);
@@ -19,15 +23,18 @@ void N3CtrlFSM::process_control(const ros::Time& now_time)
 	{
 		if (js_ctrl_mode==JS_CTRL_MODE_RAW)
 		{
+			ROS_WARN("[n3ctrl] js_ctrl_mode = JS_CTRL_MODE_RAW");//zxzxzxzx
 			process_raw_control(u, u_so3);
 		}
 		else
 		{
+			// This function is called when it is running normally. zxzxzxzx
 			process_js_control(u, u_so3);
 		}
 	}
 	else if (state == JS_NO_CTRL)
 	{
+		ROS_WARN("[n3ctrl] state = JS_NO_CTRL");//zxzxzxzx
 		process_no_control(u, u_so3);
 	}
 	else if (state == JS_RESET_POS_CTRL)
@@ -40,6 +47,7 @@ void N3CtrlFSM::process_control(const ros::Time& now_time)
 	}
 	else if (state == CMD_CTRL)
 	{
+		//ROS_WARN("[n3ctrl] state = CMD_CTRL");//zxzxzxzx
 		process_cmd_control(u, u_so3);
 	}
 	else if (state == CMD_NO_CTRL)
