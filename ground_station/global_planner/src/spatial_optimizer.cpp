@@ -472,6 +472,12 @@ int spatialTrajOptimizer::bezierCurveGeneration(
                             else
                                 dQ[idx] = MQM_l(i, j) / (double)pow(scale_k, 2 * min_order_l - 3) * pow(corridor.scale_factor, 2 * min_order_l - 1)
                                         + MQM_u(i, j) / (double)pow(scale_k, 2 * min_order_u - 3) * pow(corridor.scale_factor, 2 * min_order_u - 1);
+                            
+                            if(p == 2){
+                                dQ[idx] *= z_weight;
+                                //cout << "z_weight = " << z_weight << endl;
+                            }
+
                             idx ++ ;
                         }
 

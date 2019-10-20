@@ -28,12 +28,36 @@ void DjiRos::control_callback(const sensor_msgs::JoyConstPtr &pMsg) {
     if (pMsg->axes[4] > 0) {
       flag = 0b00100010;  // 0b00100000, mode 13
       if (pMsg->axes.size() > 5 && pMsg->axes.at(5) > 0.5) {
-        flag = 0b00101010; // 0b00100000, mode 14
+        flag = 0b00101010; // 0b00100000, mode 14 yaw_rate  
+      }
+      else {
+        flag = 0b00100010; // 0b00100000, yaw_angel 
       }
     } else {
       flag = 0b00000010;  // 0b00000000, mode 1
     }
 
+  // enum YawLogic
+  // {
+  //    /*!
+  //    - Set the control-mode to control yaw angle.
+  //    - Yaw angle is referenced to the ground frame.
+  //    - In this control mode, Ground frame is enforeced in Autopilot.
+  //      */
+  //   YAW_ANGLE = 0x00,
+  //   /*!
+  //    - Set the control-mode to control yaw angular velocity.
+  //    - Same reference frame as YAW_ANGLE.
+  //    - Limite: 150 deg/s
+  //    */
+  //   YAW_RATE = 0x08
+  // };
+
+    // ROS_WARN("YAW_ANGLE = %d",DJI::OSDK::Control::YAW_ANGLE);  // YAW_ANGLE == 0 //zxzxzxzx
+    // ROS_WARN("YAW_RATE = %d",DJI::OSDK::Control::YAW_RATE);
+    // ROS_WARN("flag = %X",flag);
+    // if((flag & 0x08) == DJI::OSDK::Control::YAW_ANGLE) ROS_WARN("in YAW_ANGLE");
+    // else ROS_WARN("in YAW_RATE");
     DJI::OSDK::Control::CtrlData ctrl_data(flag, pMsg->axes[0], pMsg->axes[1], pMsg->axes[2], pMsg->axes[3]);
 
     vehicle->control->flightCtrl(ctrl_data);

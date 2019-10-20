@@ -10,6 +10,7 @@
  */
 
 #include <dji_sdk/dji_sdk_node.h>
+#include <iostream> 
 
 /*!
  * @brief The flight controller takes control signals with frame convention:
@@ -29,6 +30,7 @@
  */
 void DJISDKNode::flightControl(uint8_t flag, float xSP, float ySP, float zSP, float yawSP)
 {
+
   uint8_t HORI  = (flag & 0xC0);
   uint8_t VERT  = (flag & 0x30);
   uint8_t YAW   = (flag & 0x08);

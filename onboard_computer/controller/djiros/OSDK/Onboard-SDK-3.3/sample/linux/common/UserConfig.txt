@@ -1,0 +1,4 @@
+app_id : your_app_id_here
+app_key : your_key_here
+device : /dev/ttyUSB0
+baudrate : 230400

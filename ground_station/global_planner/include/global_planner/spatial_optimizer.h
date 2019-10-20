@@ -14,11 +14,14 @@ class spatialTrajOptimizer
 {
     private:
         double obj;
+        double z_weight;
         Eigen::MatrixXd PolyCoeff;
         Eigen::VectorXd PolyTime;
 
     public:
-        spatialTrajOptimizer(){}
+        spatialTrajOptimizer(double z_weight_para){
+            z_weight = z_weight_para;
+        }
         ~spatialTrajOptimizer(){}
 
         int bezierCurveGeneration( 

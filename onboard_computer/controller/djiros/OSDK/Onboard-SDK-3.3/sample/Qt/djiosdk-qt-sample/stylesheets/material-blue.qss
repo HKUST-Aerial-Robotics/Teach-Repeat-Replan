@@ -1,0 +1,544 @@
+QWidget:window {					/* Borders around the code editor and debug window */
+        border: 0px solid #EEEEEE;
+        background-color: #EEEEEE;
+        font-size: 10;
+}
+
+QToolTip {
+        background-color: #2196F3;
+	color: black;
+    padding: 5px;
+    border-radius: 0;
+    opacity: 200;
+}
+
+/* ==================== Dialog ==================== */
+QLabel {
+	background: transparent;
+	color: #CFD8DC;				/* Not sure about this one */
+}
+
+QDialog, QListView {
+        background-color: #EEEEEE;
+        color: #424242;
+	outline: 0;
+	border: 2px solid transparent;
+}
+
+QListView::item:hover {
+        color: #9E9E9E;
+	background: transparent;
+}
+
+
+QListView::item:selected {
+	color: #ffffff;
+	background: transparent;
+}
+
+/* === QTabBar === */
+QTabBar {
+        background: #EEEEEE;
+}
+
+QTabWidget::pane {
+	background: transparent;	/* Only at the very bottom of the tabs */
+}
+
+QTabBar::tab {
+	background: transparent;
+	border: 0px solid transparent;
+	border-bottom: 2px solid transparent;
+        color: #616161;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+QTabBar::tab:hover {
+        background-color: transparent;
+	border: 0px solid transparent;
+        border-bottom: 2px solid #FFF;
+        color: #2196F3;
+}
+
+QTabBar::tab:selected {
+	background-color: transparent;
+	border: 0px solid transparent;
+	border-top: none;
+        border-bottom: 2px solid #2196F3;
+        color: #000000;
+}
+
+QStackedWidget {
+        background: #EEEEEE;	/* This covers a bunch of things, I was thinking about making it transparent, */
+							/* but I would have to find all the other elements... but QTabWidget::pane may be it */
+}
+
+
+/* === QGroupBox === */
+QGroupBox {
+    border-bottom: 3px solid;
+    border-bottom-color:    qradialgradient(cx:0.5, cy:1, radius: 1,
+    fx:0.5, fy:1, stop:0 #EEEEEE, stop: 0.5 #EEEEEE, stop:1 #BDBDBD);
+
+    border-top: 1px solid;
+    border-top-color: qlineargradient(  x1: 0, y1: 0, x2: 0, y2: 1,
+    stop: 0 #EEEEEE, stop: 1.0 #BDBDBD);
+
+
+    border-left: 1px solid;
+    border-left-color: qlineargradient(  x1: 0, y1: 0, x2: 1, y2: 0,
+    stop: 0 #EEEEEE, stop: 1.0 #BDBDBD);
+
+    border-right: 3px solid;
+    border-right-color: qlineargradient(  x1: 0, y1: 0, x2: 1, y2: 0,
+    stop: 0 #BDBDBD, stop: 1.0 #EEEEEE);
+    border-radius: 0px;
+    margin-top: 1em;
+    background-color: #f5f5f5;
+}
+
+QGroupBox::disabled {
+    color: #BDBDBD;
+    background-color: #EEEEEE;
+}
+QGroupBox::title::disabled {
+    color: #9E9E9E;
+}
+
+
+QGroupBox::title {
+        color: #2196F3;
+    subcontrol-origin: margin;
+    left: 6px;
+    padding: 0 3px 0 3px;
+}
+
+QComboBox {
+        color: #424242;
+        background-color: transparent;
+	selection-background-color: transparent;
+        border: 0px solid transparent;
+        border-bottom: 1px solid #42A5F5;
+        padding: 1px 18px 1px 3px;
+        min-width: 6em;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 0px;
+
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+    image: url(:/images/caret-down.png);
+    width: 14px;
+    height: 14px;
+}
+
+QComboBox QAbstractItemView
+{    
+    selection-background-color: transparent;
+	outline: 0;
+}
+
+/* === QCheckBox === */
+QCheckBox, QRadioButton {
+        color: #424242;
+        padding: 1px 18px 1px 3px;
+        spacing: 4px;
+}
+
+QCheckBox::indicator::unchecked  {
+        background-color: #EEEEEE;
+        border: 1px solid #424242;
+        border-radius: 2px;
+}
+
+QRadioButton::indicator::unchecked {
+        background-color: #EEEEEE;
+        border: 1px solid #424242;
+        border-radius: 7px;
+}
+
+QCheckBox::indicator::checked, QTreeView::indicator::checked {
+
+        image: url(:/images/check-square.png);
+        width: 20px;
+        height: 20px;
+}
+
+QRadioButton::indicator::checked {
+        background-color: #44a8f2;
+	border: 1px solid #536D79;
+        border-radius: 7px;
+}
+
+QCheckBox::indicator:disabled, QRadioButton::indicator:disabled, QTreeView::indicator:disabled {
+        background-color: #9E9E9E;			/* Not sure what this looks like */
+}
+
+QCheckBox::indicator::checked:disabled, QRadioButton::indicator::checked:disabled, QTreeView::indicator::checked:disabled {  
+    image: url(:/images/check-square.png);
+    width: 20px;
+    height: 20px;
+}
+
+QFrame{
+    border: 0px;
+    border-radius: 2px;
+    padding: 2px;
+}
+
+QTreeView {
+	background-color: transparent;
+        color: #424242;
+	outline: 0;
+	border: 0;
+}
+
+QTreeView::item:hover {
+	background-color: transparent;
+        color: #9E9E9E;
+}
+
+QTreeView::item:selected {
+	background-color: transparent;
+	color: #FFFFFF;
+}
+
+QTreeView QHeaderView:section {
+        background-color: #EEEEEE;
+        color: #CFD8DC;
+	border: 0;
+}
+
+QTreeView::indicator:checked {
+        background-color: qradialgradient(cx:0.5, cy:0.5, fx:0.25, fy:0.15, radius:0.3, stop:0 #2196F3, stop:1 #EEEEEE);
+	border: 1px solid #536D79;
+	selection-background-color: transparent;
+}
+
+QTreeView::indicator:unchecked {			/* This and the one above style the checkbox in the Options -> Keyboard */
+        background-color: #EEEEEE;				/* This is still a hover over in blue I can't get rid of */
+	border: 1px solid #536D79;
+	selection-background-color: transparent;
+}
+
+/*QTreeView QScrollBar {
+        background-color: #EEEEEE
+}*/
+
+QTreeView::branch {
+	/* Skip - applies to everything */
+}
+
+QTreeView::branch:has-siblings:adjoins-item {
+	/* Skip - files */
+}
+
+QTreeView::branch:has-siblings:!adjoins-item {
+	/* Skip - applies to almost all on the left side */
+}
+
+QTreeView::branch:closed:has-children:has-siblings {
+	background: url('./images/rightarrowgray.png') center center no-repeat;
+}
+
+QTreeView::branch:has-children:!has-siblings:closed {
+	background: url('./images/rightarrowgray.png') center center no-repeat;
+}
+
+QTreeView::branch:!has-children:!has-siblings:adjoins-item {
+	/* Skip - files */
+}
+
+QTreeView::branch:open:has-children:has-siblings {
+	background: url('./images/downarrowgray.png') center center no-repeat;
+}
+
+QTreeView::branch:open:has-children:!has-siblings {
+	background: url('./images/downarrowgray.png') center center no-repeat;
+}
+
+
+/* === QTableView === */
+
+QTableView
+{
+
+}
+
+QHeaderView::section
+{
+    background: #E0E0E0;
+    color: #424242 ;
+    border-top: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 1px solid #EEEEEE;
+    margin: 0px;
+    padding-bottom: 2px;
+    padding-right: 2px;
+
+}
+
+QHeaderView
+{
+ background-color: #E0E0E0;
+}
+
+
+/* === QScrollBar:horizontal === */
+QScrollBar:horizontal {
+        background: #EEEEEE;				/* Background where slider is not */
+	height: 10px;
+	margin: 0;
+}
+
+QScrollBar:vertical {
+        background: #EEEEEE;				/* Background where slider is not */
+	width: 10px;
+	margin: 0;
+}
+
+QScrollBar::handle:horizontal {
+    background: #44a8f2;					/* Slider color */
+    min-width: 16px;
+	border-radius: 5px;
+}
+
+QScrollBar::handle:vertical {
+    background: #44a8f2;					/* Slider color */
+    min-height: 16px;
+	border-radius: 5px;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal,
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+	background: none;												/* Removes the dotted background */
+}
+
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal,
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {	/* Hides the slider arrows */
+      border: none;
+      background: none;
+}
+
+QPushButton {
+        background-color: #ffffff;
+        color: #424242;
+
+        padding: 4px 12px;
+
+        border-bottom: 2px solid;
+        border-bottom-color: qlineargradient(  x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #757575, stop: 1.0 #EEEEEE);
+
+        border-top: 2px solid;
+        border-top-color: qlineargradient(  x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #EEEEEE, stop: 1.0 #BDBDBD);
+
+
+        border-left: 2px solid;
+        border-left-color: qlineargradient(  x1: 0, y1: 0, x2: 1, y2: 0,
+        stop: 0 #EEEEEE, stop: 1.0 #BDBDBD);
+
+        border-right: 2px solid;
+        border-right-color: qlineargradient(  x1: 0, y1: 0, x2: 1, y2: 0,
+        stop: 0 #757575, stop: 1.0 #EEEEEE);
+        border-radius: 1px;
+}
+
+QPushButton::disabled {
+        color: #BDBDBD;
+
+}
+
+QPushButton:hover {
+        color: #9E9E9E;
+}
+
+QPushButton:pressed {
+        color: #F06292;
+}
+
+QLineEdit {
+        background: #f5f5f5;
+        color: #424242;
+        border: 1px solid #42A5F5;
+        border-radius: 2px;
+        padding: 0 8px;
+        selection-background-color: #F06292;
+}
+
+QLineEdit::disabled {
+        color: #BDBDBD;
+}
+
+QSpinBox {
+	background: transparent;
+        border: 1px solid #44a8f2;
+        border-radius: 2px;
+        color: #424242;
+}
+
+/*****************************************************************************
+Main Screen
+*****************************************************************************/
+QTreeView {
+        background-color: #EEEEEE;
+}
+
+QMenu {
+        background-color: #EEEEEE;		/* File Menu Background color */
+        color: #424242;
+}
+
+QMenu::item:selected {
+        color: #9E9E9E;
+}
+
+QMenu::item:pressed {
+	color: #FFFFFF;
+}
+
+QMenu::separator {
+	height: 1px;
+        background: transparent;			/* Could change this to #424242 and reduce the margin top and bottom to 1px */
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+/* === QMenuBar === */
+QMenuBar {
+        background-color: #EEEEEE;
+        color: #424242;
+}
+
+QMenuBar::item {
+	background: transparent;
+}
+
+QMenuBar::item:disabled {
+	color: gray;
+}
+
+QMenuBar::item:selected {
+        color: #9E9E9E;
+}
+
+QMenuBar::item:pressed {
+	color: #FFFFFF;
+}
+
+QToolBar {
+        background: #EEEEEE;
+	border: 1px solid transparent;
+}
+
+QToolBar:handle {
+	background: transparent;
+        border-left: 2px dotted #2196F3;	/* Fix the 4 handle dots so it doesn't look crappy */
+	color: transparent;
+}
+
+QToolBar::separator {
+	border: 0;
+}
+
+/* === QToolButton === */
+QToolButton:hover, QToolButton:pressed {
+	background-color: transparent;
+}
+
+QToolButton::menu-button {
+	background: url('./images/downarrowgray.png') center center no-repeat;
+        background-color: #EEEEEE;												/* This needs to be set to ensure the other brown arrows don't show */
+}
+
+QToolButton::menu-button:hover, QToolButton::menu-button:pressed {
+        background-color: #EEEEEE;
+}
+
+QStatusBar {
+        background-color: #EEEEEE;
+}
+
+QLabel {
+        color: #424242;		/* Text at the bottom right corner of the screen */
+}
+
+QToolButton {	/* I don't like how the items depress */
+        color: #424242;
+}
+
+QToolButton:hover, QToolButton:pressed, QToolButton:checked {
+        background-color: #EEEEEE;
+}
+
+QToolButton:hover {
+        color: #9E9E9E;
+
+}
+
+QToolButton:checked, QToolButton:pressed {
+	color: #FFFFFF;
+}
+
+
+QToolButton {
+	border: 1px solid transparent;
+	margin: 1px;
+}
+
+QToolButton:hover {
+	background-color: transparent;				/* I don't like how the down arrows in the top menu bar move down when clicked */
+	border: 1px solid transparent;
+}
+
+QToolButton[popupMode="1"] { /* only for MenuButtonPopup */
+	padding-right: 20px; /* make way for the popup button */
+}
+
+QToolButton::menu-button {
+	border-left: 1px solid transparent;
+	background: transparent;
+    width: 16px;
+}
+
+QToolButton::menu-button:hover {
+	border-left: 1px solid transparent;
+	background: transparent;
+    width: 16px;
+}
+
+QStatusBar::item {
+        color: #424242;
+        background-color: #EEEEEE;
+}
+
+QAbstractScrollArea  {	/* Borders around the code editor and debug window */
+	border: 0;
+}
+
+/*****************************************************************************
+Play around with these settings
+*****************************************************************************/
+
+/* Force the dialog's buttons to follow the Windows guidelines. */
+QDialogButtonBox {
+    button-layout: 0;
+}
+
+QTabWidget::tab-bar {
+	left: 0px; /* Test this out on OS X, it will affect the tabs in the Options Dialog, on OS X they are centered */
+}

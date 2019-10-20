@@ -117,6 +117,11 @@ void image_callback(const sensor_msgs::ImageConstPtr &image_msg)
         new_sequence();
     }
     last_image_time = image_msg->header.stamp.toSec();
+
+    //cout<<"image callback, image buff size"<<image_buf.size()<<endl;
+
+    while(image_buf.size() > 1000)
+        image_buf.pop();
 }
 
 void point_callback(const sensor_msgs::PointCloudConstPtr &point_msg)
@@ -227,7 +232,9 @@ void vio_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
 
     cameraposevisual.reset();
     cameraposevisual.add_pose(vio_t_cam, vio_q_cam);
-    cameraposevisual.publish_by(pub_camera_pose_visual, pose_msg->header);
+    odometry.header.frame_id = "map"; //zxzx
+    cameraposevisual.publish_by(pub_camera_pose_visual, odometry.header);
+    odometry.header.frame_id = "world"; 
 
 
 }
@@ -249,6 +256,7 @@ void process()
 {
     int cnt = 0;
 
+    //cout<<"image buff size"<<image_buf.size()<<endl;
     while (true)
     {
         sensor_msgs::ImageConstPtr image_msg = NULL;
@@ -277,7 +285,12 @@ void process()
                 while (!pose_buf.empty())
                     pose_buf.pop();
                 while (image_buf.front()->header.stamp.toSec() < pose_msg->header.stamp.toSec())
+                {
+                    //sensor_msgs::ImageConstPtr ptr_img = image_buf.front();
                     image_buf.pop();
+                    //delete ptr_img;
+                }
+
                 image_msg = image_buf.front();
                 image_buf.pop();
 
@@ -530,12 +543,12 @@ int main(int argc, char **argv)
         load_flag = 1;
     }
 
-    ros::Subscriber sub_vio = n.subscribe("/vins_estimator/odometry", 2000, vio_callback);
-    ros::Subscriber sub_image = n.subscribe(IMAGE_TOPIC, 2000, image_callback);
-    ros::Subscriber sub_pose = n.subscribe("/vins_estimator/keyframe_pose", 2000, pose_callback);
-    ros::Subscriber sub_extrinsic = n.subscribe("/vins_estimator/extrinsic", 2000, extrinsic_callback);
-    ros::Subscriber sub_point = n.subscribe("/vins_estimator/keyframe_point", 2000, point_callback);
-    ros::Subscriber sub_margin_point = n.subscribe("/vins_estimator/margin_cloud", 2000, margin_point_callback);
+    ros::Subscriber sub_vio = n.subscribe("/vins_estimator/odometry", 100, vio_callback);
+    ros::Subscriber sub_image = n.subscribe(IMAGE_TOPIC, 100, image_callback);
+    ros::Subscriber sub_pose = n.subscribe("/vins_estimator/keyframe_pose", 100, pose_callback);
+    ros::Subscriber sub_extrinsic = n.subscribe("/vins_estimator/extrinsic", 100, extrinsic_callback);
+    ros::Subscriber sub_point = n.subscribe("/vins_estimator/keyframe_point", 100, point_callback);
+    ros::Subscriber sub_margin_point = n.subscribe("/vins_estimator/margin_cloud", 100, margin_point_callback);
 
     pub_match_img = n.advertise<sensor_msgs::Image>("match_image", 1000);
     pub_camera_pose_visual = n.advertise<visualization_msgs::MarkerArray>("camera_pose_visual", 1000);

@@ -12,7 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
     cmake_utils
 )
 
-set(ENABLE_CUDA false)
+set(ENABLE_CUDA true)
 
 if(ENABLE_CUDA)
     message("${Green} Use CUDA")

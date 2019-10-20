@@ -1,8 +1,8 @@
 <launch>
 
-<arg name="map_size_x" default="30.0"/>
-<arg name="map_size_y" default="30.0"/>
-<arg name="map_size_z" default="6.0" />
+<arg name="map_size_x" default="20.0"/>
+<arg name="map_size_y" default="20.0"/>
+<arg name="map_size_z" default="2.0" />
 <arg name="poly_order" default=" 5"/>
       
   <node pkg = "trr_local_replanner" type = "local_replanner" output = "screen" name = "local_replanner">
@@ -19,32 +19,32 @@
       <param name="local_planner/vis/frame_id"          value="/map" /> 
       
       <param name="local_planner/time_emergency"        value="0.5" /> 
-      <param name="local_planner/max_vel"               value="2,5" /> 
+      <param name="local_planner/max_vel"               value="2.5" /> 
       <param name="local_planner/max_acc"               value="2.5" /> 
 
       <!-- <param name="sdf_map/input_data_type"    value="$(arg sense_data_type)"/> -->
 
-      <param name="sdf_map/resolution"      value="0.05" /> 
+      <param name="sdf_map/resolution"      value="0.1" /> 
       <param name="sdf_map/global/x_size"   value="$(arg map_size_x)" /> 
       <param name="sdf_map/global/y_size"   value="$(arg map_size_y)" /> 
       <param name="sdf_map/global/z_size"   value="$(arg map_size_z)" /> 
       <param name="sdf_map/local_radius_x"  value="4.5" /> 
       <param name="sdf_map/local_radius_y"  value="4.5" /> 
       <param name="sdf_map/local_radius_z"  value="5.5" /> 
-      <param name="sdf_map/inflate_val"     value="0.15" /> 
-      <param name="sdf_map/esdf_inflate"    value="0.075"/>
+      <param name="sdf_map/inflate_val"     value="0.2" /> 
+      <param name="sdf_map/esdf_inflate"    value="0.1"/>
       <param name="sdf_map/local_map_margin" value="0"/>
       <param name="sdf_map/ground_z"        value="0.0"/>
 
-      <param name="sdf_map/cx" value="3.2247735741936430e+02"/>
-      <param name="sdf_map/cy" value="2.3707634648111778e+02"/>
-      <param name="sdf_map/fx" value="3.8445808939187248e+02"/>
-      <param name="sdf_map/fy" value="3.8398275569654390e+02"/>
+      <param name="sdf_map/cx" value="3.193751e+02"/>
+      <param name="sdf_map/cy" value="2.411233e+02"/>
+      <param name="sdf_map/fx" value="3.852785e+02"/>
+      <param name="sdf_map/fy" value="3.852785e+02"/>
 
       <param name="sdf_map/use_depth_filter" value="true"/>
       <param name="sdf_map/depth_filter_tolerance" value="0.15"/>
-      <param name="sdf_map/depth_filter_maxdist"   value="4.5"/>
-      <param name="sdf_map/depth_filter_mindist"   value="0.2"/>
+      <param name="sdf_map/depth_filter_maxdist"   value="0.0"/> <!--4.5-->
+      <param name="sdf_map/depth_filter_mindist"   value="-0.2"/> <!--0.2-->
       <param name="sdf_map/depth_filter_margin"    value="2"/>
       <param name="sdf_map/k_depth_scaling_factor" value="1000.0"/>
       <param name="sdf_map/skip_pixel" value="2"/>

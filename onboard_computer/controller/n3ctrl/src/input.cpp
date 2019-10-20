@@ -39,6 +39,7 @@ void RC_Data_t::feed(sensor_msgs::JoyConstPtr pMsg) {
     thr = msg.axes[3];
     mode = msg.axes[4];
     gear = msg.axes[5];
+    if(gear < -1.0) gear = -1.0; //zxzxzxzx
 
     check_validity();
 
@@ -126,6 +127,13 @@ Command_Data_t::Command_Data_t() {
 }
 
 void Command_Data_t::feed(quadrotor_msgs::PositionCommandConstPtr pMsg) {
+
+    // if(msg.trajectory_id == 0)
+    // {
+    //     //The first trajectory_id must be greater than 0. zxzxzxzx
+    //     return;
+    // }
+
     msg = *pMsg;
     rcv_stamp = ros::Time::now();
 

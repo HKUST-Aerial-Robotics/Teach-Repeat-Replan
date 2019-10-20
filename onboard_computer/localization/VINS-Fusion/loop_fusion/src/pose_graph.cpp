@@ -189,8 +189,10 @@ void PoseGraph::addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
     pose_stamped.pose.orientation.y = Q.y();
     pose_stamped.pose.orientation.z = Q.z();
     pose_stamped.pose.orientation.w = Q.w();
+    pose_stamped.header.frame_id = "map";
     path[sequence_cnt].poses.push_back(pose_stamped);
     path[sequence_cnt].header = pose_stamped.header;
+    pose_stamped.header.frame_id = "world";
 
     if (SAVE_LOOP_PATH)
     {

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<launch>
+  <node pkg="joy_ctrl" type="joy_ctrl" name="joy_ctrl_sim" output="screen">
+    <remap from="~joy" to="/joy"/>
+    <remap from="~uav_odom_sim" to="/uav_odom_sim"/>
+    <param name="start_x"   type="double" value=" 0.0"/>
+    <param name="start_y"   type="double" value=" 0.0"/>
+    <param name="start_z"   type="double" value=" 1.0"/>
+    <param name="start_yaw" type="double" value="0.0"/>
+
+    <param name="min_z"   type="double" value=" 0.0"/>
+    <param name="max_z"   type="double" value=" 2.0"/>
+
+
+    <param name="hori_scale" type="double" value="0.03"/>
+    <param name="vert_scale" type="double" value="0.02"/>
+    <param name="yaw_scale"  type="double" value="0.01"/>
+  
+  </node>
+
+<!-- Visualization-->
+<!--node pkg="odom_visualization" name="odom_visualization" type="odom_visualization" output="screen">
+  <remap from="~odom"            to="/uav_odom_sim"/>
+  <param name="base_frame"       value="/world"/>
+  <param name="color/a"          value="1.0"/>
+  <param name="color/r"          value="0.0"/>
+  <param name="color/g"          value="0.0"/>
+  <param name="color/b"          value="0.0"/>
+  <param name="robot_scale"      value="1.0"/>
+</node-->
+
+<node pkg="odom_visualization"
+      name="odom_visualization_1"
+      type="odom_visualization"
+      output="log">
+  <remap from="~odom"            to="/uav_odom_sim"/>
+  <remap from="~odom_world"      to="/all_odom"/>
+  <param name="base_frame"       value="/map"/>
+  <param name="target_frame"     value="/map"/>
+  <param name="tf45"             value="true"/>
+  <param name="tfc"              value="false"/>
+  <param name="color/a"          value="1.0"/>
+  <param name="color/r"          value="1.0"/>
+  <param name="color/g"          value="0.0"/>
+  <param name="color/b"          value="0.0"/>
+  <param name="covariance_scale" value="100.0"/>
+  <param name="drone_scale"      value="0.8"/>
+  <param name="id"      value="1"/>
+</node>
+
+ <node name="rviz" pkg="rviz" type="rviz" output="log"
+       args="-d $(find trr_global_planner)/config/rviz_config.rviz"> 
+</node>
+
+</launch>

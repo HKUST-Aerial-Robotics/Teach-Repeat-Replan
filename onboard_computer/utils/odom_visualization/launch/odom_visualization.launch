@@ -1,0 +1,6 @@
+<launch>
+	<node pkg="odom_visualization" type="odom_visualization" name="odom_visualization" output="screen">
+		<remap from="~odom" to="/msckf_vio/odometry" />
+	</node>
+ 
+</launch>
