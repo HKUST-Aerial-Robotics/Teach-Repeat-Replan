@@ -19,7 +19,7 @@
       <param name="local_planner/vis/frame_id"          value="/map" /> 
       
       <param name="local_planner/time_emergency"        value="0.5" /> 
-      <param name="local_planner/max_vel"               value="2,5" /> 
+      <param name="local_planner/max_vel"               value="2.5" /> 
       <param name="local_planner/max_acc"               value="2.5" /> 
 
       <!-- <param name="sdf_map/input_data_type"    value="$(arg sense_data_type)"/> -->
