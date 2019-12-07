@@ -92,7 +92,7 @@ export ROS_MASTER_URI = http://192.168.1.100:11311
 
 ## 6. Mapping
 
- - Compile the code in *ground_computer* folder in ROS workspace on the ground conputer.
+ - Compile the code in *ground_station* folder in ROS workspace on the ground computer.
  
  - Create a new folder *~/output/pose_graph/* on the onboard computer to store the pose graph generated during mapping. Run ```./sensing_estimation.sh```. (It is highly recommended that the rviz statement be manually commented out to save computing resources.)
  
