@@ -41,6 +41,7 @@ The hardware/software combination that passed our test below are **dji N3** flig
 
 ## 2. Install drivers and dependencies
 
+- Run ```./install_tools.sh``` script in the src folder to install necessary dependencies. If anything goes wrong, please open this script and manually install them one by one.
 - Follow the [instruction1](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/onboard_computer/controller/djiros) to install the drivers for **N3** flight controller on onboard computer. [version 3.7 of Onboard-SDK](https://github.com/dji-sdk/Onboard-SDK/tree/3.7) is recomended.
 - Follow the [instruction2](https://github.com/IntelRealSense/librealsense) to install the drivers for **intel realsense** on onboard computer.
 - Install necessary solvers [Mosek](https://www.mosek.com/), [OOQP](http://pages.cs.wisc.edu/~swright/ooqp/), [Ceres](http://ceres-solver.org/) and [NLopt](https://nlopt.readthedocs.io/en/latest/). You can refer to [simulation](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) for more details.
