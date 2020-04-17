@@ -16,7 +16,7 @@ void DJISDKNode::SDKfromMobileDataCallback(Vehicle *vehicle, RecvContainer recvF
 }
 
 void DJISDKNode::fromMobileDataCallback(RecvContainer recvFrame) {
-  int dataLength = recvFrame.recvInfo.len - OpenProtocol::PackageMin - 2;
+  int dataLength = recvFrame.recvInfo.len - Protocol::PackageMin - 2;
   if (dataLength <= 100) {
     DSTATUS( "Received mobile Data of len %d\n", recvFrame.recvInfo.len);
     dji_sdk::MobileData mobile_data;

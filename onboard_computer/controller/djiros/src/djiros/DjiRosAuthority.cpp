@@ -29,7 +29,7 @@ void DjiRos::on_authority_ack(Vehicle *vehicle,
   ACK::ErrorCode ack;
 
   ack.data = ErrorCode::CommonACK::NO_RESPONSE_ERROR;
-  if (recvFrame.recvInfo.len - OpenProtocol::PackageMin <= (int) sizeof(uint16_t)) {
+  if (recvFrame.recvInfo.len - Protocol::PackageMin <= (int) sizeof(uint16_t)) {
     ack.data = recvFrame.recvData.ack;
     ack.info = recvFrame.recvInfo;
   } else {
