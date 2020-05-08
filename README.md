@@ -23,7 +23,7 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 
 **Authors / Maintainers:** [Fei Gao](https://ustfei.com/), [Boyu Zhou](http://boyuzhou.net), and [Shaojie Shen](http://uav.ust.hk/group/).
 
-**Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [Kaixuan Wang](https://wang-kx.github.io/al-folio/), [Luxin Han](https://github.com/hlx1996), [William Wu](https://github.com/justwillim), Jie Pan, [Chuhao Liu](https://www.linkedin.com/in/chuhaoliu/?originalSubdomain=hk), [Hao Xu](http://www.xuhao1.me/) 
+**Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [Kaixuan Wang](https://wang-kx.github.io/al-folio/)
 
 All from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
@@ -48,7 +48,7 @@ Our system can also be used for normal autonomous navigations, like our previous
 
 **Related Papers**
 
-* [**Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments**](https://arxiv.org/abs/1907.00520), Fei Gao, Luqi Wang, Boyu Zhou, Luxin Han, Jie Pan, Shaojie Shen, IEEE Transactions on Robotics (**T-RO**), to appear, 2020.
+* [**Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments**](https://arxiv.org/abs/1907.00520), Fei Gao, Luqi Wang, Boyu Zhou, Xin Zhou, Jie Pan, Shaojie Shen, IEEE Transactions on Robotics (**T-RO**), to appear, 2020.
 
 * [**Optimal Trajectory Generation for Quadrotor Teach-and-Repeat**](https://ieeexplore.ieee.org/abstract/document/8625495), Fei Gao, Luqi Wang, Kaixuan Wang, William Wu, Boyu Zhou, Luxin Han, Shaojie Shen, IEEE Robotics and Automation Letters (**RA-L**), 2019.
 
