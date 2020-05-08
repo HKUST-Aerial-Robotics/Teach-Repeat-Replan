@@ -23,13 +23,13 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 
 **Authors / Maintainers:** [Fei Gao](https://ustfei.com/), [Boyu Zhou](http://boyuzhou.net), and [Shaojie Shen](http://uav.ust.hk/group/).
 
-**Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [Kaixuan Wang](https://wang-kx.github.io/al-folio/)
+**Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [Kaixuan Wang](https://wang-kx.github.io/al-folio/).
 
 All from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
 Sub-modules integrated into our system include:
 
-**Planning:**     flight corridor generation, global spatial-temporal planning, [local online re-planning](https://github.com/HKUST-Aerial-Robotics/Fast-Planner)
+**Planning:**     [flight corridor generation](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/master/polyhedron_generator), [global spatial-temporal planning](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/master/global_planner), [local online re-planning](https://github.com/HKUST-Aerial-Robotics/Fast-Planner)
 
 **Perception:**   [global deformable surfel mapping](https://github.com/HKUST-Aerial-Robotics/DenseSurfelMapping), [local online ESDF mapping](https://github.com/hlx1996/FIESTA)
 
