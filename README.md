@@ -21,11 +21,13 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Video Links (for Mainland China):** [Video1](https://www.bilibili.com/video/av57116775/)    [Video2](https://www.bilibili.com/video/av57117018/)
 
 
-**Authors / Maintainers:** [Fei Gao](https://ustfei.com/), [Boyu Zhou](http://boyuzhou.net), and [Shaojie Shen](http://uav.ust.hk/group/).
+**Authors / Maintainers:** [Fei Gao](https://ustfei.com/), [Boyu Zhou](http://boyuzhou.net), and Xin Zhou.
 
 **Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [Kaixuan Wang](https://wang-kx.github.io/al-folio/).
 
-All from the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
+Fei Gao and Xin Zhou are now with the [Fast Lab](http://www.kivact.com/), Zhejiang University.
+
+Other authors are with the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
 Sub-modules integrated into our system include:
 
