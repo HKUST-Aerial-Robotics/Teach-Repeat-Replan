@@ -1,6 +1,8 @@
 # Known Issues
 - If polyhedrons can't be visualized properly in Rviz, please delete the *Display Type* **PolyhedronArray** from the *display menu*, then manually add **PolyhedronArray** again and select the topic in its **Topic** drop-down list.
 
+- If using Ubuntu 18.04 and ROS melodic, you may get "error: expected constructor, destructor, or type conversion before ‘(’ token PLUGINLIB_DECLARE_CLASS(router, RouterNode, RouterNode, nodelet::Nodelet);" during compiling. Follow [issue#34](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/issues/34) to fix it.
+
 # What's New 
 - We have released all packages for conducting real-world experiments, please visit [experiment](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment).
 
