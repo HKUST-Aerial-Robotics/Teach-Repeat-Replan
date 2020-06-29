@@ -18,7 +18,6 @@ find_package(Eigen3)
 
 
 catkin_package(
-  INCLUDE_DIRS include
   LIBRARIES joy_ctrl
   CATKIN_DEPENDS geometry_msgs nav_msgs roscpp std_msgs sensor_msgs tf
 )
