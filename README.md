@@ -52,7 +52,7 @@ Our system can also be used for normal autonomous navigations, like our previous
 
 **Related Papers**
 
-* [**Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments**](https://ieeexplore.ieee.org/document/9102390), Fei Gao, Luqi Wang, Boyu Zhou, Xin Zhou, Jie Pan, Shaojie Shen, IEEE Transactions on Robotics (**T-RO**), to appear, 2020.
+* [**Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Complex Environments**](https://ieeexplore.ieee.org/document/9102390), Fei Gao, Luqi Wang, Boyu Zhou, Xin Zhou, Jie Pan, Shaojie Shen, IEEE Transactions on Robotics (**T-RO**), 2020.
 
 * [**Optimal Trajectory Generation for Quadrotor Teach-and-Repeat**](https://ieeexplore.ieee.org/abstract/document/8625495), Fei Gao, Luqi Wang, Kaixuan Wang, William Wu, Boyu Zhou, Luxin Han, Shaojie Shen, IEEE Robotics and Automation Letters (**RA-L**), 2019.
 
