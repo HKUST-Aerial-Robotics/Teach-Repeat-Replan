@@ -33,13 +33,13 @@ Other authors are with the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
 Sub-modules integrated into our system include:
 
-**Planning:**     [flight corridor generation](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/master/polyhedron_generator), [global spatial-temporal planning](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/master/global_planner), [local online re-planning](https://github.com/HKUST-Aerial-Robotics/Fast-Planner)
+**Planner:**     [flight corridor generation](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/master/polyhedron_generator), [global spatial-temporal planning](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/master/global_planner), [local online re-planning](https://github.com/HKUST-Aerial-Robotics/Fast-Planner)
 
 **Perception:**   [global deformable surfel mapping](https://github.com/HKUST-Aerial-Robotics/DenseSurfelMapping), [local online ESDF mapping](https://github.com/hlx1996/FIESTA)
 
 **Localization:** [global pose graph optimization, local visual-inertial fusion](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion)
 
-**Controlling:**  [geometric controller on SE(3)](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/controller)
+**Controller:**  [geometric controller on SE(3)](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan/tree/experiment/controller)
 
 **Architecture:**
  <p align="center">
