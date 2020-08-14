@@ -4,7 +4,10 @@
 #include <tf/transform_datatypes.h>
 
 #include <pluginlib/class_list_macros.h>
-PLUGINLIB_DECLARE_CLASS(router, RouterNode, RouterNode, nodelet::Nodelet);
+
+
+PLUGINLIB_EXPORT_CLASS(RouterNode, nodelet::Nodelet);
+
 
 RouterNode::RouterNode()
 {

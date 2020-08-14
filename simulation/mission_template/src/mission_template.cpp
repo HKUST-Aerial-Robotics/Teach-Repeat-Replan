@@ -6,8 +6,10 @@
 #include <uav_utils/geometry_utils.h>
 
 #include <pluginlib/class_list_macros.h>
-PLUGINLIB_DECLARE_CLASS(mission_template, MissionTemplateNode,
-                        MissionTemplateNode, nodelet::Nodelet);
+
+
+PLUGINLIB_EXPORT_CLASS(MissionTemplateNode, nodelet::Nodelet);
+
 
 MissionTemplateNode::MissionTemplateNode()
   : statemachine(new StateMachine{ logger })

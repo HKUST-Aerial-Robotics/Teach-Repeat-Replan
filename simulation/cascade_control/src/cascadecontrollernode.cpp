@@ -16,8 +16,8 @@
 #include "velocity.hpp"
 
 #include <pluginlib/class_list_macros.h>
-PLUGINLIB_DECLARE_CLASS(cascade_controller, CascadeControllerNode,
-                        CascadeControllerNode, nodelet::Nodelet);
+
+PLUGINLIB_EXPORT_CLASS(CascadeControllerNode, nodelet::Nodelet);
 
 CascadeControllerNode::CascadeControllerNode()
   : ctrl(new mocka::CascadeController())
