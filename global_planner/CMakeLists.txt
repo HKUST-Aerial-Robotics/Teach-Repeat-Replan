@@ -39,6 +39,7 @@ set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -O3 -Wall")
 add_library( poly_utils STATIC
     src/utils/poly_utils.cpp
     third_party/quickhull/QuickHull.cpp )
+target_link_libraries(poly_utils ${catkin_LIBRARIES})
 
 add_executable( tr_node 
     src/utils/a_star.cpp
