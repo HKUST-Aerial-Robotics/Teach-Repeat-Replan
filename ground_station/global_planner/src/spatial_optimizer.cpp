@@ -548,7 +548,7 @@ int spatialTrajOptimizer::bezierCurveGeneration(
     else if (ierr == 4)
         cout << "Ther program is very slow in convergence, may have numerical issue.\n";
     else
-        cout << "Don't know what the fuck it is, should not happen.\n";
+        cout << "Don't know what goes wrong, should not happen.\n";
     
     return ierr;
 }

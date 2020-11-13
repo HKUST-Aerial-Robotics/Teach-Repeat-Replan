@@ -73,7 +73,7 @@ int main(int argc, char **argv)
 	ros::Timer  map_filter_timer = nh.createTimer(ros::Duration(2.0), process);
 
     string save_name;
-    nh.param("save_name", save_name, string("fuck"));
+    nh.param("save_name", save_name, string("error_log"));
     
     ros::Rate r(10);
     while(ros::ok())
