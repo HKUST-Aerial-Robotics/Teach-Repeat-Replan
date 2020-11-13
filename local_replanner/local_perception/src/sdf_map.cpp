@@ -1580,10 +1580,6 @@ void SDFMap::checkDist()
         Eigen::Vector3d grad;
         double dist = getDistWithGradTrilinear(pos, grad);
 
-        if (fabs(dist) > 10.0)
-        {
-          // cout << "fuck: " << pos.transpose() << ", " << dist << endl;
-        }
       }
 }
 
