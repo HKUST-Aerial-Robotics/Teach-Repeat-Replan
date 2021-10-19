@@ -27,7 +27,7 @@ Teach-Repeat-Replan: A Complete and Robust System for Aggressive Flight in Compl
 
 **Other Contributors:** [Luqi Wang](https://lwangax.wordpress.com), [Kaixuan Wang](https://wang-kx.github.io/al-folio/).
 
-Fei Gao and Xin Zhou are now with the [Fast Lab](http://www.kivact.com/), Zhejiang University.
+Fei Gao and Xin Zhou are now with the [Fast Lab](http://zju-fast.com/), Zhejiang University.
 
 Other authors are with the [HUKST Aerial Robotics Group](http://uav.ust.hk/).
 
